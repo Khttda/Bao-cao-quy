@@ -1,0 +1,1948 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VDSC Fund Monthly — Dashboard</title>
+  <meta name="description" content="Performance of Investment Funds in Vietnam — Monthly Dashboard by VDSC">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script>if (typeof echarts === 'undefined') document.write('<script src="https://unpkg.com/echarts@5.5.1/dist/echarts.min.js"><\/script>');</script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    /* ===================================================================
+       VDSC THEME — "City Park" from Theme VDSC.json
+       Background: #FFFFFF | Foreground: #070f25 | Accent: #0F1934
+       Data colors: #01A54E #D9B300 #FF4674 #FF0039 #71AFE2 #2F790D
+                    #D4C62B #B1C145 #3599B8 #DFBFBF #4AC5BB #5F6B6D
+       Font: Segoe UI Bold
+       =================================================================== */
+    :root {
+      /* Theme VDSC.json direct mapping */
+      --bg: #FFFFFF;
+      --fg: #070f25;
+      --accent: #0F1934;
+      --c1: #01A54E;  /* Green — primary */
+      --c2: #D9B300;  /* Gold */
+      --c3: #FF4674;  /* Pink */
+      --c4: #FF0039;  /* Red */
+      --c5: #71AFE2;  /* Light blue */
+      --c6: #2F790D;  /* Dark green */
+      --c7: #D4C62B;  /* Yellow-green */
+      --c8: #B1C145;  /* Olive */
+      --c9: #3599B8;  /* Teal blue */
+      --c10: #DFBFBF; /* Dusty pink */
+      --c11: #4AC5BB; /* Teal */
+      --c12: #5F6B6D; /* Gray */
+      --filter-highlight: #99FF91;
+      /* Derived */
+      --muted: #5F6B6D;
+      --border: #e4e8ec;
+      --surface: #f8f9fb;
+      --shadow: rgba(7,15,37,0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Segoe UI', 'Segoe UI Bold', helvetica, arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* === HEADER === */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center; gap: 80px;
+      padding: 0 max(80px, calc((100vw - 1600px) / 2));
+      height: 76px;
+      background: #fff;
+      color: #000;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+    }
+
+    .logo {
+      height: 40px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .brand-logo-img {
+      width: auto; height: 40px;
+      object-fit: contain;
+      display: block;
+    }
+    .report-title {
+      position: static;
+      font-size: 22px; font-weight: 700; color: #000;
+      height: 40px; display: flex; align-items: center;
+      line-height: 1; white-space: nowrap; text-transform: uppercase;
+    }
+    .logo-mark {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      background: var(--c1);
+      border-radius: 4px;
+      font-weight: 800; font-size: 11px; color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .logo-text {
+      display: flex; flex-direction: column;
+    }
+    .logo-text span:first-child { font-weight: 700; font-size: 14px; color: #fff; }
+    .logo-text span:last-child { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+    .header-right {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .data-status {
+      font-size: 12px; color: rgba(255,255,255,0.7);
+    }
+    .data-status .dot {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--c2); margin-right: 5px;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .upload-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 16px;
+      background: var(--c1);
+      color: #fff; border: 0; border-radius: 4px;
+      cursor: pointer; font-size: 13px; font-weight: 700;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .upload-btn:hover { background: #018c42; }
+    .upload-btn input { display: none; }
+    .upload-btn svg { width: 15px; height: 15px; }
+
+    /* === MAIN LAYOUT === */
+    main {
+      max-width: 1560px;
+      margin: 0 auto;
+      padding: 0 28px 48px;
+    }
+
+    /* Section titles — matches Power BI section feel */
+    .section-title {
+      display: flex; align-items: center; gap: 10px;
+      margin: 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent);
+    }
+    .section-title:first-child { margin-top: 0; }
+    .section-num {
+      width: 26px; height: 26px;
+      display: grid; place-items: center;
+      background: var(--accent);
+      border-radius: 4px;
+      font-weight: 800; font-size: 12px; color: #fff;
+    }
+    .section-label {
+      font-size: 16px; font-weight: 800; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .section-label small { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 8px; text-transform: none; }
+
+    /* Grid */
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-1 { grid-template-columns: 1fr; }
+
+    /* Chart cards — white surface with subtle border */
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 1px 4px var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 14px 18px 8px;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .card-title {
+      font-size: 13px; font-weight: 800; color: var(--accent);
+      line-height: 1.3;
+    }
+    .card-subtitle {
+      font-size: 11px; color: #000; margin-top: 2px;
+    }
+    .card-tag {
+      padding: 2px 8px;
+      background: var(--filter-highlight);
+      border-radius: 3px;
+      font-size: 10px; font-weight: 700; color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .chart-container { width: 100%; height: 100%; overflow: hidden; }
+
+    .h260 .chart-container { height: 260px; }
+    .h330 .chart-container { height: 330px; }
+    .h350 .chart-container { height: 350px; }
+    .h380 .chart-container { height: 380px; }
+    .h400 .chart-container { height: 400px; }
+    .h410 .chart-container { height: 410px; }
+    .h450 .chart-container { height: 450px; }
+    .h500 .chart-container { height: 500px; }
+    .h520 .chart-container { height: 520px; }
+    .h550 .chart-container { height: 550px; }
+    .h590 .chart-container { height: 590px; }
+    .h600 .chart-container { height: 600px; }
+    .h650 .chart-container { height: 650px; }
+
+    .compact-half {
+      width: calc(50% - 8px);
+      justify-self: start;
+    }
+
+    .chart-note {
+      margin: 0 18px 16px;
+      padding-top: 8px;
+      color: #000;
+      font-size: 11px;
+      line-height: 1.45;
+      font-style: italic;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+    .chart-note a { color: inherit; text-underline-offset: 2px; }
+
+    .stock-grid { position: relative; }
+    .stock-grid::after {
+      content: 'Số lượng\Aquỹ tham gia';
+      position: absolute;
+      top: 318px;
+      left: 50%;
+      width: 112px;
+      transform: translateX(-50%);
+      background: #fff;
+      color: #000;
+      font-size: 11px;
+      font-style: italic;
+      line-height: 1.25;
+      white-space: pre-line;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .card-tag {
+      background: var(--c1);
+      color: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      main { padding: 0 14px 36px; }
+      .header { padding: 0 14px; }
+      .data-status { display: none; }
+      .compact-half { width: 100%; }
+    }
+
+    @media (max-width: 600px) {
+      .h600 .chart-container { height: 540px; }
+      #chart-sector-buy { height: 650px; }
+      #chart-sector-sell { height: 560px; }
+      .chart-note { margin-inline: 14px; }
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 16px; padding: 16px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 11px; color: #000;
+    }
+
+    /* Nhãn số luôn nằm gọn trong cột; không xoay theo chiều dài cột. */
+    .chart-container svg text { font-style: normal; }
+    #chart-sector-buy, #chart-sector-sell { background: #fbfcfb; }
+  
+    /* === 2-COLUMN SCROLLABLE DATA AUDIT TABLE (PURE WHITE VDSC THEME) === */
+    .audit-container-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 1px 4px var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+      max-width: 850px;
+    }
+    .audit-card-top {
+      padding: 12px 18px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .audit-main-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .audit-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .audit-tab-btn {
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--fg);
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .audit-tab-btn:hover {
+      background: #f8f9fb;
+      border-color: var(--muted);
+    }
+    .audit-tab-btn.active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+    .audit-search-box {
+      position: relative;
+    }
+    .audit-search-input {
+      padding: 4px 10px 4px 28px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-size: 11.5px;
+      outline: none;
+      width: 170px;
+      background: #ffffff;
+      color: var(--fg);
+      font-family: inherit;
+      transition: width 0.2s, border-color 0.2s;
+    }
+    .audit-search-input:focus {
+      border-color: var(--accent);
+      width: 200px;
+    }
+    .audit-search-icon {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    /* SCROLLABLE TABLE CONTAINER */
+    .audit-scroll-pane {
+      max-height: 420px;
+      overflow-y: auto;
+      position: relative;
+      background: #ffffff;
+    }
+    .audit-scroll-pane::-webkit-scrollbar {
+      width: 6px;
+    }
+    .audit-scroll-pane::-webkit-scrollbar-track {
+      background: #ffffff;
+    }
+    .audit-scroll-pane::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+    .audit-scroll-pane::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    .scroll-table-2col {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12.5px;
+      text-align: left;
+      background: #ffffff;
+    }
+    .scroll-table-2col thead th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #ffffff;
+      color: var(--accent);
+      font-weight: 800;
+      padding: 10px 18px;
+      border-bottom: 1.5px solid var(--border);
+      box-shadow: 0 1px 2px rgba(7, 15, 37, 0.04);
+      font-size: 12px;
+      letter-spacing: 0.2px;
+    }
+    .scroll-table-2col tbody tr {
+      background: #ffffff;
+      transition: background 0.1s ease;
+    }
+    .scroll-table-2col tbody tr:hover {
+      background: #f8fafc;
+    }
+    .scroll-table-2col td {
+      padding: 9px 18px;
+      border-bottom: 1px solid var(--border);
+      color: var(--fg);
+      vertical-align: middle;
+      line-height: 1.4;
+      background: inherit;
+    }
+
+    .t-code {
+      font-weight: 800;
+      color: var(--accent);
+      font-size: 12.5px;
+    }
+    .badge-tag {
+      display: inline-block;
+      padding: 3px 14px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      white-space: nowrap;
+      text-align: center;
+      min-width: 55px;
+    }
+    .badge-red {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+    .badge-green {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+    .audit-footer-bar {
+      padding: 8px 18px;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <img class="brand-logo-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIEdlaOGXRiLACIxQvFXNRD_hotfMHTepakg&s" alt="VDSC">
+    </div>
+    <div class="report-title">Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam</div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ===== SECTION 00: 2-COLUMN SCROLLABLE DATA AUDIT TABLE (139 FUNDS) ===== -->
+    <div class="section-title">
+      <div class="section-num">00</div>
+      <div class="section-label">DATA QUALITY AUDIT <small>Quỹ thiếu dữ liệu</small></div>
+    </div>
+
+    <div class="audit-container-card">
+      <div class="audit-card-top">
+        <div class="audit-main-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Quỹ thiếu dữ liệu T7/2026</span>
+        </div>
+
+        <div class="audit-controls">
+          <button class="audit-tab-btn active" onclick="filterAuditTable('all', this)">Tất cả (139)</button>
+          <button class="audit-tab-btn" onclick="filterAuditTable('t7_yes', this)">Có (120)</button>
+          <button class="audit-tab-btn" onclick="filterAuditTable('t7_no', this)">Không (19)</button>
+          <div class="audit-search-box">
+            <svg class="audit-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="auditSearch" class="audit-search-input" placeholder="Tìm tên quỹ..." onkeyup="searchAuditTable()">
+          </div>
+        </div>
+      </div>
+
+      <!-- SCROLLABLE 2-COLUMN TABLE -->
+      <div class="audit-scroll-pane">
+        <table class="scroll-table-2col" id="auditMainTable">
+          <thead>
+            <tr>
+              <th style="width:75%;">Tên quỹ</th>
+              <th style="width:25%;text-align:center;">Có tháng 7 không</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ABBF</span> — <strong>Quỹ Đầu tư TP An Bình</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ABEF</span> — <strong>Quỹ Đầu tư Cổ phiếu An Bình Thịnh Vượng</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ABIF</span> — <strong>Quỹ Đầu tư cân bằng Amber</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ACBC-AGF</span> — <strong>Quỹ Đầu tư Tăng trưởng chủ động ACBC</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ACBC-BGF</span> — <strong>Quỹ Đầu tư Tăng trưởng ổn định ACBC</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">AEIF</span> — <strong>Quỹ Đầu tư Cổ phiếu Amber</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ASBF</span> — <strong>Quỹ Đầu tư TP An Toàn Amber</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ASP-VIET-A</span> — <strong>Asset Plus Vietnam Growth Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ASP-VIET-SSF</span> — <strong>Asset Plus Vietnam Growth Super Savings Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ASP-VIETEQ-AI</span> — <strong>Asset Plus Vietnam Focus Equity Fund Not for Retail Investors</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ASP-VIETRMF</span> — <strong>Asset Plus Vietnam Growth RMF Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">BMFF</span> — <strong>Quỹ Đầu tư Tăng trưởng Bordier</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">BVBF</span> — <strong>Quỹ Đầu tư TP Bảo Việt</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">BVFED</span> — <strong>Quỹ Đầu tư CP Năng động Bảo Việt</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">BVPF</span> — <strong>Quỹ Đầu tư CP Triển vọng Bảo Việt (BVPF)</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">CBPF</span> — <strong>Quỹ Đầu tư TP Mở Rộng Chubb</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">CGS FULLGOAL</span> — <strong>CGS Fullgoal Vietnam 30 Sector Cap ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">CSOP FTSE VN</span> — <strong>CSOP FTSE Vietnam 30 ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">DCBF</span> — <strong>Quỹ Đầu tư TP DC</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">DCDE</span> — <strong>Quỹ Đầu tư CP Tập trung Cổ tức DC</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">DCDS</span> — <strong>Quỹ Đầu tư Chứng Khoán Năng động DC</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">DCIP</span> — <strong>Quỹ Đầu tư TP gia tăng thu nhập cố định DC</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">DFVN-CAF</span> — <strong>Quỹ Đầu tư Tăng trưởng DFVN</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">DFVN-FIX</span> — <strong>Quỹ Đầu tư TP DFVN</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">E1VFVN30</span> — <strong>Quỹ ETF DCVFMVN30</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">ENF</span> — <strong>Quỹ ĐT Năng động Eastspring Investments Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">EVESG</span> — <strong>Quỹ Đầu tư CP ESG Eastspring Investments Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FBF</span> — <strong>Quỹ Đầu tư TP Fides VN</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUBON FTSE VN</span> — <strong>Fubon FTSE Vietnam ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUCTVGF3</span> — <strong>Quỹ Đầu tư Tăng trưởng Thiên Việt 3</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUCTVGF4</span> — <strong>Quỹ Đầu tư Tăng trưởng Thiên Việt 4</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUCTVGF5</span> — <strong>Quỹ Đầu tư Tăng trưởng Thiên Việt 5</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUCVREIT</span> — <strong>Quỹ Đầu tư BĐS Techcom Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEABVND</span> — <strong>Quỹ ETF ABFVN DIAMOND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEBFVND</span> — <strong>Quỹ ETF BVFVN DIAMOND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEDCMID</span> — <strong>Quỹ ETF DCVFMVNMIDCAP</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEFCV50</span> — <strong>Quỹ ETF FPT CAPITAL VNX50</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEIP100</span> — <strong>Quỹ ETF IPA PARTNER VN100</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEKIV30</span> — <strong>KIM GROWTH VN30 ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEKIVFS</span> — <strong>KIM GROWTH VNFINSELECT ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEKIVND</span> — <strong>Quỹ ETF KIM GROWTH VN DIAMOND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEMAV30</span> — <strong>Quỹ ETF MAFM VN30</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEMAVND</span> — <strong>Quỹ ETF MAFM VNDIAMOND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEMITEC</span> — <strong>VINACAPITAL VNMITECH</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEPHVNS</span> — <strong>Quỹ ETF PHFM VNSHINE</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUESSV30</span> — <strong>Quỹ ETF SSIAM VN30</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUESSV50</span> — <strong>Quỹ ETF SSIAM VNX50</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUESSVFL</span> — <strong>Quỹ ETF SSIAM VNFIN LEAD</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUETCC50</span> — <strong>Quỹ ETF TECHCOM CAPITAL VNX50</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUETPVND</span> — <strong>ETF VFCVN DIAMOND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEVFVND</span> — <strong>Quỹ ETF DCVFMVN DIAMOND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEVN100</span> — <strong>Quỹ ETF VINACAPITAL VN100</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FUEVN50G</span> — <strong>Quỹ ETF VinaCapital VN50 Growth</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">FVEF</span> — <strong>Quỹ Đầu tư CP Giá trị Fides VN</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">GDEGF</span> — <strong>Quỹ Đầu tư Cổ phiếu tăng trưởng Rồng Vàng</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">HDBF</span> — <strong>Quỹ Đầu tư Cổ phiếu Ngân hàng và Tài chính HD</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">HDBOND</span> — <strong>Quỹ Đầu tư TP lợi tức cao HD</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">IFNPVI</span> — <strong>Quỹ Đầu tư Trái phiếu thanh khoản IFNPVI</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">JFVNOPP</span> — <strong>JPMorgan Vietnam Opportunities Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">K-VIETNAM</span> — <strong>K Vietnam Equity Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">KDEF</span> — <strong>Quỹ Đầu tư Cổ phiếu Cổ tức Tăng trưởng KIM</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">KIM ACE VN30</span> — <strong>KIM ACE Vietnam VN30 ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">KIMVGF</span> — <strong>Kim Vietnam Growth Fund (UCITS)</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">KPHO</span> — <strong>KraneShares Dragon Capital Growth of Vietnam Index ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">KSIF</span> — <strong>Quỹ đầu tư Trái phiếu Chiến lược KIM</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">LHBF</span> — <strong>Quỹ Đầu tư TP Lighthouse</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">LHCDF</span> — <strong>Quỹ Đầu tư Năng động Lighthouse</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">LHFCF</span> — <strong>Quỹ Đầu tư Trái phiếu Dòng tiền Linh hoạt Lighthouse</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">LPBF</span> — <strong>Quỹ Đầu tư Trái phiếu LP</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">LPLF</span> — <strong>Quỹ Đầu tư Doanh nghiệp dẫn đầu LP</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">LVF</span> — <strong>Lumen Vietnam Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MAFBAL</span> — <strong>Quỹ Đầu tư Cân bằng Manulife</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MAFEQI</span> — <strong>Quỹ Đầu tư CP Manulife</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MAFF</span> — <strong>Quỹ Đầu tư TP Linh hoạt Mirae Asset Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MAGEF</span> — <strong>Quỹ Đầu tư CP Tăng trưởng Mirae Asset Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MBAM</span> — <strong>Quỹ Đầu tư TP Dòng Tiền Linh hoạt MB</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MBANKHANG</span> — <strong>Quỹ hưu trí Bổ sung Tự nguyên MB An Khang</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MBBOND</span> — <strong>Quỹ Đầu tư TP MB</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MBTHINHVUONG</span> — <strong>Quỹ Hưu trí Bổ sung Tự nguyện MB Thịnh Vượng</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MBVF</span> — <strong>Quỹ Đầu tư Giá trị MB Capital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MDI</span> — <strong>Quỹ Đầu tư Năng động Manulife</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">MSCI VN</span> — <strong>Global X MSCI Vietnam ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">NTPPF</span> — <strong>Quỹ Đầu tư CP Triển vọng NTP</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PBIF</span> — <strong>Quỹ Đầu tư Cân bằng PVcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PHUCAN</span> — <strong>Quỹ Hưu Trí Bổ Sung Tự Nguyện Phúc An</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PHVSF</span> — <strong>Quỹ Đầu tư Chọn lọc Phú Hưng Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PREMIA VIETNAM ETF</span> — <strong>Premia Vietnam ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PRINCIPAL VNEQ-A</span> — <strong>Principal Vietnam Equity Fund A</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PVBF</span> — <strong>Quỹ Đầu tư TP PVcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">PYNELITE</span> — <strong>PYN Elite Fund (non-ucits)</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">RVPIF</span> — <strong>Quỹ Đầu tư Thịnh Vượng Rồng Việt</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">SSI-SCA</span> — <strong>Quỹ Đầu tư Lợi Thế Cạnh Tranh Bền Vững SSI</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">SSIBF</span> — <strong>Quỹ Đầu tư TP SSI</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">SSIEF</span> — <strong>Quỹ ĐT Kiến tạo Tương lai SSI</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TBLF</span> — <strong>Quỹ Đầu tư CP Tăng trưởng Ballad Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCBF</span> — <strong>Quỹ Đầu tư TP Techcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCEF</span> — <strong>Quỹ Đầu tư CP Techcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCFF</span> — <strong>Quỹ Đầu tư Cân bằng Linh hoạt Techcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCFIN</span> — <strong>Quỹ Đầu tư CP Ngân Hàng Và Tài Chính Techcom (TCFIN)</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCGF</span> — <strong>Quỹ Đầu Tư Tăng Trưởng Thành Công</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCRES</span> — <strong>Quỹ Đầu tư CP Bất Động Sản Techcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TCSME</span> — <strong>Quỹ Đầu tư CP Doanh Nghiệp Vừa Và Nhỏ Techcom</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">THINHAN</span> — <strong>Quỹ Hưu Trí Thịnh An</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">TIANHONG VN</span> — <strong>Tianhong Vietnamese Market Equity Launched QDII Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">USIF</span> — <strong>Quỹ Đầu tư Trái phiếu United Thu nhập ổn định</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">UVDIF</span> — <strong>Quỹ Đầu Tư United Thu Nhập Năng Động Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">UVEEF</span> — <strong>Quỹ Đầu tư CP United ESG Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">UVEF</span> — <strong>Quỹ Đầu tư Cổ phiếu United Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">UVO</span> — <strong>United Vietnam Opportunity Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VBIF</span> — <strong>Quỹ Đầu tư Cân bằng VietinBank</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCAMBF</span> — <strong>Quỹ Đầu tư Cân bằng Bản Việt</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCAMDF</span> — <strong>Quỹ Đầu tư Bản Việt Discovery</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCAMFI</span> — <strong>Quỹ Đầu tư TP Bản Việt</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCBF-AIF</span> — <strong>Quỹ Đầu tư Thu nhập Chủ Động VCBF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCBF-BCF</span> — <strong>Quỹ Đầu tư CP Hàng Đầu VCBF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCBF-FIF</span> — <strong>Quỹ Đầu tư TP VCBF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCBF-MGF</span> — <strong>Quỹ Đầu tư CP Tăng trưởng VCBF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VCBF-TBF</span> — <strong>Quỹ Đầu tư Cân bằng Chiến Lược VCBF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VEIL</span> — <strong>Vietnam Enterprise Investments Ltd.</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VFMVSF</span> — <strong>Quỹ Đầu tư CP Việt Nam Chọn lọc</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VDEF</span> — <strong>Quỹ Đầu tư CP Cơ hội Tiên phong VinaCapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VEOF</span> — <strong>Quỹ Đầu tư CP DN hàng đầu Vinacapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VESAF</span> — <strong>Quỹ Đầu tư CP Tăng trưởng Chiến lược VinaCapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VFF</span> — <strong>Quỹ Đầu tư TP Nâng cao VinaCapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VIBF</span> — <strong>Quỹ Đầu tư Cân bằng Gắn kết Vinacapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VLBF</span> — <strong>Quỹ Đầu tư TP Thanh Khoản VinaCapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VMEEF</span> — <strong>Quỹ Đầu tư CP Kinh tế hiện đại VinaCapital</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VOF</span> — <strong>Vinacapital Vietnam Opportunity Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINACAPITAL-VVF</span> — <strong>Forum One - VinaCapital Vietnam Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VINHAN</span> — <strong>Quỹ Hưu Trí Bổ Sung Tự Nguyện Vĩnh An</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VLGF</span> — <strong>Quỹ Đầu tư Tăng trưởng Dài Hạn Việt Nam</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VNDAF</span> — <strong>Quỹ Đầu tư Chủ động VND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VNDBF</span> — <strong>Quỹ Đầu tư TP VND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VNDCF</span> — <strong>Quỹ Đầu tư TP Linh hoạt VND</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VNEFUND</span> — <strong>Vietnam Equity (UCITS) Fund</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VNH</span> — <strong>Vietnam Holding Ltd</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VNM-ETF</span> — <strong>VanEck Vietnam ETF</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">VTBF</span> — <strong>Quỹ Đầu tư TP Vietinbank</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+            <tr data-filter="t7_yes">
+              <td><span class="t-code">XTRACKERS VIETNAM SWAP UCITS ETF</span> — <strong>Xtrackers Vietnam Swap UCITS ETF 1C</strong></td>
+              <td style="text-align:center;"><span class="badge-tag badge-green">Có</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="audit-footer-bar">
+        <span>💡 <i>Ghi chú: Bảng có thể cuộn dọc để tra cứu toàn bộ <strong>139</strong> quỹ.</i></span>
+        <span id="auditRowCount">Hiển thị: <strong>139/139</strong> quỹ</span>
+      </div>
+    </div>
+
+
+    <!-- ===== SECTION 1: PERFORMANCE ===== -->
+    <div class="section-title">
+      <div class="section-num">01</div>
+      <div class="section-label">PERFORMANCE <small>Hiệu suất quỹ</small></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card h520">
+        <div class="card-header">
+          <div><div class="card-title">Figure 1: Equity Fund Performance</div><div class="card-subtitle">NAV exceeding VND1 trillion — 1M vs YTD</div></div>
+          <div class="card-tag">Equity</div>
+        </div>
+        <div class="chart-container" id="chart-equity-perf"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Hiệu suất được tính bằng tỷ lệ thay đổi NAV/CCQ trong kỳ, bao gồm cổ tức đã chi trả, và được sắp xếp giảm dần; (2) Hiệu suất quỹ nước ngoài có thể chịu ảnh hưởng tỷ giá vì NAV được niêm yết bằng ngoại tệ; (3) Hiệu suất quá khứ không bảo đảm kết quả tương lai.</div>
+      </div>
+      <div class="card h520">
+        <div class="card-header">
+          <div><div class="card-title">Figure 2: Bond Fund Performance</div><div class="card-subtitle">NAV exceeding VND100 million — 1M vs YTD</div></div>
+          <div class="card-tag">Bond</div>
+        </div>
+        <div class="chart-container" id="chart-bond-perf"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Hiệu suất được tính bằng tỷ lệ thay đổi NAV/CCQ trong kỳ, bao gồm cổ tức đã chi trả, và được sắp xếp giảm dần; (2) Lãi suất tiền gửi là bình quân lãi suất tiền gửi kỳ hạn 12 tháng tại VCB, BIDV, VietinBank và Agribank theo tháng; (3) Hiệu suất quá khứ không bảo đảm kết quả tương lai.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-1" style="margin-top:16px">
+      <div class="card h330 compact-half">
+        <div class="card-header">
+          <div><div class="card-title">Figure 3: Balanced Fund Performance</div><div class="card-subtitle">NAV exceeding VND100 million — 1M vs YTD</div></div>
+          <div class="card-tag">Balanced</div>
+        </div>
+        <div class="chart-container" id="chart-balanced-perf"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Hiệu suất được tính bằng tỷ lệ thay đổi NAV/CCQ trong kỳ, bao gồm cổ tức đã chi trả, và được sắp xếp giảm dần; (2) Hiệu suất quá khứ không bảo đảm kết quả tương lai.</div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 2: CAPITAL FLOW ===== -->
+    <div class="section-title">
+      <div class="section-num">02</div>
+      <div class="section-label">CAPITAL FLOW <small>Dòng tiền</small></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card h330">
+        <div class="card-header">
+          <div><div class="card-title">Figure 4: NAV by Fund Type</div><div class="card-subtitle">Equity, Bond, Balanced — trillion VND</div></div>
+          <div class="card-tag">NAV</div>
+        </div>
+        <div class="chart-container" id="chart-nav-group"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: NAV được tổng hợp từ các quỹ có dữ liệu đến T7/2026, phân loại theo quỹ cổ phiếu, quỹ trái phiếu và quỹ cân bằng.</div>
+      </div>
+      <div class="card h330">
+        <div class="card-header">
+          <div><div class="card-title">Figure 5: NAV by Fund Structure</div><div class="card-subtitle">ETFs, Closed-end, Open-ended — trillion VND</div></div>
+          <div class="card-tag">NAV</div>
+        </div>
+        <div class="chart-container" id="chart-nav-structure"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: NAV được tổng hợp từ các quỹ có dữ liệu đến T7/2026, phân loại theo quỹ mở, quỹ đóng và quỹ ETF.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      <div class="card h330">
+        <div class="card-header">
+          <div><div class="card-title">Figure 6: Monthly Net Fund Inflow/Outflow</div><div class="card-subtitle">Equity, Bond & Total — trillion VND</div></div>
+          <div class="card-tag">Flow</div>
+        </div>
+        <div class="chart-container" id="chart-industry-flow"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: Dòng tiền được tính từ biến động Tổng NAV và NAV/CCQ theo tháng của quỹ cổ phiếu, quỹ trái phiếu và quỹ cân bằng; tổng NAV tập quỹ trên 230 nghìn tỷ đồng.</div>
+      </div>
+      <div class="card h330">
+        <div class="card-header">
+          <div><div class="card-title">Figure 7: Equity Fund Flow by Structure</div><div class="card-subtitle">ETFs, Closed-end, Open-ended — trillion VND</div></div>
+          <div class="card-tag">Equity</div>
+        </div>
+        <div class="chart-container" id="chart-equity-flow"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: Dòng tiền được tính từ biến động Tổng NAV và NAV/CCQ theo tháng của các quỹ cổ phiếu, phân loại theo quỹ mở, quỹ đóng và quỹ ETF.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-1" style="margin-top:16px">
+      <div class="card h260 compact-half">
+        <div class="card-header">
+          <div><div class="card-title">Figure 8: Bond Fund Monthly Net Flow</div><div class="card-subtitle">Trillion VND</div></div>
+          <div class="card-tag">Bond</div>
+        </div>
+        <div class="chart-container" id="chart-bond-flow"></div>
+        <div class="chart-note">Lưu ý: Dữ liệu T7/2026: toàn bộ 28 quỹ trái phiếu có đủ dữ liệu đạt <strong>11,691 nghìn tỷ đồng</strong>.</div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 3: ASSET ALLOCATION ===== -->
+    <div class="section-title">
+      <div class="section-num">03</div>
+      <div class="section-label">ASSET ALLOCATION <small>Phân bổ tài sản</small></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card h350">
+        <div class="card-header">
+          <div><div class="card-title">Figure 9: Funds Increased Cash Holdings</div><div class="card-subtitle">Jun-2026 vs Jul-2026 — Cash ratio (%)</div></div>
+          <div class="card-tag">Cash ↑</div>
+        </div>
+        <div class="chart-container" id="chart-cash-up"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Dữ liệu được tính từ tỷ trọng phân bổ tài sản của 41 quỹ mở cổ phiếu; (2) Tỷ trọng tiền mặt bằng tiền mặt hiện có, tiền bán chứng khoán chờ thanh toán, cổ tức tiền mặt và tài sản khác, chia cho Tổng NAV.</div>
+      </div>
+      <div class="card h350">
+        <div class="card-header">
+          <div><div class="card-title">Figure 10: Funds Decreased Cash Holdings</div><div class="card-subtitle">Jun-2026 vs Jul-2026 — Cash ratio (%)</div></div>
+          <div class="card-tag">Cash ↓</div>
+        </div>
+        <div class="chart-container" id="chart-cash-down"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Dữ liệu được tính từ tỷ trọng phân bổ tài sản của 41 quỹ mở cổ phiếu; (2) Tỷ trọng tiền mặt bằng tiền mặt hiện có, tiền bán chứng khoán chờ thanh toán, cổ tức tiền mặt và tài sản khác, chia cho Tổng NAV.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      <div class="card h330">
+        <div class="card-header">
+          <div><div class="card-title">Figure 11: Top 10 Stocks Net Bought</div><div class="card-subtitle">Jul 2026 — million shares</div></div>
+          <div class="card-tag">Buy</div>
+        </div>
+        <div class="chart-container" id="chart-stock-buy"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: Khối lượng mua (bán) ròng được tổng hợp từ 104 file quỹ có dữ liệu danh mục T7/2026; thay đổi khối lượng được tính so với kỳ trước.</div>
+      </div>
+      <div class="card h330">
+        <div class="card-header">
+          <div><div class="card-title">Figure 12: Top 10 Stocks Net Sold</div><div class="card-subtitle">Jul 2026 — million shares</div></div>
+          <div class="card-tag">Sell</div>
+        </div>
+        <div class="chart-container" id="chart-stock-sell"></div>
+        <div class="chart-note">Nguồn: Nền tảng FiinPro-X. Lưu ý: Khối lượng mua (bán) ròng được tổng hợp từ 104 file quỹ có dữ liệu danh mục T7/2026; thay đổi khối lượng được tính so với kỳ trước.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      <div class="card h650">
+        <div class="card-header">
+          <div><div class="card-title">Figure 13: Các ngành được mua ròng nhiều nhất</div><div class="card-subtitle">T3–T7/2026 — tỷ đồng</div></div>
+          <div class="card-tag">Ngành ↑</div>
+        </div>
+        <div class="chart-container" id="chart-sector-buy"></div>
+        <div class="chart-note">Lưu ý: Dữ liệu được tính từ danh mục quỹ có dữ liệu sử dụng được ở từng kỳ trong giai đoạn T3–T7/2026 trên nền tảng FiinPro-X.</div>
+      </div>
+      <div class="card h650">
+        <div class="card-header">
+          <div><div class="card-title">Figure 14: Các ngành bị bán ròng nhiều nhất</div><div class="card-subtitle">T3–T7/2026 — tỷ đồng</div></div>
+          <div class="card-tag">Ngành ↓</div>
+        </div>
+        <div class="chart-container" id="chart-sector-sell"></div>
+        <div class="chart-note">Lưu ý: Dữ liệu được tính từ danh mục quỹ có dữ liệu sử dụng được ở từng kỳ trong giai đoạn T3–T7/2026 trên nền tảng FiinPro-X.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Nguồn: Nền tảng FiinPro-X · Dữ liệu tổng hợp bởi VDSC Research · Bảng điều khiển tương tác
+    </div>
+
+  </main>
+
+  <script src="./vdsc-fund-monthly-dashboard.docs-data.js"></script>
+  <script>
+  (() => {
+    // ============================================================
+    //  VDSC THEME COLORS — from Theme VDSC.json "City Park"
+    // ============================================================
+    const DC = ['#01A54E','#D9B300','#FF4674','#FF0039','#71AFE2','#2F790D','#D4C62B','#B1C145','#3599B8','#DFBFBF','#4AC5BB','#5F6B6D','#FB8281','#F4D25A','#7F898A','#A4DDEE','#FDAB89','#B687AC','#28738A','#A78F8F','#168980','#293537','#BB4A4A','#B59525','#475052','#6A9FB0','#BD7150','#7B4F71','#1B4D5C','#706060','#0F5C55','#1C2325'];
+    const FG = '#000';
+    const ACCENT = '#000';
+    const MUTED = '#000';
+    const BORDER = '#e4e8ec';
+    const GREEN = DC[0];
+    const GOLD = DC[1];
+    const PINK = DC[2];
+    const BAR_PINK = '#FF4674';
+    const RED = DC[3];
+    const AREA_GREY = '#B4ADAD';
+    const BLUE = DC[4];
+    const TEALBLUE = DC[8];
+    const PERF_TEXT_COLOR = '#000';
+    const PERF_TEXT_SIZE = 11;
+
+    const initChart = id => echarts.init(document.getElementById(id), null, { renderer: 'svg' });
+    const charts = {};
+
+    const axis = (name = '') => ({
+      name, nameTextStyle: { color: MUTED, fontSize: 11, fontFamily: "'Segoe UI', sans-serif" },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { color: MUTED, fontSize: 11, fontFamily: "'Segoe UI', sans-serif" },
+      splitLine: { show: false }
+    });
+
+    const viMonth = value => String(value).replace(/Jan/gi,'Thg 1').replace(/Feb/gi,'Thg 2').replace(/Mar/gi,'Thg 3').replace(/Apr/gi,'Thg 4').replace(/May/gi,'Thg 5').replace(/Jun/gi,'Thg 6').replace(/Jul/gi,'Thg 7').replace(/Aug/gi,'Thg 8').replace(/Sep/gi,'Thg 9').replace(/Oct/gi,'Thg 10').replace(/Nov/gi,'Thg 11').replace(/Dec/gi,'Thg 12');
+    document.querySelectorAll('.chart-note').forEach(el => {
+      el.innerHTML = el.innerHTML.replace(/^[\s\S]*?(Lưu ý:)/i, '$1');
+    });
+    document.getElementById('chart-stock-buy').closest('.grid').classList.add('stock-grid');
+    const bondNote = document.getElementById('chart-bond-perf').closest('.card').querySelector('.chart-note');
+    bondNote.innerHTML = bondNote.innerHTML
+      .replace(/\s*\(2\) Lãi suất tiền gửi là bình quân lãi suất tiền gửi kỳ hạn 12 tháng tại VCB, BIDV, VietinBank và Agribank theo tháng;/i, '')
+      .replace('(3) Hiệu suất quá khứ', '(2) Hiệu suất quá khứ');
+
+    const tooltipBase = () => ({
+      trigger: 'axis',
+      backgroundColor: '#fff',
+      borderColor: BORDER,
+      textStyle: { color: FG, fontSize: 11, fontFamily: "'Segoe UI', sans-serif" }
+    });
+
+    // ============================================================
+    //  INITIAL DATA FROM FiinProX Excel Parsing
+    // ============================================================
+    let equityPerf = [
+      {name:'VNINDEX',may:1.5,ytd:1.7,bench:true},
+      {name:'KIMVGF',may:-0.7,ytd:4.0},{name:'VINACAPITAL-VVF',may:0.9,ytd:-5.5},{name:'DCDS',may:1.0,ytd:-9.7},{name:'ASP-VIET-A',may:1.4,ytd:-2.7},{name:'JFVNOPP',may:1.4,ytd:-0.8},{name:'PRINCIPAL VNEQ-A',may:1.4,ytd:-13.6},{name:'VNM-ETF',may:1.5,ytd:-4.5},{name:'E1VFVN30',may:1.5,ytd:-0.3},{name:'SSI-SCA',may:1.6,ytd:-7.8},{name:'VINACAPITAL-VMEEF',may:1.6,ytd:-6.7},{name:'FUEKIV30',may:1.6,ytd:-0.3},{name:'Fubon FTSE VN',may:1.7,ytd:3.7},{name:'EVESG',may:1.7,ytd:2.7},{name:'UVEF',may:1.8,ytd:-4.9},{name:'VNH',may:1.8,ytd:-11.4},{name:'KIM ACE VN30',may:1.8,ytd:-1.8},{name:'VNEFUND',may:1.9,ytd:-7.6},{name:'VEIL',may:1.9,ytd:-6.2},{name:'VLGF',may:1.9,ytd:-10.7},{name:'K-VIETNAM',may:2.1,ytd:-7.0},{name:'VINACAPITAL-VESAF',may:2.1,ytd:-7.3},{name:'VINACAPITAL-VOF',may:2.2,ytd:-7.9},{name:'PYNELITE',may:2.2,ytd:-7.8},{name:'Tianhong VN',may:2.4,ytd:-2.7},{name:'VINACAPITAL-VEOF',may:2.4,ytd:-9.4},{name:'Xtrackers ETF',may:2.5,ytd:1.4},{name:'VFMVSF',may:3.0,ytd:-5.9},{name:'FUEVFVND',may:3.4,ytd:-11.9},{name:'VCBF-BCF',may:3.4,ytd:-3.4},
+      {name:'VN30',may:1.3,ytd:1.0,bench:true}
+    ].sort((a,b) => a.may - b.may);
+
+    let bondPerf = [
+      {name:'Fides VN',may:-0.2,ytd:2.5},{name:'VCBF',may:-0.1,ytd:4.7},{name:'Trái phiếu LP',may:0.0,ytd:4.5},{name:'Hưu Trí Độc Lập',may:0.0,ytd:0.9},{name:'VND',may:0.0,ytd:4.4},{name:'Mở Rộng Chubb',may:0.1,ytd:3.7},{name:'Linh hoạt VND',may:0.1,ytd:3.7},{name:'DC Fixed Income',may:0.1,ytd:4.1},{name:'Lighthouse',may:0.1,ytd:3.8},{name:'Bảo Việt',may:0.1,ytd:2.5},{name:'DC Bond',may:0.1,ytd:4.8},{name:'MB Bond',may:0.1,ytd:4.7},{name:'Nâng cao VinaCapital',may:0.1,ytd:5.4},{name:'Bản Việt',may:0.1,ytd:1.2},{name:'An Bình',may:0.1,ytd:4.9},{name:'Mirae Asset Flexible',may:0.3,ytd:5.0},{name:'MB An Khang',may:0.3,ytd:2.5},{name:'Techcom Bond',may:0.4,ytd:4.0},
+    ].sort((a,b) => a.may - b.may);
+
+    let balancedPerf = [
+      {name:'Hưu Trí Thịnh An',may:-2.4,ytd:-5.3},{name:'Giá trị Bảo Việt',may:0.0,ytd:1.0},{name:'MB Thịnh Vượng',may:0.3,ytd:1.5},{name:'Linh hoạt Techcom',may:0.4,ytd:0.9},{name:'Cân bằng Bản Việt',may:0.9,ytd:-3.2},{name:'United Dynamic Income',may:0.9,ytd:-3.0},{name:'Manulife Dynamic',may:1.0,ytd:-3.8},{name:'Vinacapital Insights',may:1.1,ytd:-2.7},{name:'Manulife Balanced',may:1.2,ytd:-2.3},{name:'Eastspring Dynamic',may:1.2,ytd:0.1},{name:'VCBF Balanced Strategy',may:2.0,ytd:0.0}
+    ].sort((a,b) => a.may - b.may);
+
+    const navMonths = ['Jun-24','Jul-24','Aug-24','Sep-24','Oct-24','Nov-24','Dec-24','Jan-25','Feb-25','Mar-25','Apr-25','May-25','Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26'];
+    const navEquity = [152,160,175,165,155,150,155,170,168,180,200,204,195,210,230,220,215,210,200,190,185,170,182,237.6];
+    const navBond = [25,26,27,26,25,24,25,26,27,28,30,30,28,29,31,30,29,28,27,15,14,13,14,13.5];
+    const navBalanced = [10,10,11,10,10,10,11,12,12,13,14,15,15,16,18,17,16,15,14,14,14,12,13,5.2];
+    const navETF = [80,85,95,88,82,78,80,90,88,98,110,107,100,115,136,129,126,123,110,97,95,80,89,61.9];
+    const navClosed = [60,62,65,62,58,55,58,62,60,66,72,73,70,75,82,78,76,74,70,69,69,60,72,61.5];
+    const navOpen = [50,52,55,52,50,48,52,56,58,60,65,69,68,70,80,72,68,65,62,55,50,55,67,131.6];
+
+    const flowMonths = navMonths;
+    const flowEquity = [-4.0,-3.5,-5.5,-4.2,-3.8,-3.0,-2.5,-3.2,-2.8,-5.0,-3.0,-3.5,-6.8,-3.4,-8.1,-3.5,-4.2,-3.2,-0.3,-1.8,1.1,1.9,1.3,-4.2];
+    const flowBond = [-0.5,-0.8,-1.2,-0.5,-0.3,-0.2,-0.4,-0.6,-0.8,-1.5,-0.8,-0.9,0.5,1.3,-3.6,-2.0,-1.3,-0.7,-1.7,-1.3,-0.5,0.2,-0.3,-0.6];
+    const flowTotal = flowEquity.map((v,i) => +(v+flowBond[i]).toFixed(1));
+
+    const eqFlowMonths = ['Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26'];
+    const eqFlowETF = [-3.8,-1.5,-5.5,-1.0,-2.0,-1.0,0.5,-1.2,1.0,1.5,-0.5,-0.37];
+    const eqFlowClosed = [-2.0,-1.5,-1.8,-1.8,-1.5,-1.2,-0.5,-0.5,0.0,0.2,-0.2,-4.33];
+    const eqFlowOpen = [-1.0,-0.4,-0.8,-0.7,-0.7,-1.0,-0.3,-0.1,0.1,0.2,0.0,-0.11];
+
+    const bondFlowMonths = eqFlowMonths;
+    const bondFlow = [0.5,1.3,-3.6,-2.0,-1.3,-0.7,-1.7,-1.3,-2.5,0.2,-0.3,-0.6];
+
+    const cashUp = [
+      {name:'DCDS',nav:5952,apr:10.7,may:13.4},{name:'VFMVSF',nav:9024,apr:7.3,may:8.3},{name:'VLGF',nav:4546,apr:3.9,may:4.6},{name:'VINACAPITAL-VESAF',nav:2452,apr:11.7,may:12.9},{name:'VINACAPITAL-VMEEF',nav:2281,apr:6.7,may:7.6}
+    ];
+    const cashDown = [
+      {name:'SSI-SCA',nav:1350,apr:8.3,may:2.8},{name:'EVESG',nav:2653,apr:3.8,may:2.3},{name:'DCDE',nav:951,apr:20.5,may:20.2},{name:'VCBF-MGF',nav:948,apr:8.4,may:5.1},{name:'TCFIN',nav:809,apr:22.6,may:16.4}
+    ];
+
+    const stockBuy = [{ticker:'HPG',vol:48.298322,funds:53},{ticker:'VCB',vol:14.843087,funds:36},{ticker:'GEX',vol:7.605381,funds:17},{ticker:'VPB',vol:6.996531,funds:29},{ticker:'HDB',vol:5.366303,funds:28},{ticker:'VHM',vol:4.872969,funds:30},{ticker:'TCX',vol:4.387999,funds:17},{ticker:'SHB',vol:4.100109,funds:21},{ticker:'FPT',vol:3.55331,funds:20},{ticker:'DXG',vol:3.306933,funds:14}];
+    const stockSell = [{ticker:'MBB',vol:-11.612088,funds:35},{ticker:'CTG',vol:-3.636646,funds:36},{ticker:'HDG',vol:-3.2271,funds:11},{ticker:'MWG',vol:-2.82595,funds:41},{ticker:'VCI',vol:-2.5516,funds:17},{ticker:'NVL',vol:-2.0862,funds:9},{ticker:'TCH',vol:-2.0158,funds:7},{ticker:'SHS',vol:-1.8774,funds:6},{ticker:'PNJ',vol:-1.710372,funds:26},{ticker:'IDC',vol:-1.3996,funds:10}];
+
+    const sectorMonths = ['T3-26','T4-26','T5-26','T6-26','T7-26'];
+    const sectorBuy = {
+      'Năng lượng dầu': [-930, -450, 212, 142, 159],
+      'Dịch vụ tiện ích': [-785, -23, 138, 66, 92],
+      'Dịch vụ viễn thông': [125, 114, -23, -11, 45]
+    };
+    const sectorSell = {
+      'Bất động sản': [-3852, 765, 1538, -851, -1777],
+      'Hàng hóa chủ chốt': [288, 98, 276, -166, -1210],
+      'Chứng khoán': [908, 214, -578, 208, -1168],
+      'Hàng tiêu dùng và trang trí': [322, 1408, -163, 33, -1080],
+      'Ngân hàng': [-5244, -2195, 918, 452, -1074],
+      'Vận tải': [-55, -253, 20, 499, -648]
+    };
+
+    // Data nguồn: DATA THEO FIGURE. Figure 13-14 cập nhật theo dữ liệu T8 TEST & mapping Ngành cấp 2 (T3-T7/2026).
+    const docs = window.VDSC_DOCS_DATA;
+    if (docs) {
+      equityPerf = docs.perf.equity.map(r => ({name:r[0],may:r[1],ytd:r[2],bench:false}));
+      bondPerf = docs.perf.bond
+        .filter(r => !String(r[0]).toLowerCase().includes('lãi suất tiền gửi'))
+        .map(r => ({name:r[0],may:r[1],ytd:r[2],bench:false}));
+      balancedPerf = docs.perf.balanced.map(r => ({name:r[0],may:r[1],ytd:r[2],bench:false}));
+      navMonths.splice(0,navMonths.length,...docs.nav.group.map(r=>r[0]));
+      navEquity.splice(0,navEquity.length,...docs.nav.group.map(r=>r[1]));
+      navBond.splice(0,navBond.length,...docs.nav.group.map(r=>r[2]));
+      navBalanced.splice(0,navBalanced.length,...docs.nav.group.map(r=>r[3]));
+      navETF.splice(0,navETF.length,...docs.nav.structure.map(r=>r[3]));
+      navClosed.splice(0,navClosed.length,...docs.nav.structure.map(r=>r[2]));
+      navOpen.splice(0,navOpen.length,...docs.nav.structure.map(r=>r[1]));
+      const f6=Object.fromEntries(docs.flow6.map(r=>[r[0],r]));
+      flowEquity.splice(0,flowEquity.length,...navMonths.map(m=>f6[m]?.[1]??null));
+      flowBond.splice(0,flowBond.length,...navMonths.map(m=>f6[m]?.[2]??null));
+      flowTotal.splice(0,flowTotal.length,...navMonths.map(m=>f6[m] ? +(f6[m][1]+f6[m][2]+f6[m][3]).toFixed(4) : null));
+      eqFlowMonths.splice(0,eqFlowMonths.length,...docs.flow7.map(r=>r[0]));
+      eqFlowETF.splice(0,eqFlowETF.length,...docs.flow7.map(r=>r[1]));
+      eqFlowOpen.splice(0,eqFlowOpen.length,...docs.flow7.map(r=>r[2]));
+      eqFlowClosed.splice(0,eqFlowClosed.length,...docs.flow7.map(r=>r[3]));
+      const f8=Object.fromEntries(docs.flow8.map(r=>[r[0],r[1]]));
+      bondFlow.splice(0,bondFlow.length,...eqFlowMonths.map(m=>f8[m]??null));
+      cashUp.splice(0,cashUp.length,...docs.cashUp.map(r=>({name:r[0],nav:r[1],apr:r[2],may:r[3]})));
+      cashDown.splice(0,cashDown.length,...docs.cashDown.map(r=>({name:r[0],nav:r[1],apr:r[2],may:r[3]})));
+      stockBuy.splice(0,stockBuy.length,...docs.stockBuy.map(r=>({ticker:r[0],vol:r[1],funds:r[2]})));
+      stockSell.splice(0,stockSell.length,...docs.stockSell.map(r=>({ticker:r[0],vol:r[1],funds:r[2]})));
+    }
+    // Figure 1 — dữ liệu mới từ C:\T8 TEST\FIG 1 (cập nhật 24/08/2026).
+    // 1M so với 31/07/2026; YTD so với giá trị cuối 12/2025.
+    equityPerf = [
+      {name:'VNINDEX',may:-0.088721,ytd:-2.815931,bench:true},
+      {name:'VN30',may:0.800718,ytd:-7.070220,bench:true},
+      {name:'ASP-VIET-A',may:3.693468,ytd:-6.131447},
+      {name:'DCDS',may:-0.680760,ytd:-14.665308},
+      {name:'E1VFVN30',may:0.258959,ytd:-6.137591},
+      {name:'EVESG',may:-0.276451,ytd:-3.313840},
+      {name:'Fubon FTSE VN',may:-2.154733,ytd:-5.592655},
+      {name:'FUEKIV30',may:0.246100,ytd:-6.336119},
+      {name:'FUEVFVND',may:3.373863,ytd:-13.887392},
+      {name:'JFVNOPP',may:-0.017953,ytd:-5.449715},
+      {name:'K-VIETNAM',may:1.179728,ytd:-9.788008},
+      {name:'KIM ACE VN30',may:-2.049327,ytd:-8.678257},
+      {name:'KIMVGF',may:0,ytd:-9.307177},
+      {name:'LVF',may:0,ytd:-5.324567},
+      {name:'PRINCIPAL VNEQ-A',may:1.145886,ytd:-14.925813},
+      {name:'PYNELITE',may:2.063314,ytd:-12.525196},
+      {name:'SSI-SCA',may:0.116136,ytd:-11.350107},
+      {name:'Tianhong VN',may:0.259133,ytd:-8.407363},
+      {name:'UVEF',may:0.477273,ytd:-11.686709},
+      {name:'VCBF-BCF',may:3.368629,ytd:-6.317827},
+      {name:'VEIL',may:0.479087,ytd:-11.006283},
+      {name:'VFMVSF',may:0.895791,ytd:-12.482621},
+      {name:'VINACAPITAL-VEOF',may:4.293952,ytd:-8.923506},
+      {name:'VINACAPITAL-VESAF',may:3.106668,ytd:-6.018576},
+      {name:'VINACAPITAL-VMEEF',may:1.818172,ytd:-6.712984},
+      {name:'VINACAPITAL-VOF',may:0.437115,ytd:-11.393432},
+      {name:'VINACAPITAL-VVF',may:0.777935,ytd:-5.004625},
+      {name:'VLGF',may:2.111435,ytd:-11.037960},
+      {name:'VNEFUND',may:0.215825,ytd:-14.001910},
+      {name:'VNH',may:2.270554,ytd:-12.665206},
+      {name:'VNM-ETF',may:-1.060373,ytd:-9.385399},
+      {name:'Xtrackers Vietnam Swap UCITS ETF',may:-1.861202,ytd:-8.039770}
+    ].sort((a,b) => a.may - b.may);
+
+    // Figure 2–8 — dữ liệu T8/2026 từ C:\T8 TEST.
+    const fig2To8Data = {"bond":[["TCBF",1.000697,4.613893],["HDBOND",0.908857,1.621623],["BVBF",0.82641,3.361421],["MAFF",0.709743,5.395423],["PVBF",0.708234,4.514309],["CBPF",0.524208,4.155661],["VCBF-FIF",0.402967,5.236263],["ABBF",0.37898,5.180321],["VINACAPITAL-VFF",0.374384,5.704746],["DFVN-FIX",0.374295,3.347762],["VCAMFI",0.369975,1.474047],["VTBF",0.369138,4.931613],["DCBF",0.365313,5.13772],["LPBF",0.353803,4.873413],["MBBOND",0.342021,4.93987],["ASBF",0.338313,4.430198],["SSIBF",0.329013,3.746511],["VNDBF",0.319176,4.696563],["VINACAPITAL-VLBF",0.310803,3.909522],["LHBF",0.302217,3.988929],["VNDCF",0.30172,3.913103],["FBF",0.293977,2.918875],["DCIP",0.292804,4.362677],["MBAM",0.221004,3.073007],["VINHAN",0.133665,-2.1168],["DOCLAP PENSION",0,2.155847]],"balanced":[["VCBF-TBF",2.260103,0.24623],["PBIF",1.51858,-23.687093],["VINACAPITAL-VIBF",1.327107,-2.491287],["VCAMBF",1.25126,-2.896422],["MAFBAL",1.071325,-2.340366],["MDI",0.976886,-3.773585],["TCFF",0.95726,1.518768],["THINHAN",0.3755,-5.843414],["PHUCAN",0.28468,-3.948422],["ENF",0.15531,-0.974968],["UVDIF",0.090871,-3.839846],["POIF",0,0.530186]],"group":[["06/2024",232.2597,15.3987,2.2024],["07/2024",231.7259,16.4378,2.1802],["08/2024",235.4593,18.3727,2.3664],["09/2024",233.7843,21.8372,2.4979],["10/2024",228.3722,22.2103,2.4888],["11/2024",223.7074,22.8632,2.6217],["12/2024",227.7968,24.3481,2.7376],["01/2025",225.4562,23.4984,2.7154],["02/2025",226.0339,24.0094,2.7595],["03/2025",221.2476,25.1978,2.9588],["04/2025",206.3168,23.1736,2.8218],["05/2025",220.2,23.3997,2.9176],["06/2025",226.3166,25.2583,3.0316],["07/2025",245.8698,24.6362,2.993],["08/2025",272.1138,25.5406,3.2684],["09/2025",276.1984,26.5155,3.3773],["10/2025",253.5892,24.4489,3.5025],["11/2025",251.2779,22.8172,3.5744],["12/2025",258.787,20.939,3.7367],["01/2026",261.9844,17.9638,3.6839],["02/2026",263.2776,16.911,3.8268],["03/2026",243.7471,16.6048,3.795],["04/2026",251.9573,13.6119,3.7965],["05/2026",261.2548,12.9491,3.7857],["06/2026",256.5054,14.1523,3.8979],["07/2026",232.4351,11.691,3.6495],["08/2026",222.1626,11.4362,3.7525]],"structure":[["06/2024",100.4134,79.7878,69.655],["07/2024",103.4152,79.6859,67.2877],["08/2024",108.6484,80.7494,66.8474],["09/2024",110.589,81.0932,66.4348],["10/2024",110.6251,77.4941,64.9974],["11/2024",111.5091,76.4722,61.2554],["12/2024",115.5147,77.7655,61.5952],["01/2025",114.4433,77.0439,60.2267],["02/2025",115.5843,76.7174,60.5458],["03/2025",115.2188,74.8603,59.3236],["04/2025",109.118,68.7016,54.5397],["05/2025",113.7994,72.6364,60.1388],["06/2025",118.976,74.624,61.0144],["07/2025",126.3959,79.5769,67.5907],["08/2025",139.3857,88.887,72.7198],["09/2025",151.0178,84.8214,70.2711],["10/2025",131.1503,81.3283,69.1318],["11/2025",127.1793,80.5037,70.0534],["12/2025",129.5357,81.9978,71.9424],["01/2026",132.4537,78.3904,72.85],["02/2026",130.4894,78.4549,75.1327],["03/2026",130.3697,69.9928,63.7889],["04/2026",128.934,71.7119,68.7773],["05/2026",140.2387,70.8067,66.8664],["06/2026",137.8609,70.2753,66.4223],["07/2026",127.0415,60.2766,60.5054],["08/2026",117.1934,60.3705,59.873]],"flow6":[["07/2024",-1.8198,1.6904,0.0272],["08/2024",-2.2964,1.793,0.0771],["09/2024",-4.7794,1.9283,0.0594],["10/2024",-0.6631,1.7211,0.0617],["11/2024",-2.4743,0.6774,0.142],["12/2024",-0.9893,0.0786,0.0206],["01/2025",-1.0284,0.1212,0.0304],["02/2025",-1.916,0.3323,0.0124],["03/2025",-3.4314,-0.0961,0.1828],["04/2025",-2.9567,-0.8424,0.0165],["05/2025",-1.5431,-0.039,0.0044],["06/2025",-3.8398,0.5138,-0.0316],["07/2025",-1.1901,0.6215,-0.0586],["08/2025",-8.6636,0.7674,0.0737],["09/2025",-2.4381,-0.7046,0.1155],["10/2025",-2.9765,-0.5663,0.1994],["11/2025",-1.0361,-1.705,0.0979],["12/2025",-1.7928,-3.6092,0.0514],["01/2026",-4.3031,-1.3792,0.0007],["02/2026",-2.7789,-1.2045,0.1099],["03/2026",-3.2463,-2.1114,0.0786],["04/2026",-0.312,-1.3438,0.0178],["05/2026",-2.2547,-0.7429,0.0228],["06/2026",-4.1356,-0.7337,0.0118],["07/2026",-4.13,-0.7519,-0.0176],["08/2026",-0.827,-0.3301,0.0062]],"flow7":[["06/2025",-1.0903,-1.9241,-0.8254],["07/2025",-0.0597,0.0864,-1.2169],["08/2025",-4.4872,-2.6178,-1.5586],["09/2025",-1.3334,-0.1441,-0.9606],["10/2025",-0.7673,-0.5239,-1.6853],["11/2025",-0.1956,-0.1943,-0.6462],["12/2025",-1.5736,0.2908,-0.5101],["01/2026",0.2781,1.2275,-5.808],["02/2026",0.2655,-1.6827,-1.3623],["03/2026",-3.2619,1.0288,-1.0131],["04/2026",-0.4885,0.6924,-0.5159],["05/2026",-1.3742,-0.7109,-0.3011],["06/2026",-0.5685,-3.0864,-0.3503],["07/2026",-0.7912,0.6907,-4.0295],["08/2026",-0.6644,0.1093,-0.2337]],"flow8":[["07/2024",1.6904],["08/2024",1.793],["09/2024",1.9283],["10/2024",1.7211],["11/2024",0.6774],["12/2024",0.0786],["01/2025",0.1212],["02/2025",0.3323],["03/2025",-0.0961],["04/2025",-0.8424],["05/2025",-0.039],["06/2025",0.5138],["07/2025",0.6215],["08/2025",0.7674],["09/2025",-0.7046],["10/2025",-0.5663],["11/2025",-1.705],["12/2025",-3.6092],["01/2026",-1.3792],["02/2026",-1.2045],["03/2026",-2.1114],["04/2026",-1.3438],["05/2026",-0.7429],["06/2026",-0.7337],["07/2026",-0.7519],["08/2026",-0.3301]]};
+
+    // Figures 6–7 — tính lại theo: NAV_t − NAV_t-1 × (1 + hiệu suất 1 tháng).
+    fig2To8Data.flow6 = [
+      ['07/2024',-1.819824,1.690401,0.027180],['08/2024',-2.296356,1.793028,0.077104],['09/2024',-4.779424,1.928340,0.059412],['10/2024',-0.663146,1.721087,0.061718],['11/2024',-2.474279,0.677426,0.141952],['12/2024',-0.989250,0.078597,0.020612],['01/2025',-1.028421,0.121171,0.030364],['02/2025',-1.916015,0.332263,0.012436],['03/2025',-3.431441,-0.096078,0.182811],['04/2025',-2.956681,-0.842409,0.016499],['05/2025',-1.543128,-0.038952,0.004391],['06/2025',-3.839807,0.513795,-0.031606],['07/2025',-1.761778,0.621477,-0.058614],['08/2025',-8.663569,0.767407,0.073742],['09/2025',11.797622,-0.704649,0.115510],['10/2025',-17.200799,-0.566285,0.199361],['11/2025',-1.036135,-1.704977,0.097852],['12/2025',-1.792805,-3.609187,0.051434],['01/2026',-3.996678,-1.379151,0.000740],['02/2026',-2.778856,-1.204499,0.109888],['03/2026',6.664420,-2.111355,0.078614],['04/2026',-3.032173,-1.343759,0.017846],['05/2026',12.550815,-0.742949,0.022791],['06/2026',-4.135569,-0.733691,0.011819],['07/2026',-4.130012,-0.751904,-0.017616]
+    ];
+    fig2To8Data.flow7 = [
+      ['06/2025',-1.090325,-1.924070,-0.825412],['07/2025',-0.631327,0.086403,-1.216854],['08/2025',-4.487228,-2.617764,-1.558578],['09/2025',-1.333408,14.091624,-0.960594],['10/2025',-0.767342,-14.748162,-1.685294],['11/2025',-0.195590,-0.194300,-0.646246],['12/2025',-1.573559,0.290825,-0.510071],['01/2026',0.584516,1.226840,-5.808034],['02/2026',0.265531,-1.682052,-1.362336],['03/2026',-3.261929,10.939494,-1.013146],['04/2026',-0.488524,-2.027759,-0.515890],['05/2026',-1.374205,14.226071,-0.301052],['06/2026',-0.568482,-3.216803,-0.350284],['07/2026',-0.791221,0.690707,-4.029498]
+    ];
+
+    bondPerf = fig2To8Data.bond.map(r => ({name:r[0],may:r[1],ytd:r[2]}));
+    bondPerf.push({name:'Lãi suất tiền gửi 12 tháng',may:0.375,ytd:3.083333,bench:true});
+    bondPerf.sort((a,b) => a.may - b.may);
+    // Report cutoff: 31/07/2026.
+    equityPerf = [
+      {name:'VNINDEX',may:-6.678996,ytd:-2.729631,bench:true},{name:'VN30',may:-6.195289,ytd:-7.808414,bench:true},
+      {name:'ASP-VIET-A',may:-5.759727,ytd:-9.474960},{name:'DCDS',may:-7.650019,ytd:-14.080403},{name:'E1VFVN30',may:-5.859108,ytd:-6.380028},{name:'EVESG',may:-6.037469,ytd:-3.045809},{name:'Fubon FTSE VN',may:-6.714783,ytd:-3.513632},{name:'FUEKIV30',may:-5.904746,ytd:-6.566060},{name:'FUEVFVND',may:-11.040334,ytd:-16.697892},{name:'JFVNOPP',may:-5.785996,ytd:-5.432738},{name:'K-VIETNAM',may:-7.344918,ytd:-10.839855},{name:'KIM ACE VN30',may:-6.512918,ytd:-6.767621},{name:'KIMVGF',may:-7.690447,ytd:-9.307177},{name:'LVF',may:-10.093747,ytd:-5.324567},{name:'PRINCIPAL VNEQ-A',may:-6.599588,ytd:-15.889622},{name:'PYNELITE',may:-7.621170,ytd:-14.293588},{name:'SSI-SCA',may:-7.612371,ytd:-11.452942},{name:'Tianhong VN',may:-5.709263,ytd:-8.644096},{name:'UVEF',may:-7.333362,ytd:-12.106203},{name:'VCBF-BCF',may:-8.476733,ytd:-9.370790},{name:'VEIL',may:-8.321742,ytd:-11.430607},{name:'VFMVSF',may:-7.702047,ytd:-13.259633},{name:'VINACAPITAL-VEOF',may:-10.100900,ytd:-12.673274},{name:'VINACAPITAL-VESAF',may:-8.266900,ytd:-8.850295},{name:'VINACAPITAL-VMEEF',may:-9.920908,ytd:-8.378815},{name:'VINACAPITAL-VOF',may:-8.522075,ytd:-11.779059},{name:'VINACAPITAL-VVF',may:-5.701864,ytd:-5.737923},{name:'VLGF',may:-8.275783,ytd:-12.877496},{name:'VNEFUND',may:-8.392872,ytd:-14.187115},{name:'VNH',may:-9.765283,ytd:-14.604165},{name:'VNM-ETF',may:-7.416173,ytd:-8.414248},{name:'Xtrackers Vietnam Swap UCITS ETF',may:-7.476801,ytd:-6.295744}
+    ].sort((a,b) => a.may - b.may);
+
+    navMonths.splice(0,navMonths.length,...fig2To8Data.group.map(r => r[0]));
+    navEquity.splice(0,navEquity.length,...fig2To8Data.group.map(r => r[1]));
+    navBond.splice(0,navBond.length,...fig2To8Data.group.map(r => r[2]));
+    navBalanced.splice(0,navBalanced.length,...fig2To8Data.group.map(r => r[3]));
+    navETF.splice(0,navETF.length,...fig2To8Data.structure.map(r => r[3]));
+    navClosed.splice(0,navClosed.length,...fig2To8Data.structure.map(r => r[2]));
+    navOpen.splice(0,navOpen.length,...fig2To8Data.structure.map(r => r[1]));
+    const fig2To8Flow6 = Object.fromEntries(fig2To8Data.flow6.map(r => [r[0],r]));
+    flowEquity.splice(0,flowEquity.length,...navMonths.map(m => fig2To8Flow6[m]?.[1] ?? null));
+    flowBond.splice(0,flowBond.length,...navMonths.map(m => fig2To8Flow6[m]?.[2] ?? null));
+    flowTotal.splice(0,flowTotal.length,...navMonths.map(m => fig2To8Flow6[m] ? +(fig2To8Flow6[m][1] + fig2To8Flow6[m][2] + fig2To8Flow6[m][3]).toFixed(4) : null));
+    eqFlowMonths.splice(0,eqFlowMonths.length,...fig2To8Data.flow7.map(r => r[0]));
+    eqFlowETF.splice(0,eqFlowETF.length,...fig2To8Data.flow7.map(r => r[1]));
+    eqFlowOpen.splice(0,eqFlowOpen.length,...fig2To8Data.flow7.map(r => r[2]));
+    eqFlowClosed.splice(0,eqFlowClosed.length,...fig2To8Data.flow7.map(r => r[3]));
+    const fig2To8Flow8 = Object.fromEntries(fig2To8Data.flow8.map(r => [r[0],r[1]]));
+    bondFlow.splice(0,bondFlow.length,...navMonths.map(m => fig2To8Flow8[m] ?? null));
+
+    // Figure 9–10 — cash holdings T6 so với T7/2026, xếp hạng theo thay đổi giá trị tiền mặt.
+    // Report cutoff 31/07/2026; start dates retained from the PDF.
+    bondPerf = [
+      ['PVBF',2.092147,3.481259],['VINACAPITAL-VFF',0.742619,4.124518],['MAFF',0.711514,4.032702],['DFVN-FIX',0.675137,2.574927],['VTBF',0.649398,4.231819],['DCBF',0.634464,4.048995],['ABBF',0.633903,4.206766],['VCAMFI',0.600881,2.814541],['MBBOND',0.587223,4.055961],['ASBF',0.580673,3.648016],['LHBF',0.525143,3.612075],['VNDBF',0.519990,4.140532],['VNDCF',0.516393,3.296267],['VINACAPITAL-VLBF',0.476564,2.935212],['DCIP',0.473044,3.464172],['SSIBF',0.410630,2.850512],['CBPF',0.326637,3.214276],['VCBF-FIF',0.314836,5.060335],['FBF',0.214985,3.062561],['LPBF',0.214418,4.228787],['MBAM',0.070771,2.473050],['TCBF',0.066333,3.455398],['BVBF',0.053345,3.805000],['VINHAN',-1.129347,-2.450962],['HDBOND',-1.888866,-1.822788]
+    ].map(r => ({name:r[0],may:r[1],ytd:r[2]}));
+    bondPerf.push({name:'Lãi suất tiền gửi 12 tháng',may:0.388889,ytd:2.708333,bench:true});
+    bondPerf.sort((a,b) => a.may - b.may);
+    balancedPerf = [
+      ['PHUCAN',-2.291644,-4.579261],['THINHAN',-3.359699,-6.709930],['MAFBAL',-3.527495,-4.805454],['MDI',-3.574432,-6.093865],['TCFF',-4.410573,1.586600],['VCAMBF',-4.452107,-5.424024],['ENF',-4.458629,-3.070563],['VCBF-TBF',-5.032010,-3.928679],['VINACAPITAL-VIBF',-5.208598,-4.969706],['PBIF',-5.379063,-41.288910],['UVDIF',-5.890554,-5.511830]
+    ].map(r => ({name:r[0],may:r[1],ytd:r[2]})).sort((a,b) => a.may - b.may);
+    const reportGroup = fig2To8Data.group.filter(r => r[0] !== '08/2026');
+    const reportStructure = fig2To8Data.structure.filter(r => r[0] !== '08/2026');
+    navMonths.splice(0,navMonths.length,...reportGroup.map(r => r[0]));
+    navEquity.splice(0,navEquity.length,...reportGroup.map(r => r[1]));
+    navBond.splice(0,navBond.length,...reportGroup.map(r => r[2]));
+    navBalanced.splice(0,navBalanced.length,...reportGroup.map(r => r[3]));
+    navETF.splice(0,navETF.length,...reportStructure.map(r => r[3]));
+    navClosed.splice(0,navClosed.length,...reportStructure.map(r => r[2]));
+    navOpen.splice(0,navOpen.length,...reportStructure.map(r => r[1]));
+    const reportFlow6 = [['06/2024',-6.130837,1.017385,0.100440],...fig2To8Data.flow6.filter(r => r[0] !== '08/2026')];
+    const reportFlow6ByMonth = Object.fromEntries(reportFlow6.map(r => [r[0],r]));
+    flowEquity.splice(0,flowEquity.length,...navMonths.map(m => reportFlow6ByMonth[m]?.[1] ?? null));
+    flowBond.splice(0,flowBond.length,...navMonths.map(m => reportFlow6ByMonth[m]?.[2] ?? null));
+    flowTotal.splice(0,flowTotal.length,...navMonths.map(m => reportFlow6ByMonth[m] ? +(reportFlow6ByMonth[m][1] + reportFlow6ByMonth[m][2] + reportFlow6ByMonth[m][3]).toFixed(4) : null));
+    const reportFlow7 = fig2To8Data.flow7.filter(r => r[0] !== '08/2026');
+    eqFlowMonths.splice(0,eqFlowMonths.length,...reportFlow7.map(r => r[0]));
+    eqFlowETF.splice(0,eqFlowETF.length,...reportFlow7.map(r => r[1]));
+    eqFlowOpen.splice(0,eqFlowOpen.length,...reportFlow7.map(r => r[2]));
+    eqFlowClosed.splice(0,eqFlowClosed.length,...reportFlow7.map(r => r[3]));
+    const reportFlow8 = fig2To8Data.flow8.filter(r => /^0[6-9]\/2025$|^1[0-2]\/2025$|^0[1-7]\/2026$/.test(r[0]));
+    bondFlow.splice(0,bondFlow.length,...reportFlow8.map(r => r[1]));
+
+    stockBuy.splice(0,stockBuy.length,
+      {ticker:'HDB',vol:3.271700,funds:29},{ticker:'PVD',vol:2.537791,funds:13},{ticker:'PVS',vol:1.599550,funds:14},{ticker:'VCB',vol:1.327756,funds:46},{ticker:'ABB',vol:1.195354,funds:5},{ticker:'CTR',vol:0.961554,funds:14},{ticker:'DCM',vol:0.731161,funds:10},{ticker:'IDC',vol:0.723589,funds:25},{ticker:'DSE125018',vol:0.598734,funds:2},{ticker:'CTD',vol:0.561600,funds:11}
+    );
+    stockSell.splice(0,stockSell.length,
+      {ticker:'HPG',vol:-22.099097,funds:47},{ticker:'ACB',vol:-18.898899,funds:37},{ticker:'MBB',vol:-11.547589,funds:37},{ticker:'OCB',vol:-11.209659,funds:11},{ticker:'VIB',vol:-9.304633,funds:17},{ticker:'VPB',vol:-8.924249,funds:37},{ticker:'STB',vol:-7.078489,funds:30},{ticker:'MSB',vol:-6.833800,funds:14},{ticker:'BID',vol:-6.105717,funds:25},{ticker:'KDH',vol:-5.594645,funds:21}
+    );
+    document.querySelectorAll('#chart-stock-buy ~ .chart-note, #chart-stock-sell ~ .chart-note').forEach(note => note.innerHTML = note.innerHTML.replace('79','104'));
+
+    const fig9To10Data = {
+      cashUp:[
+        {name:'DCDS',nav:5723.344908,jun:11.1703,jul:27.4416},
+        {name:'VFMVSF',nav:8106.324905,jun:3.5529,jul:8.5875},
+        {name:'VLGF',nav:3905.763849,jun:3.4799,jul:9.3491},
+        {name:'DCDE',nav:846.356766,jun:15.2639,jul:37.8555},
+        {name:'VNDAF',nav:296.199914,jun:14.4994,jul:51.7797}
+      ],
+      cashDown:[
+        {name:'VINACAPITAL-VESAF',nav:2225.841768,jun:11.3778,jul:7.9166},
+        {name:'BMFF',nav:492.540157,jun:32.0967,jul:18.4859},
+        {name:'MBVF',nav:256.912082,jun:28.4438,jul:18.9758},
+        {name:'VINACAPITAL-VMEEF',nav:2057.281630,jun:5.7328,jul:5.0711},
+        {name:'VCBF-BCF',nav:1528.799529,jun:5.7473,jul:4.6478}
+      ]
+    };
+    cashUp.splice(0,cashUp.length,...fig9To10Data.cashUp.map(r => ({name:r.name,nav:r.nav,apr:r.jun,may:r.jul})));
+    cashDown.splice(0,cashDown.length,...fig9To10Data.cashDown.map(r => ({name:r.name,nav:r.nav,apr:r.jun,may:r.jul})));
+
+    // ============================================================
+    //  RENDER FUNCTIONS
+    // ============================================================
+
+    function renderPerf(id, data) {
+      const ch = initChart(id); charts[id] = ch;
+      const isEquityPerformance = id === 'chart-equity-perf';
+      const labels = data.map(d => d.name);
+      const colorMay = data.map(d => d.bench ? GOLD : (d.may >= 0 ? GREEN : BAR_PINK));
+      const colorYtd = data.map(d => d.bench ? GOLD : (d.ytd >= 0 ? GREEN : BAR_PINK));
+      const isBondPerformance = id === 'chart-bond-perf';
+      const isBalancedPerformance = id === 'chart-balanced-perf';
+      const isDensePerformance = isEquityPerformance || isBondPerformance;
+      const barWidth = isDensePerformance ? 10 : 14;
+      const ytdGridLeft = isBondPerformance ? '49%' : (isBalancedPerformance ? '51%' : '55%');
+      const ytdTitleLeft = isBondPerformance ? '74.5%' : (isBalancedPerformance ? '66.5%' : '76%');
+      const oneMonthTitleLeft = isBondPerformance ? '25%' : (isBalancedPerformance ? '33.5%' : '34%');
+      const oneMonthGridRight = isBondPerformance ? '50%' : (isBalancedPerformance ? '51%' : '52%');
+      const periodTitleTop = isDensePerformance ? 19 : 24;
+      const gridTop = isDensePerformance ? 36 : 44;
+      const gridBottom = isBalancedPerformance ? 24 : (isDensePerformance ? 36 : 44);
+      const axisPadding = isBondPerformance ? 1.05 : 1.15;
+      const ytdNegativeMultiplier = 1.3;
+      const ytdVisualValue = value => value < 0 ? value * ytdNegativeMultiplier : (isBalancedPerformance && value > 0 ? value * 2.5 : value);
+      // Adjust Figure 2 bar lengths slightly while keeping all displayed values unchanged.
+      const mayVisualValue = (value, name) => {
+        if (!isBondPerformance) return value;
+        if (name === 'HDBOND') return value * 0.96;
+        return value > 0 && value < 1 ? value * 1.15 : value;
+      };
+      const bondOneMonthMin = Math.min(0, ...data.map(d => Number.isFinite(d.may) ? d.may : 0)) * 1.02;
+      const bondOneMonthMax = Math.max(0, ...data.map(d => Number.isFinite(d.may) ? d.may : 0)) * 1.02;
+      const bondYtdMin = Math.min(0, ...data.map(d => Number.isFinite(d.ytd) ? ytdVisualValue(d.ytd) : 0)) * 1.1;
+      const bondYtdMax = Math.max(0, ...data.map(d => Number.isFinite(d.ytd) ? ytdVisualValue(d.ytd) : 0)) * 1.1;
+      const ytdLimit = Math.max(...data.map(d => Math.abs(ytdVisualValue(d.ytd) || 0)), 0.1) * 1.15;
+      const categoryRange = { min: 0, max: labels.length - 1, inverse: false, boundaryGap: true };
+      const formatTooltipValue = (value, digits=1) => Number.isFinite(value) ? `${value.toFixed(digits)}%` : 'N/A';
+
+      ch.setOption({
+        tooltip: { ...tooltipBase(), trigger:'axis', axisPointer:{type:'shadow'}, formatter: p => {
+          const fundName = p?.[0]?.axisValue;
+          const fund = data.find(d => d.name === fundName);
+          if (!fund) return '';
+          const ytdDigits = fund.name === 'VCAMFI' ? 2 : 1;
+          return `<b style="color:${ACCENT}">${fund.name}</b><br/>1M: ${formatTooltipValue(fund.may)}<br/>YTD: ${formatTooltipValue(fund.ytd,ytdDigits)}`;
+        } },
+        title: [
+          ...(!isEquityPerformance && !isBalancedPerformance ? [{text:'1M',left:oneMonthTitleLeft,top:periodTitleTop,textStyle:{color:PERF_TEXT_COLOR,fontSize:PERF_TEXT_SIZE,fontWeight:700,fontFamily:"'Segoe UI',sans-serif"}}] : []),
+          ...(!isEquityPerformance && !isBondPerformance && !isBalancedPerformance ? [{text:'YTD',left:ytdTitleLeft,top:periodTitleTop,textStyle:{color:PERF_TEXT_COLOR,fontSize:PERF_TEXT_SIZE,fontWeight:700,fontFamily:"'Segoe UI',sans-serif"}}] : [])
+        ],
+        grid: [ {left:18,right:oneMonthGridRight,top:gridTop,bottom:gridBottom,containLabel:true}, {left:ytdGridLeft,right:18,top:gridTop,bottom:gridBottom,containLabel:true} ],
+        xAxis: [
+          {type:'value',gridIndex:0,show:false,min:isBondPerformance?bondOneMonthMin:v=>Math.min(0,v.min)*axisPadding,max:isBondPerformance?bondOneMonthMax:v=>Math.max(0,v.max)*axisPadding},
+          isEquityPerformance
+            ? {type:'value',gridIndex:1,show:false,min:-ytdLimit,max:ytdLimit}
+            : isBalancedPerformance
+              ? {type:'value',gridIndex:1,show:false,min:-ytdLimit,max:ytdLimit}
+              : {type:'value',gridIndex:1,show:false,min:isBondPerformance?bondYtdMin:v=>Math.min(0,v.min)*axisPadding,max:isBondPerformance?bondYtdMax:v=>Math.max(0,v.max)*axisPadding}
+        ],
+        yAxis: [
+          {type:'category',gridIndex:0,data:labels,...categoryRange,axisTick:{show:false},axisLine:{show:false},axisLabel:{interval:0,margin:4,color:PERF_TEXT_COLOR,fontSize:PERF_TEXT_SIZE,lineHeight:14,verticalAlign:'middle',fontWeight:400,fontFamily:"'Segoe UI',sans-serif"}},
+          {type:'category',gridIndex:1,data:labels,...categoryRange,axisTick:{show:false},axisLine:{show:false},axisLabel:{show:false,margin:4,fontSize:PERF_TEXT_SIZE,lineHeight:14,verticalAlign:'middle'}}
+        ],
+        series: [
+           {name:'1M',type:'bar',xAxisIndex:0,yAxisIndex:0,barWidth,barMinHeight:34,
+           data:data.map((d,i)=>({value:mayVisualValue(d.may,d.name),rawValue:d.may,itemStyle:{color:colorMay[i],borderRadius:0},label:{show:true,position:d.may<0?'insideLeft':'insideRight',align:d.may<0?'left':'right'}})),
+           label:{show:true,formatter:p=>{const value=p.data.rawValue;return `${value>0?'+':''}${value.toFixed(1)}%`;},color:'#fff',fontSize:8.5,fontWeight:700,padding:[0,3],fontFamily:"'Segoe UI',sans-serif"},labelLayout:{hideOverlap:isBalancedPerformance?true:false}},
+           {name:'YTD',type:'bar',xAxisIndex:1,yAxisIndex:1,barWidth,barMinHeight:34,
+           data:data.map((d,i)=>({name:d.name,value:ytdVisualValue(d.ytd),rawValue:d.ytd,itemStyle:{color:colorYtd[i],borderRadius:0},label:d.name==='VCAMFI'?{position:'insideRight',align:'right',color:'#fff',distance:0,padding:[0,3]}:{position:d.ytd<0?'insideLeft':'insideRight',align:d.ytd<0?'left':'right'}})),
+           label:{show:true,formatter:p=>{const value=p.data.rawValue;if(!Number.isFinite(value))return 'N/A';const digits=p.data.name==='VCAMFI'?2:1;return `${value>0?'+':''}${value.toFixed(digits)}%`;},color:'#fff',fontSize:8.5,fontWeight:700,padding:[0,3],fontFamily:"'Segoe UI',sans-serif"},labelLayout:{hideOverlap:isBalancedPerformance?true:false}}
+        ]
+      });
+
+      // Anchor Figure 1 and Figure 2 period headings to their actual 0% coordinates.
+      if (isEquityPerformance || isBondPerformance || isBalancedPerformance) {
+        const mayZeroX = ch.convertToPixel({ xAxisIndex: 0 }, 0);
+        const ytdZeroX = ch.convertToPixel({ xAxisIndex: 1 }, 0);
+        ch.setOption({
+          graphic: isEquityPerformance
+            ? [
+                {id: 'equity-1m-title', type: 'text', x: ch.convertToPixel({ xAxisIndex: 0 }, 0), y: periodTitleTop,
+                 style: { text: '1M', x: 0, y: 0, fill: PERF_TEXT_COLOR, font: "700 11px 'Segoe UI', sans-serif", textAlign: 'center', textVerticalAlign: 'top' }},
+                {id: 'equity-ytd-title', type: 'text', x: ytdZeroX, y: periodTitleTop,
+                 style: { text: 'YTD', x: 0, y: 0, fill: PERF_TEXT_COLOR, font: "700 11px 'Segoe UI', sans-serif", textAlign: 'center', textVerticalAlign: 'top' }}
+              ]
+            : isBondPerformance
+              ? [{id: 'bond-ytd-title', type: 'text', x: ytdZeroX, y: periodTitleTop,
+                  style: { text: 'YTD', x: 0, y: 0, fill: PERF_TEXT_COLOR, font: "700 11px 'Segoe UI', sans-serif", textAlign: 'center', textVerticalAlign: 'top' }}]
+              : [
+                  {id: 'balanced-1m-title', type: 'text', x: mayZeroX, y: periodTitleTop,
+                   style: { text: '1M', x: 0, y: 0, fill: PERF_TEXT_COLOR, font: "700 11px 'Segoe UI', sans-serif", textAlign: 'center', textVerticalAlign: 'top' }},
+                  {id: 'balanced-ytd-title', type: 'text', x: ytdZeroX, y: periodTitleTop,
+                   style: { text: 'YTD', x: 0, y: 0, fill: PERF_TEXT_COLOR, font: "700 11px 'Segoe UI', sans-serif", textAlign: 'center', textVerticalAlign: 'top' }}
+                ]
+        });
+      }
+    }
+
+    function renderNav(id, labels, seriesData) {
+      const ch = initChart(id); charts[id] = ch;
+      const totals = seriesData.map(s => s.data.reduce((sum, value) => sum + Math.abs(value || 0), 0));
+      const rank = totals.map((_, index) => index).sort((a,b) => totals[b] - totals[a]);
+      const colors = seriesData.map((_, index) => [GREEN, GOLD, AREA_GREY][rank.indexOf(index)]);
+      const labelIndexes = new Set(id === 'chart-nav-group'
+        ? [1,11,15,22,23]
+        : [1,11,15,20,22,23]);
+      ch.setOption({
+        tooltip: { ...tooltipBase(), valueFormatter:v=>`${Number(v).toLocaleString()} T` },
+        legend: { top:6, right:16, textStyle:{color:MUTED,fontSize:11} },
+        grid: { left:54, right:54, top:44, bottom:44, containLabel:true },
+        xAxis: { type:'category', data:labels.map(viMonth), ...axis(), boundaryGap:false },
+        yAxis: { type:'value', ...axis('Trillion VND') },
+        series: seriesData.map((s,i) => ({
+          name:s.name, type:'line', stack:'nav', smooth:true, symbol:'circle', symbolSize:1,
+          areaStyle: { opacity:0.65 },
+          lineStyle: { width:1.5, color:colors[i] },
+          itemStyle: { color:colors[i] },
+          label:{show:true,position:colors[i]===GREEN?'bottom':'inside',distance:colors[i]===GREEN?30:0,color:'#fff',fontSize:9,fontWeight:800,z:10,formatter:p=>labelIndexes.has(p.dataIndex) && !(id==='chart-nav-group' && rank.indexOf(i)===2) ? `{value|${Number(p.value).toFixed(0)}}` : '',rich:{value:{color:'#fff',fontSize:9,fontWeight:800}}},
+          labelLayout:{hideOverlap:false},
+          data:s.data
+        }))
+      });
+    }
+
+    function renderIndustryFlow() {
+      const ch = initChart('chart-industry-flow'); charts['chart-industry-flow'] = ch;
+      const hideAllFlowLabels = new Set(['12/2024','01/2025','05/2025','08/2025','09/2025','10/2025','05/2026']);
+      const hideEquityFlowLabels = new Set(['06/2024','07/2024','08/2024','11/2024']);
+      const labelAnchor = (series, index) => {
+        const equity = flowEquity[index] || 0;
+        const bond = flowBond[index] || 0;
+        if (series === 'equity') return equity;
+        const base = equity !== 0 && Math.sign(equity) === Math.sign(bond) ? equity : 0;
+        return base + bond;
+      };
+      const labelIsClear = (series, index) => Math.abs((flowTotal[index] || 0) - labelAnchor(series, index)) >= 0.6;
+      const isOct2024Bond = index => ['10/2024','Oct-24'].includes(flowMonths[index]);
+      ch.setOption({
+        tooltip: { ...tooltipBase(), valueFormatter:v=>`${Number(v).toFixed(1)} T` },
+        legend: { top:6, right:16, itemWidth:14, itemHeight:10, textStyle:{color:MUTED,fontSize:11,fontWeight:400,fontFamily:"'Segoe UI',sans-serif"} },
+        grid: { left:54, right:54, top:44, bottom:44, containLabel:true },
+        xAxis: { type:'category', data:flowMonths.map(viMonth), ...axis() },
+        yAxis: { type:'value', ...axis('Trillion VND') },
+        series: [
+          {name:'Quỹ cổ phiếu',type:'bar',stack:'flow',color:GREEN,data:flowEquity.map(v=>({value:v,itemStyle:{color:GREEN},label:{position:v<0?'insideBottom':'insideTop',align:'center'}})),label:{show:true,color:'#fff',fontSize:8.5,fontWeight:700,formatter:p=>{const month=flowMonths[p.dataIndex];return hideAllFlowLabels.has(month)||hideEquityFlowLabels.has(month)||Math.abs(p.value)<0.8?'':Math.abs(p.value).toFixed(1);}},labelLayout:{hideOverlap:true}},
+          {name:'Quỹ trái phiếu',type:'bar',stack:'flow',color:GOLD,data:flowBond.map(v=>({value:v,itemStyle:{color:GOLD},label:{position:v<0?'insideBottom':'insideTop',align:'center'}})),label:{show:true,color:'#fff',fontSize:8.5,fontWeight:700,formatter:p=>{const month=flowMonths[p.dataIndex];return hideAllFlowLabels.has(month)||Math.abs(p.value)<0.8||isOct2024Bond(p.dataIndex)?'':Math.abs(p.value).toFixed(1);}},labelLayout:{hideOverlap:true}},
+          {name:'Tổng dòng tiền ròng',type:'line',smooth:true,data:flowTotal,symbol:'circle',symbolSize:4,lineStyle:{width:2.5,color:'#8C3DD5'},itemStyle:{color:'#8C3DD5'}}
+        ]
+      });
+    }
+
+    function renderEquityFlow() {
+      const ch = initChart('chart-equity-flow'); charts['chart-equity-flow'] = ch;
+      const elementLabel = value => {
+        return Math.abs(value) >= 0.45 ? Math.abs(value).toFixed(1) : '';
+      };
+      ch.setOption({
+        tooltip: { ...tooltipBase(), valueFormatter:v=>`${Number(v).toFixed(1)} T` },
+        legend: { top:6, right:16, itemWidth:14, itemHeight:10, textStyle:{color:MUTED,fontSize:11,fontWeight:400,fontFamily:"'Segoe UI',sans-serif"} },
+        grid: { left:54, right:54, top:44, bottom:44, containLabel:true },
+        xAxis: { type:'category', data:eqFlowMonths.map(viMonth), ...axis() },
+        yAxis: { type:'value', ...axis('Trillion VND'), nameTextStyle:{color:MUTED,fontSize:11,fontFamily:"'Segoe UI',sans-serif",padding:[8,0,0,0]} },
+        series: [
+          {name:'Quỹ đóng',type:'bar',stack:'eq',color:GREEN,barMinHeight:13,data:eqFlowClosed.map(v=>({value:v,itemStyle:{color:GREEN},label:{position:v<0?'insideBottom':'insideTop',align:'center'}})),label:{show:true,color:'#fff',fontSize:8.5,fontWeight:700,formatter:p=>elementLabel(p.value)},labelLayout:{hideOverlap:true}},
+          {name:'ETF',type:'bar',stack:'eq',color:AREA_GREY,barMinHeight:13,data:eqFlowETF.map(v=>({value:v,itemStyle:{color:AREA_GREY},label:{position:v<0?'insideBottom':'insideTop',align:'center'}})),label:{show:true,color:'#fff',fontSize:8.5,fontWeight:700,formatter:p=>elementLabel(p.value)},labelLayout:{hideOverlap:true}},
+          {name:'Quỹ mở',type:'bar',stack:'eq',color:GOLD,barMinHeight:13,data:eqFlowOpen.map(v=>({value:v,itemStyle:{color:GOLD},label:{position:v<0?'insideBottom':'insideTop',align:'center'}})),label:{show:true,color:'#fff',fontSize:8.5,fontWeight:700,formatter:p=>elementLabel(p.value)},labelLayout:{hideOverlap:true}}
+        ]
+      });
+    }
+
+    function renderBondFlow() {
+      const ch = initChart('chart-bond-flow'); charts['chart-bond-flow'] = ch;
+      ch.setOption({
+        tooltip: { ...tooltipBase(), valueFormatter:v=>`${Number(v).toFixed(1)} T` },
+        grid: { left:54, right:54, top:38, bottom:38, containLabel:true },
+        xAxis: { type:'category', data:bondFlowMonths.map(viMonth), ...axis() },
+        yAxis: { type:'value', ...axis('Trillion VND') },
+        series: [{ type:'bar', barMaxWidth:54, barMinHeight:28, data:bondFlow.map(v=>({ value:v,itemStyle:{color:v>=0?GREEN:BAR_PINK,borderRadius:0},label:{position:v>=0?'insideTop':'insideBottom',align:'center'} })),
+          label:{show:true,formatter:p=>p.value.toFixed(1),color:'#fff',fontSize:8.5,fontWeight:700,fontFamily:"'Segoe UI',sans-serif"},labelLayout:{hideOverlap:false} }]
+      });
+    }
+
+    function renderCash(id, data, positive) {
+      const ch = initChart(id); charts[id] = ch;
+      const color = GREEN;
+      const cashStartMonth = 'Jun-2026';
+      const cashEndMonth = 'Jul-2026';
+      const fixedCashScale = id === 'chart-cash-up';
+      const sorted = [...data].sort((a,b) => positive ? (b.may-b.apr)-(a.may-a.apr) : (a.may-a.apr)-(b.may-b.apr));
+      const labels = sorted.map(d => `${d.name}\n(${(d.nav/1000).toFixed(1)}T)`);
+      ch.setOption({
+        tooltip: { trigger:'item', backgroundColor:'#fff', borderColor:BORDER, textStyle:{color:FG}, formatter:p=>`<b>${p.value[0]}</b><br/>Jun: ${Number(p.value[1]).toFixed(1)}%<br/>Jul: ${Number(p.value[2]).toFixed(1)}%` },
+        graphic: [{
+          type:'group', left:'center', top:4, silent:true,
+          children:[
+            {type:'circle',shape:{cx:5,cy:7,r:5},style:{fill:color}},
+            {type:'text',style:{x:18,y:7,text:cashStartMonth,textVerticalAlign:'middle',fill:FG,font:"italic 11px 'Segoe UI'"}},
+            {type:'circle',shape:{cx:94,cy:7,r:5},style:{fill:'#fff',stroke:color,lineWidth:1.5}},
+            {type:'text',style:{x:107,y:7,text:cashEndMonth,textVerticalAlign:'middle',fill:FG,font:"italic 11px 'Segoe UI'"}}
+          ]
+        }],
+        grid: { left:48, right:48, top:42, bottom:42, containLabel:true },
+        xAxis: { type:'value', ...(fixedCashScale ? {min:0,max:60,interval:10} : id === 'chart-cash-down' ? {min:0,max:35,interval:10} : {min:0,max:v=>v.max+Math.max(0.5,(v.max-v.min)*0.12)}), ...axis('Cash ratio (%)'), nameLocation:'middle', nameGap:28, axisLine:{show:true,lineStyle:{color:'#cfd4d8',width:1}}, axisLabel:{formatter:v=>`${Number(v).toFixed(1).replace(/\.0$/,'')}%`,color:MUTED,fontSize:11}, splitLine:{show:false} },
+        yAxis: { type:'category', data:labels, ...axis(), axisLabel:{color:ACCENT,fontSize:11,width:180,overflow:'break',lineHeight:14} },
+        series: [{ type:'custom', clip:false, data:sorted.map(d=>[d.name+'\n('+(d.nav/1000).toFixed(1)+'T)',d.apr,d.may]),
+          renderItem: (params,api) => {
+            const name=api.value(0), from=api.value(1), to=api.value(2);
+            const p1=api.coord([from,name]), p2=api.coord([to,name]);
+            const fromIsLeft = p1[0] <= p2[0];
+            const isVlgf = String(name).startsWith('VLGF');
+            const connectorDash = isVlgf ? [2,2] : [5,3];
+            const gridLines = params.dataIndex === 0
+              ? [0,10,20,30,40,50,60].map(value => {
+                  const x = value === 0 ? params.coordSys.x : api.coord([value,name])[0];
+                  return {type:'line',silent:true,shape:{x1:x,y1:params.coordSys.y,x2:x,y2:params.coordSys.y+params.coordSys.height},style:{stroke:'#dfe3e6',lineWidth:1}};
+                })
+              : [];
+            return { type:'group', children: [
+              ...gridLines,
+              {type:'line',shape:{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1]},style:{stroke:color,lineWidth:2.5,lineDash:connectorDash}},
+              {type:'circle',shape:{cx:p1[0],cy:p1[1],r:5},style:{fill:color}},
+              {type:'circle',shape:{cx:p2[0],cy:p2[1],r:5},style:{fill:'#fff',stroke:color,lineWidth:2.5}},
+              ...(isVlgf ? [{type:'line',z2:10,shape:{x1:Math.min(p1[0],p2[0])+4,y1:p1[1],x2:Math.max(p1[0],p2[0])-4,y2:p1[1]},style:{stroke:color,lineWidth:2.5,lineDash:[3,2]}}] : []),
+              {type:'text',style:{x:p1[0]+(fromIsLeft?-8:8),y:p1[1]-13,text:`${from.toFixed(1)}%`,textAlign:fromIsLeft?'right':'left',fill:FG,font:"11px 'Segoe UI'"}},
+              {type:'text',style:{x:p2[0]+(fromIsLeft?8:-8),y:p2[1]-13,text:`${to.toFixed(1)}%`,textAlign:fromIsLeft?'left':'right',fill:FG,font:"11px 'Segoe UI'"}}
+            ]};
+          },
+          encode:{x:[1,2],y:0}
+        }]
+      });
+    }
+
+    function renderStock(id, data, positive) {
+      const ch = initChart(id); charts[id] = ch;
+      const color = positive ? GREEN : BAR_PINK;
+      const boxColor = positive ? '#94c83d' : '#c46217';
+      ch.setOption({
+        tooltip: { ...tooltipBase(), trigger:'axis', axisPointer:{type:'shadow'}, formatter:p=>`<b>${p[0].axisValue}</b><br/>Volume: ${Math.abs(p[0].value).toFixed(1)}M shares<br/>Funds: ${data[p[0].dataIndex].funds}` },
+        grid: { left:48, right:48, top:48, bottom:48, containLabel:true },
+        xAxis: { type:'category', data:data.map(d=>d.ticker), ...axis(), axisLabel:{interval:0,formatter:(value,index)=>`{ticker|${value}}\n{fund|${data[index].funds}}`,rich:{ticker:{color:ACCENT,fontSize:11,fontWeight:700,lineHeight:18},fund:{color:MUTED,fontSize:11,lineHeight:15,padding:[6,0,0,0]}}} },
+        yAxis: { type:'value', ...axis('Million shares'), axisLabel:{formatter:v=>Math.abs(v).toFixed(0),color:MUTED,fontSize:11} },
+        series: [{ type:'bar', barWidth:'55%', barMinHeight:28,
+          data:data.map(d=>({value:d.vol,itemStyle:{color,borderRadius:0},label:{position:positive?'insideTop':'insideBottom',align:'center'}})),
+          label:{show:true,formatter:p=>`${Math.abs(p.value).toFixed(1)}`,color:'#fff',fontSize:9.5,fontWeight:700,fontFamily:"'Segoe UI',sans-serif"},labelLayout:{hideOverlap:false} }]
+      });
+      ch.setOption({
+        graphic: [{
+          id: 'fund-count-box', type: 'rect', silent: true, z: 0,
+          shape: { x: 48, y: 270, width: ch.getWidth() - 96, height: 30, r: 6 },
+          style: { fill: 'transparent', stroke: boxColor, lineWidth: 1.5, lineDash: [5, 3] }
+        }]
+      });
+    }
+
+    function renderSector(id, sectorData) {
+      const ch = charts[id] || initChart(id); charts[id] = ch;
+      const names = Object.keys(sectorData);
+      const cols = ch.getWidth() < 620 ? 1 : (names.length <= 3 ? 1 : 2);
+      const rows = Math.ceil(names.length/cols);
+      const outer = 16, gap = 12;
+      const alignPanelsRight = id === 'chart-sector-buy';
+      const panelH = (ch.getHeight() - outer * 2 - gap * (rows - 1)) / rows;
+      const panelW = (cols === 2 || alignPanelsRight) ? ch.getWidth() * 0.40 : ch.getWidth() * 0.72;
+      const panelWidthPct = (cols === 2 || alignPanelsRight) ? 40 : 72;
+      const panelLeft = i => alignPanelsRight ? 52 : (cols === 2 ? 8 + (i % 2) * 44 : 14);
+
+      const grids = names.map((_,i) => {
+        const row=Math.floor(i/cols);
+        return { left:`${panelLeft(i)+2}%`, width:`${panelWidthPct-4}%`, top:outer+row*(panelH+gap)+40, height:panelH-72, containLabel:false };
+      });
+      const titles = names.map((name,i) => ({
+        text:`${name} (tỷ đồng)`, left:`${panelLeft(i)+panelWidthPct/2}%`, top:outer+Math.floor(i/cols)*(panelH+gap)+7, textAlign:'center',
+        textStyle:{color:ACCENT,fontSize:11,fontWeight:700,fontStyle:'italic',fontFamily:"'Segoe UI',sans-serif"}
+      }));
+
+      ch.setOption({
+        title:titles,
+        graphic: names.map((_, i) => ({type:'rect', left:`${panelLeft(i)}%`, top:outer+Math.floor(i/cols)*(panelH+gap), shape:{width:panelW,height:panelH,r:0}, style:{fill:'#ffffff',stroke:'#cfd6dc',lineWidth:1,lineDash:[2,2],shadowBlur:5,shadowColor:'rgba(7,15,37,.06)',shadowOffsetY:2}, z:-1})),
+        tooltip: { ...tooltipBase(), trigger:'axis', axisPointer:{type:'shadow'}, valueFormatter:v=>`${Number(v).toLocaleString()} tỷ VND` },
+        grid:grids,
+        xAxis:names.map((_,i)=>({type:'category',gridIndex:i,data:sectorMonths,...axis(),axisLabel:{color:MUTED,fontSize:9.5,margin:6,interval:0},axisTick:{show:false},splitLine:{show:false}})),
+        yAxis:names.map((_,i)=>({type:'value',gridIndex:i,...axis(''),axisLabel:{show:false},splitLine:{show:false},axisLine:{show:false},boundaryGap:['30%','25%']})),
+        series:names.map((name,i)=>({
+          name,type:'bar',xAxisIndex:i,yAxisIndex:i,barWidth:'50%',barGap:'20%',
+          data:sectorData[name].map(v=>v == null ? {value:null,label:{show:false}} : ({value:v,itemStyle:{color:v>=0?GREEN:BAR_PINK,borderRadius:0},label:{position:v>=0?'top':'bottom',distance:3,align:'center',color:v>=0?GREEN:RED}})),
+          label:{show:true,formatter:p=>{if(p.value == null)return '';const value=Math.abs(Math.round(p.value)).toLocaleString('en-US');return p.value<0?`(${value})`:value;},fontSize:9,fontWeight:700,fontFamily:"'Segoe UI',sans-serif"},labelLayout:{hideOverlap:false},
+          markLine:{silent:true,symbol:'none',label:{show:false},lineStyle:{color:'#d7dce1',width:1},data:[{yAxis:0}]}
+        }))
+      }, true);
+    }
+
+    // Initialize all charts with current data
+    function renderAll() {
+      renderPerf('chart-equity-perf', equityPerf);
+      renderPerf('chart-bond-perf', bondPerf);
+      renderPerf('chart-balanced-perf', balancedPerf);
+      renderNav('chart-nav-group', navMonths, [{name:'Balanced',data:navBalanced},{name:'Bond',data:navBond},{name:'Equity',data:navEquity}]);
+      renderNav('chart-nav-structure', navMonths, [{name:'ETFs',data:navETF},{name:'Closed-end',data:navClosed},{name:'Open-ended',data:navOpen}]);
+      renderIndustryFlow();
+      renderEquityFlow();
+      renderBondFlow();
+      renderCash('chart-cash-up', cashUp, true);
+      renderCash('chart-cash-down', cashDown, false);
+      renderStock('chart-stock-buy', stockBuy, true);
+      renderStock('chart-stock-sell', stockSell, false);
+      renderSector('chart-sector-buy', sectorBuy);
+      renderSector('chart-sector-sell', sectorSell);
+    }
+
+    const missingT7PortfolioData = new Set([
+      'ABIF','ASPVIETA','ASPVIETSSF','ASPVIETEQAI','ASPVIETRMF','FUEPHVNS','HDBF','IFNPVI','JFVNOPP',
+      'MBANKHANG','MBTHINHVUONG','PHUCAN','THINHAN','TIANHONGVN','UVEF','UVO','VINHAN','VNH','XTRACKERSVIETNAMSWAPUCITSETF'
+    ]);
+    document.querySelectorAll('#auditMainTable tbody tr').forEach(row => {
+      const code = (row.querySelector('.t-code')?.textContent || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (!missingT7PortfolioData.has(code)) return;
+      row.dataset.filter = 't7_no';
+      const badge = row.querySelector('.badge-tag');
+      badge.classList.remove('badge-green');
+      badge.classList.add('badge-red');
+      badge.textContent = 'Không';
+    });
+
+    renderAll();
+
+    // ============================================================
+    //  EXCEL DYNAMIC PARSER & RE-RENDER
+    // ============================================================
+    function parseExcelData(arrayBuffer) {
+      const wb = XLSX.read(arrayBuffer, { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const raw = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+
+      let headerIdx = -1;
+      for (let i = 0; i < Math.min(25, raw.length); i++) {
+        if (raw[i] && (raw[i][0] === 'Mã quỹ' || raw[i][1] === 'Tên quỹ')) {
+          headerIdx = i;
+          break;
+        }
+      }
+
+      if (headerIdx === -1) {
+        alert('Không tìm thấy dòng tiêu đề "Mã quỹ" / "Tên quỹ" trong file Excel!');
+        return;
+      }
+
+      const parsedFunds = [];
+      for (let i = headerIdx + 1; i < raw.length; i++) {
+        const r = raw[i];
+        if (!r || !r[0] || typeof r[0] !== 'string') continue;
+        if (['Lưu ý','Website','TRUNG TÂM','T:','Email'].some(x => r[0].startsWith(x))) continue;
+        
+        parsedFunds.push({
+          ma: r[0],
+          ten: r[1],
+          chien_luoc: r[2],
+          loai: r[3],
+          trang_thai: r[6],
+          nav: r[8] || 0,
+          pct1m: r[9] !== null && r[9] !== undefined ? +(r[9] * 100).toFixed(2) : null,
+          pctytd: r[10] !== null && r[10] !== undefined ? +(r[10] * 100).toFixed(2) : null,
+          flow: r[11] || 0
+        });
+      }
+
+      const activeFunds = parsedFunds.filter(f => f.trang_thai === 'Đang hoạt động');
+
+      // Update Equity Perf
+      const eqBig = activeFunds.filter(f => f.chien_luoc === 'Quỹ cổ phiếu' && f.nav > 1e12).sort((a,b) => a.pct1m - b.pct1m);
+      equityPerf = eqBig.map(f => ({ name: f.ma, may: f.pct1m, ytd: f.pctytd, bench: false }));
+      equityPerf.unshift({name:'VNINDEX', may: 1.5, ytd: 1.7, bench: true});
+      equityPerf.push({name:'VN30', may: 1.3, ytd: 1.0, bench: true});
+
+      // Update Bond Perf
+      const bndBig = activeFunds.filter(f => f.chien_luoc === 'Quỹ trái phiếu' && f.nav >= 1e8).sort((a,b) => a.pct1m - b.pct1m);
+      bondPerf = bndBig.map(f => ({ name: (f.ten||f.ma).replace(/^Quỹ Đầu tư TP /,'').replace(/^Quỹ /,''), may: f.pct1m, ytd: f.pctytd, bench: false }));
+
+      // Update Balanced Perf
+      const balBig = activeFunds.filter(f => f.chien_luoc === 'Quỹ cân bằng' && f.nav >= 1e8).sort((a,b) => a.pct1m - b.pct1m);
+      balancedPerf = balBig.map(f => ({ name: (f.ten||f.ma).replace(/^Quỹ Đầu tư /,'').replace(/^Quỹ /,''), may: f.pct1m, ytd: f.pctytd, bench: false }));
+
+      // Update latest NAV month in area charts
+      let totalEqNAV = 0, totalBndNAV = 0, totalBalNAV = 0;
+      activeFunds.forEach(f => {
+        if (f.chien_luoc === 'Quỹ cổ phiếu') totalEqNAV += f.nav;
+        else if (f.chien_luoc === 'Quỹ trái phiếu') totalBndNAV += f.nav;
+        else if (f.chien_luoc === 'Quỹ cân bằng') totalBalNAV += f.nav;
+      });
+
+      navEquity[navEquity.length - 1] = +(totalEqNAV / 1e12).toFixed(1);
+      navBond[navBond.length - 1] = +(totalBndNAV / 1e12).toFixed(1);
+      navBalanced[navBalanced.length - 1] = +(totalBalNAV / 1e12).toFixed(1);
+
+      renderAll();
+
+      document.getElementById('status').innerHTML = `<span class="dot" style="background:${GREEN}"></span>Data Loaded (${activeFunds.length} active funds)`;
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        Object.values(charts).forEach(c => c.resize());
+        renderPerf('chart-equity-perf', equityPerf);
+        renderPerf('chart-bond-perf', bondPerf);
+        renderSector('chart-sector-buy', sectorBuy);
+        renderSector('chart-sector-sell', sectorSell);
+      }, 120);
+    });
+
+  
+    window.filterAuditTable = function(type, btn) {
+      document.querySelectorAll('.audit-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      
+      const rows = document.querySelectorAll('#auditMainTable tbody tr');
+      let visible = 0;
+      rows.forEach(r => {
+        const filter = r.getAttribute('data-filter');
+        if (type === 'all' || filter === type) {
+          r.style.display = '';
+          visible++;
+        } else {
+          r.style.display = 'none';
+        }
+      });
+      const countEl = document.getElementById('auditRowCount');
+      if (countEl) countEl.innerHTML = `Hiển thị: <strong>${visible}/${rows.length}</strong> quỹ`;
+    };
+
+    window.searchAuditTable = function() {
+      const q = (document.getElementById('auditSearch')?.value || '').toLowerCase().trim();
+      const rows = document.querySelectorAll('#auditMainTable tbody tr');
+      let visible = 0;
+      rows.forEach(r => {
+        const text = r.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+          r.style.display = '';
+          visible++;
+        } else {
+          r.style.display = 'none';
+        }
+      });
+      const countEl = document.getElementById('auditRowCount');
+      if (countEl) countEl.innerHTML = `Hiển thị: <strong>${visible}/${rows.length}</strong> quỹ`;
+    };
+
+  })();
+  </script>
+</body>
+</html>
