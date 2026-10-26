@@ -15692,7 +15692,8 @@ function renderCash(id, data, positive) {
       const countBadge = document.getElementById('fig15-count-badge');
       if (!tbody) return;
 
-      const p = fig15CurrentPeriod || 't8';
+      let p = fig15CurrentPeriod || 't9';
+      if (p === 'M8' || p === 't8') p = 't9';
       const allStocks = getMergedStockData(p);
       const q = (fig15SearchQuery || window.sheet4StockSearchQuery || '').toLowerCase().trim();
 
@@ -15701,7 +15702,12 @@ function renderCash(id, data, positive) {
       const stockSet = hasStockFilter ? new Set(selectedStocks.map(s => s.toLowerCase())) : null;
 
       // TOP 10 CỔ PHIẾU ĐƯỢC PHÊ DUYỆT CỦA FIGURE 15 (Chỉ giữ đúng 10 mã trên chart)
-      const top10Fig15 = ['VIC', 'TCM', 'HPG', 'VHM', 'FPT', 'MWG', 'MBB', 'TCB', 'VCB', 'VPB'];
+      const chartTop10List = (fig15Data.timeSeries && fig15Data.timeSeries[p])
+        ? fig15Data.timeSeries[p].map(d => (d.ticker || '').toUpperCase())
+        : ['F88', 'VIC', 'TCM', 'EVF', 'FPT', 'MWG', 'VHM', 'VPB', 'QTP', 'HPG'];
+      const top10Fig15 = (chartTop10List && chartTop10List.length > 0)
+        ? chartTop10List
+        : ['F88', 'VIC', 'TCM', 'EVF', 'FPT', 'MWG', 'VHM', 'VPB', 'QTP', 'HPG'];
       const top10Set = new Set(top10Fig15);
 
       let filtered = allStocks.filter(function(s) {
