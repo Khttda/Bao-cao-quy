@@ -13402,7 +13402,7 @@ function renderBondFlow() {
           show: false
         },
         grid: {
-          left: 16,
+          left: 42,
           right: 32,
           top: 22,
           bottom: 34,
@@ -15015,7 +15015,6 @@ function renderCash(id, data, positive) {
         if (!data || data.length < 2) return '';
         w = w || 105; h = h || 22;
         if (isStock === undefined) isStock = data.some(v => v % 1 !== 0);
-        const lastV = data[data.length - 1];
         // Theo đúng thứ tự thời gian: Dương ở trên, Âm ở dưới, xuất phát từ đường mốc 0
         const plotData = data;
 
@@ -15030,21 +15029,33 @@ function renderCash(id, data, positive) {
           const y = padY + hIn * (1 - (v - minV) / (maxV - minV));
           return [Number(x.toFixed(1)), Number(y.toFixed(1))];
         });
-        const pathD = 'M ' + pts.map(p => p.join(',')).join(' L ');
 
         // Tọa độ mốc 0 chuẩn làm đường cơ sở (baseline)
         const yZero = padY + hIn * (1 - (0 - minV) / (maxV - minV));
         const yZeroStr = yZero.toFixed(1);
 
-        // Vùng đổ bóng khép kín về đường mốc 0 (thay vì tràn xuống đáy khung)
-        const fillD = pathD + ` L ${pts[pts.length-1][0]},${yZeroStr} L ${pts[0][0]},${yZeroStr} Z`;
+        // Tô màu line và vùng đổ bóng theo từng tháng: Tháng tăng -> Xanh (#107c41), Tháng giảm -> Đỏ (#d83b01)
+        let fillPaths = '';
+        let strokePaths = '';
+        for (let i = 1; i < pts.length; i++) {
+          const pPrev = pts[i - 1];
+          const pCurr = pts[i];
+          const isUp = plotData[i] >= plotData[i - 1];
+          const segStroke = isUp ? '#107c41' : '#d83b01';
+          const segFill = isUp ? 'rgba(16,124,65,0.12)' : 'rgba(216,59,1,0.12)';
+          const segFillD = `M ${pPrev[0]},${yZeroStr} L ${pPrev[0]},${pPrev[1]} L ${pCurr[0]},${pCurr[1]} L ${pCurr[0]},${yZeroStr} Z`;
+          fillPaths += `<path d="${segFillD}" fill="${segFill}"/>`;
+          strokePaths += `<path d="M ${pPrev[0]},${pPrev[1]} L ${pCurr[0]},${pCurr[1]}" fill="none" stroke="${segStroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+        }
 
-        const color = lastV > 0 ? '#107c41' : (lastV < 0 ? '#d83b01' : '#64748b');
-        const fillColor = lastV > 0 ? 'rgba(16,124,65,0.12)' : (lastV < 0 ? 'rgba(216,59,1,0.12)' : 'rgba(100,116,139,0.08)');
-        
         // Đường mốc 0 nét đứt
         const zeroLine = `<line x1="${padX}" y1="${yZeroStr}" x2="${w - padX}" y2="${yZeroStr}" stroke="#cbd5e1" stroke-dasharray="2,2" stroke-width="1"/>`;
+        
+        // Điểm tròn tháng cuối cùng (T9) theo xu hướng của T9 so với T8
         const lastPt = pts[pts.length - 1];
+        const lastIsUp = plotData[plotData.length - 1] >= plotData[plotData.length - 2];
+        const lastColor = lastIsUp ? '#107c41' : '#d83b01';
+
         const months = ['T4', 'T5', 'T6', 'T7', 'T8', 'T9'];
         const titleText = data.map((v, i) => `${months[i]}: ${Number(v).toLocaleString('vi-VN')} tỷ đ`).join(' | ');
 
@@ -15061,11 +15072,11 @@ function renderCash(id, data, positive) {
           onmousemove="window.handleSparkHover(event, this)"
           onmouseleave="window.handleSparkLeave(this)">
           ${zeroLine}
-          <path d="${fillD}" fill="${fillColor}"/>
-          <path d="${pathD}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          ${fillPaths}
+          ${strokePaths}
           <line class="spark-hover-line" x1="0" y1="1" x2="0" y2="${h - 1}" stroke="#94a3b8" stroke-dasharray="2,2" stroke-width="1" style="display: none;"/>
-          <circle cx="${lastPt[0]}" cy="${lastPt[1]}" r="2.6" fill="${color}" stroke="#ffffff" stroke-width="1.2"/>
-          <circle class="spark-hover-dot" cx="0" cy="0" r="3.5" fill="#ffffff" stroke="${color}" stroke-width="2" style="display: none;"/>
+          <circle cx="${lastPt[0]}" cy="${lastPt[1]}" r="2.6" fill="${lastColor}" stroke="#ffffff" stroke-width="1.2"/>
+          <circle class="spark-hover-dot" cx="0" cy="0" r="3.5" fill="#ffffff" stroke="${lastColor}" stroke-width="2" style="display: none;"/>
         </svg>`;
       }
 
@@ -15130,6 +15141,10 @@ function renderCash(id, data, positive) {
       if (dot) {
         dot.setAttribute('cx', pt[0]);
         dot.setAttribute('cy', pt[1]);
+        const dotIsUp = bestIdx === 0
+          ? (vals.length > 1 ? vals[1] >= vals[0] : true)
+          : vals[bestIdx] >= vals[bestIdx - 1];
+        dot.setAttribute('stroke', dotIsUp ? '#107c41' : '#d83b01');
         dot.style.display = 'block';
       }
 
