@@ -5486,8 +5486,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     <div class="report-title">Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam</div>
   </header>
   <!-- ===== PAGE TABS (DƯỚI TIÊU ĐỀ, TRÊN CÁC CHART: 01-04) ===== -->
-  <div class="pbi-bottom-bar" id="pbiBottomBar">
-    <div class="pbi-tabs-container">
+  <div class="pbi-bottom-bar" id="pbiBottomBar" style="display: flex; justify-content: space-between; align-items: center; padding-right: 14px;">
+<div class="pbi-tabs-container">
       <div class="pbi-sheet-tab active" id="pbi-tab-1" onclick="switchPbiSheet(1)">
         <span class="pbi-tab-num">01</span>
         <span class="pbi-tab-title">Hiệu suất quỹ</span>
@@ -5513,6 +5513,14 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
       </div>
 
     </div>
+  <!-- BỘ LỌC NGÔN NGỮ (LANGUAGE FILTER: TIẾNG VIỆT / TIẾNG ANH) -->
+  <div class="pbi-lang-filter" id="pbiLangFilter" style="display: inline-flex; align-items: center; gap: 6px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); user-select: none;">
+    <span id="lang-filter-label" style="font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; padding-left: 4px;">Ngôn ngữ:</span>
+    <div style="display: inline-flex; background: #f1f5f9; border-radius: 4px; padding: 1.5px; gap: 2px;">
+      <button type="button" id="btn-lang-vi" class="lang-switch-btn active" onclick="window.switchLanguage('vi')" style="padding: 3px 10px; font-size: 11px; font-weight: 700; border-radius: 3px; border: none; cursor: pointer; transition: all 0.15s ease; background: #007a3d; color: #ffffff;">Tiếng Việt</button>
+      <button type="button" id="btn-lang-en" class="lang-switch-btn" onclick="window.switchLanguage('en')" style="padding: 3px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; border: none; cursor: pointer; transition: all 0.15s ease; background: transparent; color: #475569;">Tiếng Anh</button>
+    </div>
+  </div>
   </div>
 
 
@@ -21972,7 +21980,7 @@ window.toggleCardChartView = function(chartId) {
     // =========================================================================
     // DỮ LIỆU & LOGIC DÒNG TIỀN MUA/BÁN THEO NHÓM NGÀNH (PAGE 02)
     // =========================================================================
-    window.s2SectorFlowData = {"2": {"Ngân hàng": {"inflow": 2379.0, "outflow": 1555.6, "net": 823.4}, "Tài nguyên Cơ bản": {"inflow": 2235.6, "outflow": 727.6, "net": 1508.0}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 341.5, "outflow": 170.7, "net": 170.8}, "Bất động sản": {"inflow": 714.4, "outflow": 2768.5, "net": -2054.1}, "Dịch vụ tài chính": {"inflow": 632.3, "outflow": 393.8, "net": 238.6}, "Thực phẩm và đồ uống": {"inflow": 342.7, "outflow": 152.1, "net": 190.6}, "Bán lẻ": {"inflow": 738.2, "outflow": 869.7, "net": -131.5}, "Trái phiếu doanh nghiệp": {"inflow": 100.6, "outflow": 139.5, "net": -38.9}, "Bảo hiểm": {"inflow": 42.3, "outflow": 64.5, "net": -22.1}, "Xây dựng và Vật liệu": {"inflow": 103.2, "outflow": 189.2, "net": -86.0}, "Dầu khí": {"inflow": 155.3, "outflow": 115.1, "net": 40.1}, "Điện, nước & xăng dầu khí đốt": {"inflow": 118.0, "outflow": 122.8, "net": -4.8}, "Công nghệ Thông tin": {"inflow": 324.5, "outflow": 1985.5, "net": -1661.0}, "Hóa chất": {"inflow": 210.5, "outflow": 30.9, "net": 179.6}, "Y tế": {"inflow": 1.1, "outflow": 0.0, "net": 1.1}, "Ô tô và phụ tùng": {"inflow": 3.1, "outflow": 0.9, "net": 2.2}, "Viễn thông": {"inflow": 3.8, "outflow": 48.5, "net": -44.7}, "Du lịch và Giải trí": {"inflow": 63.6, "outflow": 44.6, "net": 19.0}, "Hàng cá nhân & Gia dụng": {"inflow": 701.3, "outflow": 46.8, "net": 654.5}, "Truyền thông": {"inflow": 0.0, "outflow": 10.0, "net": -10.0}}, "3": {"Ngân hàng": {"inflow": 2133.2, "outflow": 6184.5, "net": -4051.3}, "Tài nguyên Cơ bản": {"inflow": 1827.6, "outflow": 991.2, "net": 836.4}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 140.2, "outflow": 372.4, "net": -232.3}, "Bất động sản": {"inflow": 1711.4, "outflow": 5504.6, "net": -3793.2}, "Dịch vụ tài chính": {"inflow": 2036.1, "outflow": 1013.4, "net": 1022.7}, "Thực phẩm và đồ uống": {"inflow": 459.3, "outflow": 1141.2, "net": -681.9}, "Bán lẻ": {"inflow": 582.1, "outflow": 572.0, "net": 10.1}, "Trái phiếu doanh nghiệp": {"inflow": 128.6, "outflow": 111.6, "net": 17.0}, "Bảo hiểm": {"inflow": 107.2, "outflow": 122.8, "net": -15.7}, "Xây dựng và Vật liệu": {"inflow": 293.6, "outflow": 160.1, "net": 133.5}, "Dầu khí": {"inflow": 51.2, "outflow": 1055.8, "net": -1004.6}, "Điện, nước & xăng dầu khí đốt": {"inflow": 216.8, "outflow": 181.7, "net": 35.2}, "Công nghệ Thông tin": {"inflow": 508.9, "outflow": 540.2, "net": -31.3}, "Hóa chất": {"inflow": 138.4, "outflow": 151.4, "net": -13.0}, "Y tế": {"inflow": 0.0, "outflow": 11.8, "net": -11.8}, "Ô tô và phụ tùng": {"inflow": 3.8, "outflow": 46.5, "net": -42.7}, "Viễn thông": {"inflow": 23.0, "outflow": 19.3, "net": 3.7}, "Du lịch và Giải trí": {"inflow": 149.0, "outflow": 208.3, "net": -59.3}, "Hàng cá nhân & Gia dụng": {"inflow": 506.6, "outflow": 221.1, "net": 285.5}}, "4": {"Ngân hàng": {"inflow": 1291.6, "outflow": 1912.4, "net": -620.8}, "Tài nguyên Cơ bản": {"inflow": 847.5, "outflow": 192.5, "net": 655.0}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 55.7, "outflow": 178.8, "net": -123.1}, "Bất động sản": {"inflow": 1926.0, "outflow": 1346.8, "net": 579.2}, "Dịch vụ tài chính": {"inflow": 681.9, "outflow": 720.1, "net": -38.2}, "Thực phẩm và đồ uống": {"inflow": 375.8, "outflow": 363.1, "net": 12.7}, "Bán lẻ": {"inflow": 199.6, "outflow": 880.2, "net": -680.6}, "Trái phiếu doanh nghiệp": {"inflow": 1.9, "outflow": 36.9, "net": -35.0}, "Bảo hiểm": {"inflow": 44.0, "outflow": 101.7, "net": -57.7}, "Xây dựng và Vật liệu": {"inflow": 127.4, "outflow": 97.1, "net": 30.4}, "Dầu khí": {"inflow": 22.9, "outflow": 99.1, "net": -76.2}, "Điện, nước & xăng dầu khí đốt": {"inflow": 64.5, "outflow": 109.4, "net": -44.9}, "Công nghệ Thông tin": {"inflow": 314.8, "outflow": 114.4, "net": 200.4}, "Hóa chất": {"inflow": 59.8, "outflow": 115.3, "net": -55.5}, "Y tế": {"inflow": 1.3, "outflow": 1.0, "net": 0.2}, "Ô tô và phụ tùng": {"inflow": 10.3, "outflow": 2.4, "net": 7.9}, "Viễn thông": {"inflow": 21.6, "outflow": 0.7, "net": 20.9}, "Du lịch và Giải trí": {"inflow": 68.0, "outflow": 72.5, "net": -4.5}, "Hàng cá nhân & Gia dụng": {"inflow": 1462.0, "outflow": 18.6, "net": 1443.3}}, "5": {"Ngân hàng": {"inflow": 2623.6, "outflow": 1574.1, "net": 1049.5}, "Tài nguyên Cơ bản": {"inflow": 1402.2, "outflow": 221.9, "net": 1180.3}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 446.6, "outflow": 86.7, "net": 359.9}, "Bất động sản": {"inflow": 2441.0, "outflow": 1328.8, "net": 1112.2}, "Dịch vụ tài chính": {"inflow": 439.3, "outflow": 537.1, "net": -97.8}, "Thực phẩm và đồ uống": {"inflow": 403.8, "outflow": 229.3, "net": 174.5}, "Bán lẻ": {"inflow": 327.1, "outflow": 688.6, "net": -361.5}, "Trái phiếu doanh nghiệp": {"inflow": 47.5, "outflow": 70.7, "net": -23.2}, "Bảo hiểm": {"inflow": 9.3, "outflow": 10.0, "net": -0.7}, "Xây dựng và Vật liệu": {"inflow": 169.4, "outflow": 153.5, "net": 15.9}, "Dầu khí": {"inflow": 50.0, "outflow": 21.3, "net": 28.7}, "Điện, nước & xăng dầu khí đốt": {"inflow": 265.7, "outflow": 101.2, "net": 164.5}, "Công nghệ Thông tin": {"inflow": 709.1, "outflow": 113.3, "net": 595.8}, "Hóa chất": {"inflow": 33.4, "outflow": 89.1, "net": -55.7}, "Ô tô và phụ tùng": {"inflow": 1.8, "outflow": 3.1, "net": -1.4}, "Viễn thông": {"inflow": 3.3, "outflow": 23.1, "net": -19.8}, "Du lịch và Giải trí": {"inflow": 185.8, "outflow": 36.0, "net": 149.8}, "Hàng cá nhân & Gia dụng": {"inflow": 64.8, "outflow": 173.1, "net": -108.4}, "Truyền thông": {"inflow": 10.8, "outflow": 0.0, "net": 10.8}}, "6": {"Ngân hàng": {"inflow": 1371.0, "outflow": 2067.2, "net": -696.2}, "Tài nguyên Cơ bản": {"inflow": 162.7, "outflow": 259.3, "net": -96.7}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 73.2, "outflow": 177.3, "net": -104.1}, "Bất động sản": {"inflow": 986.8, "outflow": 1962.8, "net": -976.0}, "Dịch vụ tài chính": {"inflow": 703.1, "outflow": 622.7, "net": 80.5}, "Thực phẩm và đồ uống": {"inflow": 238.8, "outflow": 254.7, "net": -15.9}, "Bán lẻ": {"inflow": 443.0, "outflow": 168.8, "net": 274.2}, "Trái phiếu doanh nghiệp": {"inflow": 0.0, "outflow": 422.7, "net": -422.7}, "Bảo hiểm": {"inflow": 23.4, "outflow": 9.7, "net": 13.7}, "Xây dựng và Vật liệu": {"inflow": 91.5, "outflow": 43.1, "net": 48.4}, "Dầu khí": {"inflow": 30.3, "outflow": 40.8, "net": -10.5}, "Điện, nước & xăng dầu khí đốt": {"inflow": 181.8, "outflow": 134.4, "net": 47.4}, "Công nghệ Thông tin": {"inflow": 298.6, "outflow": 186.5, "net": 112.1}, "Hóa chất": {"inflow": 40.2, "outflow": 16.4, "net": 23.8}, "Y tế": {"inflow": 0.2, "outflow": 7.7, "net": -7.5}, "Ô tô và phụ tùng": {"inflow": 4.9, "outflow": 4.9, "net": 0.0}, "Viễn thông": {"inflow": 0.0, "outflow": 6.9, "net": -6.9}, "Du lịch và Giải trí": {"inflow": 312.8, "outflow": 4.5, "net": 308.3}, "Hàng cá nhân & Gia dụng": {"inflow": 52.4, "outflow": 18.6, "net": 33.8}, "Truyền thông": {"inflow": 0.3, "outflow": 0.0, "net": 0.3}}, "7": {"Ngân hàng": {"inflow": 710.7, "outflow": 2426.8, "net": -1716.1}, "Tài nguyên Cơ bản": {"inflow": 90.6, "outflow": 635.0, "net": -544.4}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 51.1, "outflow": 445.9, "net": -394.8}, "Bất động sản": {"inflow": 650.8, "outflow": 1651.2, "net": -1000.5}, "Dịch vụ tài chính": {"inflow": 227.5, "outflow": 549.1, "net": -321.6}, "Thực phẩm và đồ uống": {"inflow": 210.5, "outflow": 356.1, "net": -145.5}, "Bán lẻ": {"inflow": 326.8, "outflow": 444.2, "net": -117.4}, "Trái phiếu doanh nghiệp": {"inflow": 126.5, "outflow": 292.4, "net": -166.0}, "Bảo hiểm": {"inflow": 42.7, "outflow": 62.2, "net": -19.5}, "Xây dựng và Vật liệu": {"inflow": 131.6, "outflow": 142.0, "net": -10.4}, "Dầu khí": {"inflow": 137.6, "outflow": 24.0, "net": 113.6}, "Điện, nước & xăng dầu khí đốt": {"inflow": 92.6, "outflow": 122.9, "net": -30.3}, "Công nghệ Thông tin": {"inflow": 235.4, "outflow": 318.9, "net": -83.5}, "Hóa chất": {"inflow": 45.2, "outflow": 27.3, "net": 17.9}, "Ô tô và phụ tùng": {"inflow": 0.0, "outflow": 21.8, "net": -21.8}, "Viễn thông": {"inflow": 3.2, "outflow": 0.0, "net": 3.2}, "Chứng chỉ quỹ": {"inflow": 0.0, "outflow": 3.4, "net": -3.4}, "Du lịch và Giải trí": {"inflow": 33.5, "outflow": 225.2, "net": -191.7}, "Hàng cá nhân & Gia dụng": {"inflow": 106.7, "outflow": 99.2, "net": 7.5}}, "8": {"Ngân hàng": {"inflow": 1765.9, "outflow": 1206.2, "net": 559.7}, "Tài nguyên Cơ bản": {"inflow": 43.6, "outflow": 174.6, "net": -131.0}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 190.6, "outflow": 145.9, "net": 44.7}, "Bất động sản": {"inflow": 3360.1, "outflow": 694.1, "net": 2665.9}, "Dịch vụ tài chính": {"inflow": 528.3, "outflow": 370.1, "net": 158.2}, "Thực phẩm và đồ uống": {"inflow": 654.9, "outflow": 112.5, "net": 542.4}, "Bán lẻ": {"inflow": 233.0, "outflow": 443.6, "net": -210.6}, "Bảo hiểm": {"inflow": 26.0, "outflow": 18.7, "net": 7.3}, "Xây dựng và Vật liệu": {"inflow": 95.1, "outflow": 87.2, "net": 7.9}, "Dầu khí": {"inflow": 158.8, "outflow": 57.7, "net": 101.0}, "Điện, nước & xăng dầu khí đốt": {"inflow": 51.9, "outflow": 131.5, "net": -79.6}, "Công nghệ Thông tin": {"inflow": 234.2, "outflow": 130.2, "net": 104.0}, "Hóa chất": {"inflow": 20.7, "outflow": 12.1, "net": 8.6}, "Y tế": {"inflow": 0.0, "outflow": 1.2, "net": -1.2}, "Ô tô và phụ tùng": {"inflow": 29.2, "outflow": 0.3, "net": 29.0}, "Du lịch và Giải trí": {"inflow": 5.0, "outflow": 198.3, "net": -193.3}, "Hàng cá nhân & Gia dụng": {"inflow": 31.0, "outflow": 23.4, "net": 7.6}, "Truyền thông": {"inflow": 0.0, "outflow": 0.1, "net": -0.1}}, "9": {"Ngân hàng": {"inflow": 2402.4, "outflow": 1794.9, "net": 607.5}, "Tài nguyên Cơ bản": {"inflow": 250.0, "outflow": 322.9, "net": -72.9}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 79.8, "outflow": 207.2, "net": -127.4}, "Bất động sản": {"inflow": 404.0, "outflow": 2425.6, "net": -2021.7}, "Dịch vụ tài chính": {"inflow": 168.2, "outflow": 670.1, "net": -501.9}, "Thực phẩm và đồ uống": {"inflow": 226.1, "outflow": 243.9, "net": -17.8}, "Bán lẻ": {"inflow": 98.5, "outflow": 430.2, "net": -331.7}, "Bảo hiểm": {"inflow": 119.5, "outflow": 97.6, "net": 21.9}, "Xây dựng và Vật liệu": {"inflow": 92.6, "outflow": 54.9, "net": 37.7}, "Dầu khí": {"inflow": 182.8, "outflow": 66.2, "net": 116.6}, "Điện, nước & xăng dầu khí đốt": {"inflow": 45.5, "outflow": 74.2, "net": -28.7}, "Công nghệ Thông tin": {"inflow": 463.6, "outflow": 57.9, "net": 405.6}, "Hóa chất": {"inflow": 125.9, "outflow": 66.2, "net": 59.6}, "Y tế": {"inflow": 0.0, "outflow": 0.8, "net": -0.8}, "Ô tô và phụ tùng": {"inflow": 6.7, "outflow": 1.5, "net": 5.2}, "Viễn thông": {"inflow": 3.0, "outflow": 9.6, "net": -6.5}, "Du lịch và Giải trí": {"inflow": 85.9, "outflow": 250.2, "net": -164.2}, "Hàng cá nhân & Gia dụng": {"inflow": 9.2, "outflow": 16.2, "net": -7.0}, "Truyền thông": {"inflow": 0.2, "outflow": 0.0, "net": 0.2}}};
+    window.s2SectorFlowData = {"2": {"Ngân hàng": {"inflow": 2548.2, "outflow": 2185.6, "net": 362.6}, "Tài nguyên Cơ bản": {"inflow": 2235.6, "outflow": 727.6, "net": 1508.0}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 341.5, "outflow": 170.7, "net": 170.8}, "Bất động sản": {"inflow": 714.4, "outflow": 2768.5, "net": -2054.1}, "Dịch vụ tài chính": {"inflow": 632.3, "outflow": 393.8, "net": 238.6}, "Thực phẩm và đồ uống": {"inflow": 342.7, "outflow": 152.1, "net": 190.6}, "Bán lẻ": {"inflow": 738.2, "outflow": 869.7, "net": -131.5}, "Trái phiếu doanh nghiệp": {"inflow": 100.6, "outflow": 139.5, "net": -38.9}, "Bảo hiểm": {"inflow": 42.3, "outflow": 64.5, "net": -22.1}, "Xây dựng và Vật liệu": {"inflow": 103.2, "outflow": 189.2, "net": -86.0}, "Dầu khí": {"inflow": 155.3, "outflow": 115.1, "net": 40.1}, "Điện, nước & xăng dầu khí đốt": {"inflow": 118.0, "outflow": 122.8, "net": -4.8}, "Công nghệ Thông tin": {"inflow": 324.5, "outflow": 1985.5, "net": -1661.0}, "Hóa chất": {"inflow": 210.5, "outflow": 30.9, "net": 179.6}, "Y tế": {"inflow": 1.1, "outflow": 0.0, "net": 1.1}, "Ô tô và phụ tùng": {"inflow": 3.1, "outflow": 0.9, "net": 2.2}, "Viễn thông": {"inflow": 3.8, "outflow": 48.5, "net": -44.7}, "Du lịch và Giải trí": {"inflow": 63.6, "outflow": 44.6, "net": 19.0}, "Hàng cá nhân & Gia dụng": {"inflow": 701.3, "outflow": 46.8, "net": 654.5}, "Truyền thông": {"inflow": 0.0, "outflow": 10.0, "net": -10.0}}, "3": {"Ngân hàng": {"inflow": 3078.3, "outflow": 7694.9, "net": -4616.6}, "Tài nguyên Cơ bản": {"inflow": 1827.6, "outflow": 991.2, "net": 836.4}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 140.2, "outflow": 372.4, "net": -232.3}, "Bất động sản": {"inflow": 1711.4, "outflow": 5504.6, "net": -3793.2}, "Dịch vụ tài chính": {"inflow": 2036.1, "outflow": 1013.4, "net": 1022.7}, "Thực phẩm và đồ uống": {"inflow": 459.3, "outflow": 1141.2, "net": -681.9}, "Bán lẻ": {"inflow": 582.1, "outflow": 572.0, "net": 10.1}, "Trái phiếu doanh nghiệp": {"inflow": 128.6, "outflow": 111.6, "net": 17.0}, "Bảo hiểm": {"inflow": 107.2, "outflow": 122.8, "net": -15.7}, "Xây dựng và Vật liệu": {"inflow": 293.6, "outflow": 160.1, "net": 133.5}, "Dầu khí": {"inflow": 51.2, "outflow": 1055.8, "net": -1004.6}, "Điện, nước & xăng dầu khí đốt": {"inflow": 216.8, "outflow": 181.7, "net": 35.2}, "Công nghệ Thông tin": {"inflow": 508.9, "outflow": 540.2, "net": -31.3}, "Hóa chất": {"inflow": 138.4, "outflow": 151.4, "net": -13.0}, "Y tế": {"inflow": 0.0, "outflow": 11.8, "net": -11.8}, "Ô tô và phụ tùng": {"inflow": 3.8, "outflow": 46.5, "net": -42.7}, "Viễn thông": {"inflow": 23.0, "outflow": 19.3, "net": 3.7}, "Du lịch và Giải trí": {"inflow": 149.0, "outflow": 208.3, "net": -59.3}, "Hàng cá nhân & Gia dụng": {"inflow": 506.6, "outflow": 221.1, "net": 285.5}}, "4": {"Ngân hàng": {"inflow": 2060.2, "outflow": 2834.1, "net": -773.9}, "Tài nguyên Cơ bản": {"inflow": 847.5, "outflow": 192.5, "net": 655.0}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 55.7, "outflow": 178.8, "net": -123.1}, "Bất động sản": {"inflow": 1926.0, "outflow": 1346.8, "net": 579.2}, "Dịch vụ tài chính": {"inflow": 681.9, "outflow": 720.1, "net": -38.2}, "Thực phẩm và đồ uống": {"inflow": 375.8, "outflow": 363.1, "net": 12.7}, "Bán lẻ": {"inflow": 199.6, "outflow": 880.2, "net": -680.6}, "Trái phiếu doanh nghiệp": {"inflow": 1.9, "outflow": 36.9, "net": -35.0}, "Bảo hiểm": {"inflow": 44.0, "outflow": 101.7, "net": -57.7}, "Xây dựng và Vật liệu": {"inflow": 127.4, "outflow": 97.1, "net": 30.4}, "Dầu khí": {"inflow": 22.9, "outflow": 99.1, "net": -76.2}, "Điện, nước & xăng dầu khí đốt": {"inflow": 64.5, "outflow": 109.4, "net": -44.9}, "Công nghệ Thông tin": {"inflow": 314.8, "outflow": 114.4, "net": 200.4}, "Hóa chất": {"inflow": 59.8, "outflow": 115.3, "net": -55.5}, "Y tế": {"inflow": 1.3, "outflow": 1.0, "net": 0.2}, "Ô tô và phụ tùng": {"inflow": 10.3, "outflow": 2.4, "net": 7.9}, "Viễn thông": {"inflow": 21.6, "outflow": 0.7, "net": 20.9}, "Du lịch và Giải trí": {"inflow": 68.0, "outflow": 72.5, "net": -4.5}, "Hàng cá nhân & Gia dụng": {"inflow": 1462.0, "outflow": 18.6, "net": 1443.3}}, "5": {"Ngân hàng": {"inflow": 3326.2, "outflow": 2294.1, "net": 1032.1}, "Tài nguyên Cơ bản": {"inflow": 1402.2, "outflow": 221.9, "net": 1180.3}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 446.6, "outflow": 86.7, "net": 359.9}, "Bất động sản": {"inflow": 2441.0, "outflow": 1328.8, "net": 1112.2}, "Dịch vụ tài chính": {"inflow": 439.3, "outflow": 537.1, "net": -97.8}, "Thực phẩm và đồ uống": {"inflow": 403.8, "outflow": 229.3, "net": 174.5}, "Bán lẻ": {"inflow": 327.1, "outflow": 688.6, "net": -361.5}, "Trái phiếu doanh nghiệp": {"inflow": 47.5, "outflow": 70.7, "net": -23.2}, "Bảo hiểm": {"inflow": 9.3, "outflow": 10.0, "net": -0.7}, "Xây dựng và Vật liệu": {"inflow": 169.4, "outflow": 153.5, "net": 15.9}, "Dầu khí": {"inflow": 50.0, "outflow": 21.3, "net": 28.7}, "Điện, nước & xăng dầu khí đốt": {"inflow": 265.7, "outflow": 101.2, "net": 164.5}, "Công nghệ Thông tin": {"inflow": 709.1, "outflow": 113.3, "net": 595.8}, "Hóa chất": {"inflow": 33.4, "outflow": 89.1, "net": -55.7}, "Ô tô và phụ tùng": {"inflow": 1.8, "outflow": 3.1, "net": -1.4}, "Viễn thông": {"inflow": 3.3, "outflow": 23.1, "net": -19.8}, "Du lịch và Giải trí": {"inflow": 185.8, "outflow": 36.0, "net": 149.8}, "Hàng cá nhân & Gia dụng": {"inflow": 64.8, "outflow": 173.1, "net": -108.4}, "Truyền thông": {"inflow": 10.8, "outflow": 0.0, "net": 10.8}}, "6": {"Ngân hàng": {"inflow": 2651.7, "outflow": 2413.7, "net": 238.0}, "Tài nguyên Cơ bản": {"inflow": 162.7, "outflow": 259.3, "net": -96.7}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 73.2, "outflow": 177.3, "net": -104.1}, "Bất động sản": {"inflow": 986.8, "outflow": 1962.8, "net": -976.0}, "Dịch vụ tài chính": {"inflow": 703.1, "outflow": 622.7, "net": 80.5}, "Thực phẩm và đồ uống": {"inflow": 238.8, "outflow": 254.7, "net": -15.9}, "Bán lẻ": {"inflow": 443.0, "outflow": 168.8, "net": 274.2}, "Trái phiếu doanh nghiệp": {"inflow": 0.0, "outflow": 422.7, "net": -422.7}, "Bảo hiểm": {"inflow": 23.4, "outflow": 9.7, "net": 13.7}, "Xây dựng và Vật liệu": {"inflow": 91.5, "outflow": 43.1, "net": 48.4}, "Dầu khí": {"inflow": 30.3, "outflow": 40.8, "net": -10.5}, "Điện, nước & xăng dầu khí đốt": {"inflow": 181.8, "outflow": 134.4, "net": 47.4}, "Công nghệ Thông tin": {"inflow": 298.6, "outflow": 186.5, "net": 112.1}, "Hóa chất": {"inflow": 40.2, "outflow": 16.4, "net": 23.8}, "Y tế": {"inflow": 0.2, "outflow": 7.7, "net": -7.5}, "Ô tô và phụ tùng": {"inflow": 4.9, "outflow": 4.9, "net": 0.0}, "Viễn thông": {"inflow": 0.0, "outflow": 6.9, "net": -6.9}, "Du lịch và Giải trí": {"inflow": 312.8, "outflow": 4.5, "net": 308.3}, "Hàng cá nhân & Gia dụng": {"inflow": 52.4, "outflow": 18.6, "net": 33.8}, "Truyền thông": {"inflow": 0.3, "outflow": 0.0, "net": 0.3}}, "7": {"Ngân hàng": {"inflow": 1012.5, "outflow": 3167.5, "net": -2155.0}, "Tài nguyên Cơ bản": {"inflow": 90.6, "outflow": 635.0, "net": -544.4}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 51.1, "outflow": 445.9, "net": -394.8}, "Bất động sản": {"inflow": 650.8, "outflow": 1651.2, "net": -1000.5}, "Dịch vụ tài chính": {"inflow": 227.5, "outflow": 549.1, "net": -321.6}, "Thực phẩm và đồ uống": {"inflow": 210.5, "outflow": 356.1, "net": -145.5}, "Bán lẻ": {"inflow": 326.8, "outflow": 444.2, "net": -117.4}, "Trái phiếu doanh nghiệp": {"inflow": 126.5, "outflow": 292.4, "net": -166.0}, "Bảo hiểm": {"inflow": 42.7, "outflow": 62.2, "net": -19.5}, "Xây dựng và Vật liệu": {"inflow": 131.6, "outflow": 142.0, "net": -10.4}, "Dầu khí": {"inflow": 137.6, "outflow": 24.0, "net": 113.6}, "Điện, nước & xăng dầu khí đốt": {"inflow": 92.6, "outflow": 122.9, "net": -30.3}, "Công nghệ Thông tin": {"inflow": 235.4, "outflow": 318.9, "net": -83.5}, "Hóa chất": {"inflow": 45.2, "outflow": 27.3, "net": 17.9}, "Ô tô và phụ tùng": {"inflow": 0.0, "outflow": 21.8, "net": -21.8}, "Viễn thông": {"inflow": 3.2, "outflow": 0.0, "net": 3.2}, "Chứng chỉ quỹ": {"inflow": 0.0, "outflow": 3.4, "net": -3.4}, "Du lịch và Giải trí": {"inflow": 33.5, "outflow": 225.2, "net": -191.7}, "Hàng cá nhân & Gia dụng": {"inflow": 106.7, "outflow": 99.2, "net": 7.5}}, "8": {"Ngân hàng": {"inflow": 1815.7, "outflow": 1432.1, "net": 383.6}, "Tài nguyên Cơ bản": {"inflow": 43.6, "outflow": 174.6, "net": -131.0}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 190.6, "outflow": 145.9, "net": 44.7}, "Bất động sản": {"inflow": 3360.1, "outflow": 694.1, "net": 2665.9}, "Dịch vụ tài chính": {"inflow": 528.3, "outflow": 370.1, "net": 158.2}, "Thực phẩm và đồ uống": {"inflow": 654.9, "outflow": 112.5, "net": 542.4}, "Bán lẻ": {"inflow": 233.0, "outflow": 443.6, "net": -210.6}, "Bảo hiểm": {"inflow": 26.0, "outflow": 18.7, "net": 7.3}, "Xây dựng và Vật liệu": {"inflow": 95.1, "outflow": 87.2, "net": 7.9}, "Dầu khí": {"inflow": 158.8, "outflow": 57.7, "net": 101.0}, "Điện, nước & xăng dầu khí đốt": {"inflow": 51.9, "outflow": 131.5, "net": -79.6}, "Công nghệ Thông tin": {"inflow": 234.2, "outflow": 130.2, "net": 104.0}, "Hóa chất": {"inflow": 20.7, "outflow": 12.1, "net": 8.6}, "Y tế": {"inflow": 0.0, "outflow": 1.2, "net": -1.2}, "Ô tô và phụ tùng": {"inflow": 29.2, "outflow": 0.3, "net": 29.0}, "Du lịch và Giải trí": {"inflow": 5.0, "outflow": 198.3, "net": -193.3}, "Hàng cá nhân & Gia dụng": {"inflow": 31.0, "outflow": 23.4, "net": 7.6}, "Truyền thông": {"inflow": 0.0, "outflow": 0.1, "net": -0.1}}, "9": {"Ngân hàng": {"inflow": 2402.4, "outflow": 1794.9, "net": 607.5}, "Tài nguyên Cơ bản": {"inflow": 250.0, "outflow": 322.9, "net": -72.9}, "Hàng & Dịch vụ Công nghiệp": {"inflow": 79.8, "outflow": 207.2, "net": -127.4}, "Bất động sản": {"inflow": 404.0, "outflow": 2425.6, "net": -2021.7}, "Dịch vụ tài chính": {"inflow": 168.2, "outflow": 670.1, "net": -501.9}, "Thực phẩm và đồ uống": {"inflow": 226.1, "outflow": 243.9, "net": -17.8}, "Bán lẻ": {"inflow": 98.5, "outflow": 430.2, "net": -331.7}, "Bảo hiểm": {"inflow": 119.5, "outflow": 97.6, "net": 21.9}, "Xây dựng và Vật liệu": {"inflow": 92.6, "outflow": 54.9, "net": 37.7}, "Dầu khí": {"inflow": 182.8, "outflow": 66.2, "net": 116.6}, "Điện, nước & xăng dầu khí đốt": {"inflow": 45.5, "outflow": 74.2, "net": -28.7}, "Công nghệ Thông tin": {"inflow": 463.6, "outflow": 57.9, "net": 405.6}, "Hóa chất": {"inflow": 125.9, "outflow": 66.2, "net": 59.6}, "Y tế": {"inflow": 0.0, "outflow": 0.8, "net": -0.8}, "Ô tô và phụ tùng": {"inflow": 6.7, "outflow": 1.5, "net": 5.2}, "Viễn thông": {"inflow": 3.0, "outflow": 9.6, "net": -6.5}, "Du lịch và Giải trí": {"inflow": 85.9, "outflow": 250.2, "net": -164.2}, "Hàng cá nhân & Gia dụng": {"inflow": 9.2, "outflow": 16.2, "net": -7.0}, "Truyền thông": {"inflow": 0.2, "outflow": 0.0, "net": 0.2}}};
     window.s2CurrentSectorMonth = 9;
     window.s2SectorSortCol = 'net';
     window.s2SectorSortDir = 'desc';
@@ -21983,7 +21991,12 @@ window.toggleCardChartView = function(chartId) {
       window.s2CurrentSectorMonth = parseInt(val, 10) || 9;
       const subTitle = document.getElementById('s2-sector-subtitle');
       if (subTitle) {
-        subTitle.textContent = 'Tháng ' + window.s2CurrentSectorMonth + '/2026 — Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)';
+        var mNum = window.s2CurrentSectorMonth || 9;
+      if (window.currentLang === 'en') {
+        subTitle.textContent = 'Month ' + mNum + '/2026 — Inflow, Outflow & Net Flow (Bil VND)';
+      } else {
+        subTitle.textContent = 'Tháng ' + mNum + '/2026 — Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)';
+      }
       }
       if (window.s2SectorViewMode === 'table') {
         window.renderS2SectorTable();
@@ -22150,8 +22163,8 @@ window.toggleCardChartView = function(chartId) {
         const rowBg = (idx % 2 === 1) ? '#f8fafc' : '#ffffff';
         htmlRows += `
           <tr style="background:${rowBg}; border-bottom:1px solid #f1f5f9; transition: background 0.12s ease;">
-            <td onclick="window.handleS2SectorClick('${r.name}')" style="padding: 5px 6px; font-weight: 700; color: #007a5e; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; text-decoration: underline; text-underline-offset: 2px;" title="Bấm để xem danh sách các mã cổ phiếu trong ngành ${r.name}">
-              ${r.name}
+            <td onclick="window.handleS2SectorClick('${r.name}')" style="padding: 5px 6px; font-weight: 700; color: #007a5e; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; text-decoration: underline; text-underline-offset: 2px;" title="Click to view stocks in ${window.getSectorName(r.name)}">
+              ${window.getSectorName(r.name)}
             </td>
             <td style="text-align: right; padding: 5px 6px; font-family: monospace; font-size: 10px; font-weight: 700; color: #007a3d;">
               ${infText}
@@ -23808,6 +23821,305 @@ setTimeout(function() {
         window.closeS2FundTradeModal();
       }
     });
+
+
+    
+    // =========================================================================
+    // HỆ THỐNG DỊCH THUẬT TOÀN DIỆN 100% TIẾNG ANH / TIẾNG VIỆT
+    // =========================================================================
+    window.currentLang = 'vi';
+    window.DICT_VI_TO_EN = {"Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam": "Monthly Report on Investment Fund Activities in Vietnam", "Hiệu suất quỹ": "Fund Performance", "Dòng tiền": "Cash Flow", "Phân bố tài sản": "Asset Allocation", "Tỷ trọng nắm giữ": "Stock Holdings", "Ngôn ngữ:": "Language:", "BỘ LỌC DỮ LIỆU": "DATA FILTERS", "BỘ LỌC CHÍNH": "MAIN FILTERS", "Loại hình quỹ": "Fund Strategy", "Cấu trúc quỹ": "Fund Structure", "Chiến lược đầu tư": "Fund Strategy", "All loại quỹ (4)": "All Fund Types (4)", "All loại quỹ": "All Fund Types", "Chưa chọn loại quỹ nào": "No fund type selected", "Quỹ Cổ phiếu & ETF": "Equity & ETF Funds", "Quỹ Cổ phiếu": "Equity Funds", "Quỹ Trái phiếu": "Bond Funds", "Quỹ Cân bằng": "Balanced Funds", "Quỹ cổ phiếu": "Equity Funds", "Quỹ trái phiếu": "Bond Funds", "Quỹ cân bằng": "Balanced Funds", "Quỹ đóng": "Closed-End Fund", "Quỹ mở": "Open-End Fund", "Quỹ Đóng": "Closed-End Fund", "Quỹ Mở": "Open-End Fund", "Quỹ ETF": "ETF Fund", "Tiêu chí NAV": "NAV Criteria", "Bộ lọc theo chart": "Chart-based Filter", "Bộ lọc chi tiết từng chart": "Detailed Filter per Chart", "All quỹ": "All Funds", "Xem toàn bộ (không có bộ lọc)": "View all (unfiltered)", "Áp dụng chuẩn tất cả biểu đồ": "Apply standard across charts", "Lọc toàn bộ dữ liệu trên dashboard.": "Filter all data across dashboard.", "Lọc nhóm biểu đồ hiệu suất.": "Filter performance charts.", "Lọc riêng bảng Dòng tiền Mua/Bán.": "Filter cash flow tables.", "Kỳ báo cáo": "Reporting Period", "Mã cổ phiếu": "Stock Ticker", "All mã CK": "All Tickers", "Tìm quỹ...": "Search fund...", "Tìm mã CK...": "Search ticker...", "Tìm tên / mã quỹ...": "Search fund name / ticker...", "Tìm tên hoặc mã quỹ...": "Search fund name or code...", "Tìm mã CK hoặc tên DN...": "Search ticker or company name...", "Tìm mã quỹ, tên quỹ...": "Search fund code, name...", "Xóa tìm kiếm": "Clear search", "Khôi phục mặc định": "Reset Defaults", "Đang chờ nạp đủ data": "Awaiting full data", "Chế độ hiển thị: Toàn bộ danh mục quỹ (Không giới hạn tiêu chí NAV)": "Display Mode: Full Fund Universe (Unfiltered NAV criteria)", "Dữ liệu chi tiết": "Detailed Data", "Xuất dữ liệu gốc ra file Excel": "Export raw data to Excel", "Tùy chọn": "Options", "Xem theo Loại hình quỹ": "View by Fund Strategy", "Xem theo Cấu trúc quỹ": "View by Fund Structure", "Tên quỹ": "Fund Name", "Hiệu suất 1M": "1M Return", "Hiệu suất YTD": "YTD Return", "So với VNINDEX": "vs VNINDEX", "Chỉ số VNINDEX": "VNINDEX Benchmark", "— (Mốc so sánh)": "— (Benchmark)", "Mốc so sánh": "Benchmark", "Lãi suất tiền gửi 12 tháng": "12-Month Deposit Rate", "Dòng tiền Mua & Bán theo nhóm ngành": "Cash Flow by Industry Sector", "Dòng tiền theo Từng Mã CK": "Cash Flow by Stock Ticker", "Dòng tiền theo Từng Quỹ": "Cash Flow by Fund", "Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)": "Inflow, Outflow & Net Flow (Bil VND)", "Nhóm ngành": "Industry Sector", "Tiền vào": "Inflow", "Tiền ra": "Outflow", "Ròng (Net)": "Net Flow", "MoM": "MoM", "Mã CK": "Ticker", "Mã CP": "Ticker", "Lũy kế YTD": "YTD Cum.", "Số quỹ GD": "Trading Funds", "Mã Quỹ": "Fund Code", "Mã quỹ": "Fund Code", "Inflow / Outflow": "Inflow / Outflow", "(Tỷ VNĐ)": "(Bil VND)", "Tiền mặt": "Cash", "Cổ phiếu": "Stocks", "Trái phiếu": "Bonds", "Thay đổi Inflow / Outflow": "Inflow / Outflow Change", "Giá trị": "Value", "TỔNG CỘNG": "TOTAL", "TỔNG": "TOTAL", "Tỷ lệ Tiền mặt & Biến động Phân bổ các Quỹ Mở": "Open-Ended Funds Cash Ratio & Allocation Changes", "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ": "Cash Allocation Increase / Decrease Distribution by Fund", "Phân bổ Biến động Tỷ trọng Tiền mặt & Tỷ trọng Tiền mặt TB": "Distribution of Fund Cash Ratio Changes & Average Cash Allocation", "Các Quỹ Mở Cổ phiếu Giảm Tỷ trọng Tiền mặt": "Open-Ended Equity Funds with Decreased Cash Ratio", "Thống kê Tiền mặt & Biến động theo Quỹ": "Fund Cash Holdings, Allocation Ratio & Monthly Variations", "Quỹ tăng tiền mặt": "Funds Increasing Cash", "Quỹ giảm tiền mặt": "Funds Decreasing Cash", "Tăng TM": "Increase Cash", "Giảm TM": "Decrease Cash", "All loại quỹ (107 quỹ)": "All Fund Types (107 funds)", "── Theo Loại hình quỹ ──": "── By Fund Structure ──", "── Theo Chiến lược đầu tư ──": "── By Investment Strategy ──", "Quỹ mở (83 quỹ)": "Open-End Fund (83 funds)", "Quỹ ETF (21 quỹ)": "ETF Fund (21 funds)", "Quỹ đóng (3 quỹ)": "Closed-End Fund (3 funds)", "Quỹ Cổ phiếu (66 quỹ)": "Equity Fund (66 funds)", "Quỹ Trái phiếu (28 quỹ)": "Bond Fund (28 funds)", "Quỹ Cân bằng (13 quỹ)": "Balanced Fund (13 funds)", "Chọn tất cả": "Select All", "Bỏ chọn": "Deselect All", "Thay đổi": "Change", "Tháng hiện tại (T9/2026)": "Current Month (Sep 2026)", "Tháng trước (T8/2026)": "Previous Month (Aug 2026)", "Biến động Tháng 9 so với Tháng 8": "Change Sep vs Aug", "Tỷ trọng tiền mặt/NAV (%)": "Cash/NAV Ratio (%)", "Tỷ trọng Tiền mặt/NAV (%)": "Cash/NAV Ratio (%)", "Giá trị Mua & Bán Ròng theo Ngành": "Net Buying & Selling Value by Industry Sector", "Top 10 Cổ phiếu Mua & Bán Ròng nhiều nhất theo Giá trị": "Top 10 Net-Bought & Net-Sold Stocks by Trading Value", "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền CP": "Top 10 Stocks Portfolio Weight (% NAV) & Stock Cash Flow Explorer", "Bảng Xếp hạng Top Cổ phiếu, Tổng Giá trị & Tỷ trọng Danh mục": "Top Stock Holdings Ranking, Total Value & Portfolio Weight", "Biểu đồ Xếp hạng Top 5 Cổ phiếu (Bump Chart)": "Top 5 Stocks Bump Chart", "Top 10 mua ròng (triệu CP)": "Top 10 Net Bought (mil shares)", "Top 10 bán ròng (triệu CP)": "Top 10 Net Sold (mil shares)", "Toàn bộ": "All", "Khối lượng Mua/Bán CP": "Trading Volume (Shares)", "Giá trị Mua/Bán CP": "Trading Value (Bil VND)", "Tỷ trọng toàn danh mục": "Portfolio Weight", "Tỷ lệ nắm giữ TB": "Avg. Holding Ratio", "Tổng giá trị": "Total Value", "Quỹ nắm": "Holding Funds", "Tên / Mã quỹ": "Fund Name / Code", "Giá trị (tỷ đồng)": "Value (Bil VND)", "Giá trị (tỷ đ)": "Value (Bil VND)", "T9": "Sep", "T8": "Aug", "T7": "Jul", "T6": "Jun", "DANH SÁCH QUỸ": "FUND LIST", "Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X": "September 2026 Data · Source: FiinPro-X", "Đủ dữ liệu": "Full Data", "Thiếu dữ liệu": "Missing Data", "Tên quỹ (Bấm để xem danh mục)": "Fund Name (Click to view portfolio)", "Có tháng 8 không": "Aug Data Available", "Ghi chú: Bảng có thể bấm vào tên quỹ để xem thông tin danh mục": "Note: Click on fund name to view portfolio details", "Quay lại danh sách quỹ": "Back to fund list", "Danh mục Quỹ": "Fund Portfolio", "Danh mục đầu tư chi tiết Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X": "Detailed Investment Portfolio September 2026 · Source: FiinPro-X", "Chưa công bố danh mục Tháng 9/2026": "Portfolio for Sep 2026 Not Disclosed", "Quỹ này hiện chưa có dữ liệu danh mục đầu tư kỳ Tháng 9/2026 trên nền tảng FiinPro-X.": "This fund currently has no portfolio data for Sep 2026 on FiinPro-X.", "mã tài sản": "assets", "Tổng giá trị:": "Total value:", "Cổ phiếu ngành:": "Industry stocks:", "Lọc trong Bảng Mã CK →": "Filter in Ticker Table →", "Tên Doanh nghiệp": "Company Name", "Tên doanh nghiệp": "Company Name", "Tên cổ phiếu": "Stock Name", "Tên doanh nghiệp / Tài sản": "Company / Asset Name", "Ngành": "Sector", "Lệnh": "Order", "Khối lượng": "Volume", "Tỷ trọng": "Weight", "Tỷ trọng TB trong danh mục:": "Avg. Portfolio Weight:", "Giá:": "Price:", "Ròng:": "Net:", "GD:": "Trades:", "quỹ giao dịch": "trading funds", "lượt giao dịch": "transactions", "Quỹ mua": "Buying Funds", "Quỹ bán": "Selling Funds", "Di chuột ra ngoài hoặc bấm ESC để đóng": "Hover out or press ESC to close", "Bấm ESC hoặc nhấp ra ngoài để đóng": "Press ESC or click outside to close", "Đóng cửa sổ (Esc)": "Close window (Esc)", "Đóng bảng (Esc)": "Close panel (Esc)", "Đóng bảng": "Close panel", "Không tìm thấy quỹ nào khớp với từ khóa tìm kiếm.": "No funds match your search criteria.", "Không tìm thấy mã tài sản nào khớp với từ khóa tìm kiếm.": "No assets match your search criteria.", "Không tìm thấy mã cổ phiếu nào phù hợp.": "No stocks match your search criteria.", "Không có quỹ nào phù hợp.": "No matching funds.", "Không có quỹ khớp": "No matching funds", "Ngân hàng": "Banking", "Bất động sản": "Real Estate", "Thực phẩm và đồ uống": "Food & Beverage", "Dịch vụ tài chính": "Financial Services", "Công nghệ Thông tin": "Information Technology", "Dầu khí": "Oil & Gas", "Hàng & Dịch vụ Công nghiệp": "Industrial Goods & Services", "Ô tô và phụ tùng": "Automobiles & Parts", "Hóa chất": "Chemicals", "Xây dựng và Vật liệu": "Construction & Materials", "Hàng cá nhân & Gia dụng": "Personal & Household Goods", "Bán lẻ": "Retail", "Bảo hiểm": "Insurance", "Du lịch và Giải trí": "Travel & Leisure", "Tài nguyên Cơ bản": "Basic Resources", "Điện, nước & xăng dầu khí đốt": "Utilities", "Y tế": "Healthcare", "Viễn thông": "Telecommunications", "Truyền thông": "Media", "Trái phiếu doanh nghiệp": "Corporate Bonds", "Chứng chỉ quỹ": "Fund Certificates", "Khác": "Others", "Tháng 9/2026": "September 2026", "Tháng 8/2026": "August 2026", "Tháng 7/2026": "July 2026", "Tháng 6/2026": "June 2026", "Tháng 5/2026": "May 2026", "Tháng 4/2026": "April 2026", "Tháng 3/2026": "March 2026", "Tháng 2/2026": "February 2026", "Tháng 1/2026": "January 2026"};
+    window.DICT_EN_TO_VI = {"Monthly Report on Investment Fund Activities in Vietnam": "Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam", "Fund Performance": "Hiệu suất quỹ", "Cash Flow": "Dòng tiền", "Asset Allocation": "Phân bố tài sản", "Stock Holdings": "Tỷ trọng nắm giữ", "Language:": "Ngôn ngữ:", "DATA FILTERS": "BỘ LỌC DỮ LIỆU", "MAIN FILTERS": "BỘ LỌC CHÍNH", "Fund Strategy": "Chiến lược đầu tư", "Fund Structure": "Cấu trúc quỹ", "All Fund Types (4)": "All loại quỹ (4)", "All Fund Types": "All loại quỹ", "No fund type selected": "Chưa chọn loại quỹ nào", "Equity & ETF Funds": "Quỹ Cổ phiếu & ETF", "Equity Funds": "Quỹ cổ phiếu", "Bond Funds": "Quỹ trái phiếu", "Balanced Funds": "Quỹ cân bằng", "Closed-End Fund": "Quỹ Đóng", "Open-End Fund": "Quỹ Mở", "ETF Fund": "Quỹ ETF", "NAV Criteria": "Tiêu chí NAV", "Chart-based Filter": "Bộ lọc theo chart", "Detailed Filter per Chart": "Bộ lọc chi tiết từng chart", "All Funds": "All quỹ", "View all (unfiltered)": "Xem toàn bộ (không có bộ lọc)", "Apply standard across charts": "Áp dụng chuẩn tất cả biểu đồ", "Filter all data across dashboard.": "Lọc toàn bộ dữ liệu trên dashboard.", "Filter performance charts.": "Lọc nhóm biểu đồ hiệu suất.", "Filter cash flow tables.": "Lọc riêng bảng Dòng tiền Mua/Bán.", "Reporting Period": "Kỳ báo cáo", "Stock Ticker": "Mã cổ phiếu", "All Tickers": "All mã CK", "Search fund...": "Tìm quỹ...", "Search ticker...": "Tìm mã CK...", "Search fund name / ticker...": "Tìm tên / mã quỹ...", "Search fund name or code...": "Tìm tên hoặc mã quỹ...", "Search ticker or company name...": "Tìm mã CK hoặc tên DN...", "Search fund code, name...": "Tìm mã quỹ, tên quỹ...", "Clear search": "Xóa tìm kiếm", "Reset Defaults": "Khôi phục mặc định", "Awaiting full data": "Đang chờ nạp đủ data", "Display Mode: Full Fund Universe (Unfiltered NAV criteria)": "Chế độ hiển thị: Toàn bộ danh mục quỹ (Không giới hạn tiêu chí NAV)", "Detailed Data": "Dữ liệu chi tiết", "Export raw data to Excel": "Xuất dữ liệu gốc ra file Excel", "Options": "Tùy chọn", "View by Fund Strategy": "Xem theo Loại hình quỹ", "View by Fund Structure": "Xem theo Cấu trúc quỹ", "Fund Name": "Tên quỹ", "1M Return": "Hiệu suất 1M", "YTD Return": "Hiệu suất YTD", "vs VNINDEX": "So với VNINDEX", "VNINDEX Benchmark": "Chỉ số VNINDEX", "— (Benchmark)": "— (Mốc so sánh)", "Benchmark": "Mốc so sánh", "12-Month Deposit Rate": "Lãi suất tiền gửi 12 tháng", "Cash Flow by Industry Sector": "Dòng tiền Mua & Bán theo nhóm ngành", "Cash Flow by Stock Ticker": "Dòng tiền theo Từng Mã CK", "Cash Flow by Fund": "Dòng tiền theo Từng Quỹ", "Inflow, Outflow & Net Flow (Bil VND)": "Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)", "Industry Sector": "Nhóm ngành", "Inflow": "Tiền vào", "Outflow": "Tiền ra", "Net Flow": "Ròng (Net)", "MoM": "MoM", "Ticker": "Mã CP", "YTD Cum.": "Lũy kế YTD", "Trading Funds": "Số quỹ GD", "Fund Code": "Mã quỹ", "Inflow / Outflow": "Inflow / Outflow", "(Bil VND)": "(Tỷ VNĐ)", "Cash": "Tiền mặt", "Stocks": "Cổ phiếu", "Bonds": "Trái phiếu", "Inflow / Outflow Change": "Thay đổi Inflow / Outflow", "Value": "Giá trị", "TOTAL": "TỔNG", "Open-Ended Funds Cash Ratio & Allocation Changes": "Tỷ lệ Tiền mặt & Biến động Phân bổ các Quỹ Mở", "Cash Allocation Increase / Decrease Distribution by Fund": "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ", "Distribution of Fund Cash Ratio Changes & Average Cash Allocation": "Phân bổ Biến động Tỷ trọng Tiền mặt & Tỷ trọng Tiền mặt TB", "Open-Ended Equity Funds with Decreased Cash Ratio": "Các Quỹ Mở Cổ phiếu Giảm Tỷ trọng Tiền mặt", "Fund Cash Holdings, Allocation Ratio & Monthly Variations": "Thống kê Tiền mặt & Biến động theo Quỹ", "Funds Increasing Cash": "Quỹ tăng tiền mặt", "Funds Decreasing Cash": "Quỹ giảm tiền mặt", "Increase Cash": "Tăng TM", "Decrease Cash": "Giảm TM", "All Fund Types (107 funds)": "All loại quỹ (107 quỹ)", "── By Fund Structure ──": "── Theo Loại hình quỹ ──", "── By Investment Strategy ──": "── Theo Chiến lược đầu tư ──", "Open-End Fund (83 funds)": "Quỹ mở (83 quỹ)", "ETF Fund (21 funds)": "Quỹ ETF (21 quỹ)", "Closed-End Fund (3 funds)": "Quỹ đóng (3 quỹ)", "Equity Fund (66 funds)": "Quỹ Cổ phiếu (66 quỹ)", "Bond Fund (28 funds)": "Quỹ Trái phiếu (28 quỹ)", "Balanced Fund (13 funds)": "Quỹ Cân bằng (13 quỹ)", "Select All": "Chọn tất cả", "Deselect All": "Bỏ chọn", "Change": "Thay đổi", "Current Month (Sep 2026)": "Tháng hiện tại (T9/2026)", "Previous Month (Aug 2026)": "Tháng trước (T8/2026)", "Change Sep vs Aug": "Biến động Tháng 9 so với Tháng 8", "Cash/NAV Ratio (%)": "Tỷ trọng Tiền mặt/NAV (%)", "Net Buying & Selling Value by Industry Sector": "Giá trị Mua & Bán Ròng theo Ngành", "Top 10 Net-Bought & Net-Sold Stocks by Trading Value": "Top 10 Cổ phiếu Mua & Bán Ròng nhiều nhất theo Giá trị", "Top 10 Stocks Portfolio Weight (% NAV) & Stock Cash Flow Explorer": "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền CP", "Top Stock Holdings Ranking, Total Value & Portfolio Weight": "Bảng Xếp hạng Top Cổ phiếu, Tổng Giá trị & Tỷ trọng Danh mục", "Top 5 Stocks Bump Chart": "Biểu đồ Xếp hạng Top 5 Cổ phiếu (Bump Chart)", "Top 10 Net Bought (mil shares)": "Top 10 mua ròng (triệu CP)", "Top 10 Net Sold (mil shares)": "Top 10 bán ròng (triệu CP)", "All": "Toàn bộ", "Trading Volume (Shares)": "Khối lượng Mua/Bán CP", "Trading Value (Bil VND)": "Giá trị Mua/Bán CP", "Portfolio Weight": "Tỷ trọng toàn danh mục", "Avg. Holding Ratio": "Tỷ lệ nắm giữ TB", "Total Value": "Tổng giá trị", "Holding Funds": "Quỹ nắm", "Fund Name / Code": "Tên / Mã quỹ", "Value (Bil VND)": "Giá trị (tỷ đ)", "Sep": "T9", "Aug": "T8", "Jul": "T7", "Jun": "T6", "FUND LIST": "DANH SÁCH QUỸ", "September 2026 Data · Source: FiinPro-X": "Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X", "Full Data": "Đủ dữ liệu", "Missing Data": "Thiếu dữ liệu", "Fund Name (Click to view portfolio)": "Tên quỹ (Bấm để xem danh mục)", "Aug Data Available": "Có tháng 8 không", "Note: Click on fund name to view portfolio details": "Ghi chú: Bảng có thể bấm vào tên quỹ để xem thông tin danh mục", "Back to fund list": "Quay lại danh sách quỹ", "Fund Portfolio": "Danh mục Quỹ", "Detailed Investment Portfolio September 2026 · Source: FiinPro-X": "Danh mục đầu tư chi tiết Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X", "Portfolio for Sep 2026 Not Disclosed": "Chưa công bố danh mục Tháng 9/2026", "This fund currently has no portfolio data for Sep 2026 on FiinPro-X.": "Quỹ này hiện chưa có dữ liệu danh mục đầu tư kỳ Tháng 9/2026 trên nền tảng FiinPro-X.", "assets": "mã tài sản", "Total value:": "Tổng giá trị:", "Industry stocks:": "Cổ phiếu ngành:", "Filter in Ticker Table →": "Lọc trong Bảng Mã CK →", "Company Name": "Tên doanh nghiệp", "Stock Name": "Tên cổ phiếu", "Company / Asset Name": "Tên doanh nghiệp / Tài sản", "Sector": "Ngành", "Order": "Lệnh", "Volume": "Khối lượng", "Weight": "Tỷ trọng", "Avg. Portfolio Weight:": "Tỷ trọng TB trong danh mục:", "Price:": "Giá:", "Net:": "Ròng:", "Trades:": "GD:", "trading funds": "quỹ giao dịch", "transactions": "lượt giao dịch", "Buying Funds": "Quỹ mua", "Selling Funds": "Quỹ bán", "Hover out or press ESC to close": "Di chuột ra ngoài hoặc bấm ESC để đóng", "Press ESC or click outside to close": "Bấm ESC hoặc nhấp ra ngoài để đóng", "Close window (Esc)": "Đóng cửa sổ (Esc)", "Close panel (Esc)": "Đóng bảng (Esc)", "Close panel": "Đóng bảng", "No funds match your search criteria.": "Không tìm thấy quỹ nào khớp với từ khóa tìm kiếm.", "No assets match your search criteria.": "Không tìm thấy mã tài sản nào khớp với từ khóa tìm kiếm.", "No stocks match your search criteria.": "Không tìm thấy mã cổ phiếu nào phù hợp.", "No matching funds.": "Không có quỹ nào phù hợp.", "No matching funds": "Không có quỹ khớp", "Banking": "Ngân hàng", "Real Estate": "Bất động sản", "Food & Beverage": "Thực phẩm và đồ uống", "Financial Services": "Dịch vụ tài chính", "Information Technology": "Công nghệ Thông tin", "Oil & Gas": "Dầu khí", "Industrial Goods & Services": "Hàng & Dịch vụ Công nghiệp", "Automobiles & Parts": "Ô tô và phụ tùng", "Chemicals": "Hóa chất", "Construction & Materials": "Xây dựng và Vật liệu", "Personal & Household Goods": "Hàng cá nhân & Gia dụng", "Retail": "Bán lẻ", "Insurance": "Bảo hiểm", "Travel & Leisure": "Du lịch và Giải trí", "Basic Resources": "Tài nguyên Cơ bản", "Utilities": "Điện, nước & xăng dầu khí đốt", "Healthcare": "Y tế", "Telecommunications": "Viễn thông", "Media": "Truyền thông", "Corporate Bonds": "Trái phiếu doanh nghiệp", "Fund Certificates": "Chứng chỉ quỹ", "Others": "Khác", "September 2026": "Tháng 9/2026", "August 2026": "Tháng 8/2026", "July 2026": "Tháng 7/2026", "June 2026": "Tháng 6/2026", "May 2026": "Tháng 5/2026", "April 2026": "Tháng 4/2026", "March 2026": "Tháng 3/2026", "February 2026": "Tháng 2/2026", "January 2026": "Tháng 1/2026"};
+
+    window.getI18nText = function(str) {
+      if (!str) return str;
+      var s = String(str).trim();
+      if (window.currentLang === 'en') {
+        return window.DICT_VI_TO_EN[s] || s;
+      } else {
+        return window.DICT_EN_TO_VI[s] || s;
+      }
+    };
+
+    window.translateNodeText = function(txt, toLang) {
+      if (!txt) return txt;
+      var s = txt.trim();
+      if (!s) return txt;
+      var dict = (toLang === 'en') ? window.DICT_VI_TO_EN : window.DICT_EN_TO_VI;
+      if (dict[s]) return txt.replace(s, dict[s]);
+
+      // Regex patterns
+      if (toLang === 'en') {
+        return txt
+          .replace(/Hiển thị (\d+)\/(\d+) quỹ/g, 'Displaying $1/$2 funds')
+          .replace(/Hiển thị (\d+)\/(\d+) mã/g, 'Displaying $1/$2 tickers')
+          .replace(/Hiện có (\d+) quỹ có dữ liệu\/ (\d+) quỹ/g, 'Currently $1 funds with data / $2 funds')
+          .replace(/Khớp (\d+) quỹ/g, 'Matched $1 funds')
+          .replace(/(\d+) mua · (\d+) bán/g, '$1 buy · $2 sell')
+          .replace(/(\d+) quỹ/g, '$1 funds')
+          .replace(/(\d+) mã/g, '$1 tickers')
+          .replace(/(\d+) lượt giao dịch/g, '$1 transactions')
+          .replace(/(\d+(\.\d+)?) triệu CP/g, '$1 mil shares')
+          .replace(/(\d+(\.\d+)?) tỷ đ/g, '$1 bil VND')
+          .replace(/(\d+(\.\d+)?) tỷ VNĐ/g, '$1 bil VND')
+          .replace(/(\d+(\.\d+)?) tỷ/g, '$1 bil VND')
+          .replace(/(\d+(\.\d+)?) điểm/g, '$1 pts')
+          .replace(/Tháng (\d+)\/2026/g, 'Month $1/2026')
+          .replace(/TỔNG CỘNG \((\d+) quỹ\)/g, 'TOTAL ($1 funds)');
+      } else {
+        return txt
+          .replace(/Displaying (\d+)\/(\d+) funds/g, 'Hiển thị $1/$2 quỹ')
+          .replace(/Displaying (\d+)\/(\d+) tickers/g, 'Hiển thị $1/$2 mã')
+          .replace(/Currently (\d+) funds with data \/ (\d+) funds/g, 'Hiện có $1 quỹ có dữ liệu/ $2 quỹ')
+          .replace(/Matched (\d+) funds/g, 'Khớp $1 quỹ')
+          .replace(/(\d+) buy · (\d+) sell/g, '$1 mua · $2 bán')
+          .replace(/(\d+) funds/g, '$1 quỹ')
+          .replace(/(\d+) tickers/g, '$1 mã')
+          .replace(/(\d+) transactions/g, '$1 lượt giao dịch')
+          .replace(/(\d+(\.\d+)?) mil shares/g, '$1 triệu CP')
+          .replace(/(\d+(\.\d+)?) bil VND/g, '$1 tỷ')
+          .replace(/(\d+(\.\d+)?) pts/g, '$1 điểm')
+          .replace(/Month (\d+)\/2026/g, 'Tháng $1/2026')
+          .replace(/TOTAL \((\d+) funds\)/g, 'TỔNG CỘNG ($1 quỹ)');
+      }
+    };
+
+    window.switchLanguage = function(lang) {
+      window.currentLang = lang;
+      
+      // 1. Update Switcher Buttons
+      var btnVi = document.getElementById('btn-lang-vi');
+      var btnEn = document.getElementById('btn-lang-en');
+      var lblLang = document.getElementById('lang-filter-label');
+      if (btnVi && btnEn) {
+        if (lang === 'en') {
+          btnEn.style.background = '#007a3d';
+          btnEn.style.color = '#ffffff';
+          btnEn.style.fontWeight = '700';
+          btnVi.style.background = 'transparent';
+          btnVi.style.color = '#475569';
+          btnVi.style.fontWeight = '600';
+          if (lblLang) lblLang.textContent = 'Language:';
+        } else {
+          btnVi.style.background = '#007a3d';
+          btnVi.style.color = '#ffffff';
+          btnVi.style.fontWeight = '700';
+          btnEn.style.background = 'transparent';
+          btnEn.style.color = '#475569';
+          btnEn.style.fontWeight = '600';
+          if (lblLang) lblLang.textContent = 'Ngôn ngữ:';
+        }
+      }
+
+      // 2. Walk entire DOM text nodes and translate
+      var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+      var node;
+      while (node = walker.nextNode()) {
+        var parent = node.parentElement;
+        if (parent && (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE' || parent.id === 'btn-lang-vi' || parent.id === 'btn-lang-en')) {
+          continue;
+        }
+        node.nodeValue = window.translateNodeText(node.nodeValue, lang);
+      }
+
+      // 3. Attributes (placeholder, title)
+      document.querySelectorAll('[placeholder], [title]').forEach(function(el) {
+        var p = el.getAttribute('placeholder');
+        if (p) el.setAttribute('placeholder', window.translateNodeText(p, lang));
+        var t = el.getAttribute('title');
+        if (t) el.setAttribute('title', window.translateNodeText(t, lang));
+      });
+
+      // 4. Select dropdown options
+      document.querySelectorAll('select option').forEach(function(opt) {
+        opt.textContent = window.translateNodeText(opt.textContent, lang);
+      });
+
+      // 5. Dynamic Subtitle for Sector Table
+      var mNum = window.s2CurrentSectorMonth || 9;
+      var subSec = document.getElementById('s2-sector-subtitle');
+      if (subSec) {
+        subSec.textContent = (lang === 'en') 
+          ? ('Month ' + mNum + '/2026 — Inflow, Outflow & Net Flow (Bil VND)')
+          : ('Tháng ' + mNum + '/2026 — Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)');
+      }
+
+      // 6. Re-render active charts and tables
+      if (typeof window.renderS2SectorTable === 'function') window.renderS2SectorTable();
+      if (typeof window.renderS2StockTable === 'function') window.renderS2StockTable();
+      if (typeof window.renderS2FundTable === 'function') window.renderS2FundTable();
+      if (typeof window.renderS2SectorChart === 'function' && window.s2SectorViewMode === 'chart') window.renderS2SectorChart();
+      if (typeof window.renderP1ActiveChart === 'function') window.renderP1ActiveChart();
+      if (typeof window.renderP1Table === 'function') window.renderP1Table();
+      if (typeof window.renderFig15Chart === 'function') window.renderFig15Chart();
+      if (typeof window.renderFig16Bump === 'function') window.renderFig16Bump();
+    };
+
+
+    window.SECTOR_MAP_VI = {};
+    for (var k in window.SECTOR_MAP_EN) {
+      window.SECTOR_MAP_VI[window.SECTOR_MAP_EN[k]] = k;
+    }
+
+    window.getSectorName = function(sec) {
+      if (window.currentLang === 'en') {
+        return window.SECTOR_MAP_EN[sec] || sec;
+      }
+      return window.SECTOR_MAP_VI[sec] || sec;
+    };
+
+    window.switchLanguage = function(lang) {
+      window.currentLang = lang;
+      
+      // 1. Update Switcher Button UI
+      var btnVi = document.getElementById('btn-lang-vi');
+      var btnEn = document.getElementById('btn-lang-en');
+      var lblLang = document.getElementById('lang-filter-label');
+      
+      if (btnVi && btnEn) {
+        if (lang === 'en') {
+          btnEn.style.background = '#007a3d';
+          btnEn.style.color = '#ffffff';
+          btnEn.style.fontWeight = '700';
+          btnVi.style.background = 'transparent';
+          btnVi.style.color = '#475569';
+          btnVi.style.fontWeight = '600';
+          if (lblLang) lblLang.textContent = 'Language:';
+        } else {
+          btnVi.style.background = '#007a3d';
+          btnVi.style.color = '#ffffff';
+          btnVi.style.fontWeight = '700';
+          btnEn.style.background = 'transparent';
+          btnEn.style.color = '#475569';
+          btnEn.style.fontWeight = '600';
+          if (lblLang) lblLang.textContent = 'Ngôn ngữ:';
+        }
+      }
+
+      // 2. Translate Top Navigation Tabs
+      var tab1 = document.querySelector('#pbi-tab-1 .pbi-tab-title');
+      var tab2 = document.querySelector('#pbi-tab-2 .pbi-tab-title');
+      var tab3 = document.querySelector('#pbi-tab-3 .pbi-tab-title');
+      var tab4 = document.querySelector('#pbi-tab-4 .pbi-tab-title');
+      if (tab1) tab1.textContent = (lang === 'en') ? 'Fund Performance' : 'Hiệu suất quỹ';
+      if (tab2) tab2.textContent = (lang === 'en') ? 'Cash Flow' : 'Dòng tiền';
+      if (tab3) tab3.textContent = (lang === 'en') ? 'Asset Allocation' : 'Phân bố tài sản';
+      if (tab4) tab4.textContent = (lang === 'en') ? 'Stock Holdings' : 'Tỷ trọng nắm giữ';
+
+      // 3. Main Header Title
+      var mainTitle = document.querySelector('.report-title');
+      if (mainTitle) {
+        mainTitle.textContent = (lang === 'en') 
+          ? 'Monthly Report on Investment Fund Activities in Vietnam'
+          : 'Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam';
+      }
+
+      // 4. Sidebar Drawer Filters
+      var sbHead = document.querySelector('.drawer-title-bold');
+      if (sbHead) sbHead.textContent = (lang === 'en') ? 'DATA FILTERS' : 'BỘ LỌC DỮ LIỆU';
+      var sbReset = document.querySelector('.drawer-reset-btn');
+      if (sbReset) sbReset.textContent = (lang === 'en') ? 'Reset Default' : 'Khôi phục mặc định';
+
+      var sbFundLabels = document.querySelectorAll('.drawer-filter-group-title');
+      if (sbFundLabels.length >= 5) {
+        sbFundLabels[0].textContent = (lang === 'en') ? 'Fund Strategy' : 'Loại hình quỹ';
+        sbFundLabels[1].textContent = (lang === 'en') ? 'NAV Criteria' : 'Tiêu chí NAV';
+        sbFundLabels[2].textContent = (lang === 'en') ? 'Fund' : 'Quỹ';
+        sbFundLabels[3].textContent = (lang === 'en') ? 'Reporting Period' : 'Kỳ báo cáo';
+        sbFundLabels[4].textContent = (lang === 'en') ? 'Stock Ticker' : 'Mã cổ phiếu';
+      }
+
+      var inputFund = document.getElementById('sbFundSearchInput');
+      if (inputFund) inputFund.placeholder = (lang === 'en') ? 'Search fund...' : 'Tìm quỹ...';
+      var inputStock = document.getElementById('sbStockSearchInput');
+      if (inputStock) inputStock.placeholder = (lang === 'en') ? 'Search ticker...' : 'Tìm mã CK...';
+
+      // 5. Sheet 1: Performance
+      var btnDimType = document.getElementById('btn-dim-type');
+      var btnDimStruct = document.getElementById('btn-dim-structure');
+      if (btnDimType) btnDimType.textContent = (lang === 'en') ? 'Fund Strategy' : 'Chiến lược đầu tư';
+      if (btnDimStruct) btnDimStruct.textContent = (lang === 'en') ? 'Fund Structure' : 'Cấu trúc quỹ';
+      
+      var p1Search = document.getElementById('p1-table-search');
+      if (p1Search) p1Search.placeholder = (lang === 'en') ? 'Search fund name / ticker...' : 'Tìm tên / mã quỹ...';
+      
+      var p1Th = document.querySelectorAll('#p1-data-table thead th');
+      if (p1Th.length >= 4) {
+        p1Th[0].textContent = (lang === 'en') ? 'Fund Name' : 'Tên quỹ';
+        p1Th[1].textContent = (lang === 'en') ? '1M Return' : 'Hiệu suất 1M';
+        p1Th[2].textContent = (lang === 'en') ? 'YTD Return' : 'Hiệu suất YTD';
+        p1Th[3].textContent = (lang === 'en') ? 'vs VNINDEX' : 'So với VNINDEX';
+      }
+
+      // 6. Sheet 2: Cash Flow (Page 02)
+      var s2Titles = document.querySelectorAll('#pbi-sheet-2 .card-title');
+      if (s2Titles.length >= 5) {
+        s2Titles[0].textContent = (lang === 'en') ? 'Fund NAV & Capital Flows by Investment Strategy' : 'Fund NAV & Capital Flows by Investment Strategy';
+        s2Titles[1].textContent = (lang === 'en') ? 'Fund NAV & Capital Flows by Structure Strategy' : 'Fund NAV & Capital Flows by Structure Strategy';
+        s2Titles[2].textContent = (lang === 'en') ? 'Cash Flow by Industry Sector' : 'Dòng tiền Mua & Bán theo nhóm ngành';
+        s2Titles[3].textContent = (lang === 'en') ? 'Cash Flow by Stock Ticker' : 'Dòng tiền theo Từng Mã CK';
+        s2Titles[4].textContent = (lang === 'en') ? 'Cash Flow by Fund' : 'Dòng tiền theo Từng Quỹ';
+      }
+
+      // Sheet 2 Sector Table Headers
+      var secTh = document.querySelectorAll('#s2-sector-table thead th');
+      if (secTh.length >= 5) {
+        secTh[0].innerHTML = (lang === 'en') ? 'Industry Sector <span id="sort-icon-s2-name">↕</span>' : 'Nhóm ngành <span id="sort-icon-s2-name">↕</span>';
+        secTh[1].innerHTML = (lang === 'en') ? 'Inflow <span id="sort-icon-s2-inflow">↕</span>' : 'Tiền vào <span id="sort-icon-s2-inflow">↕</span>';
+        secTh[2].innerHTML = (lang === 'en') ? 'Outflow <span id="sort-icon-s2-outflow">↕</span>' : 'Tiền ra <span id="sort-icon-s2-outflow">↕</span>';
+        secTh[3].innerHTML = (lang === 'en') ? 'Net Flow <span id="sort-icon-s2-net">▼</span>' : 'Ròng (Net) <span id="sort-icon-s2-net">▼</span>';
+        secTh[4].innerHTML = (lang === 'en') ? 'MoM <span id="sort-icon-s2-mom">↕</span>' : 'MoM <span id="sort-icon-s2-mom">↕</span>';
+      }
+
+      // Sheet 2 Stock Table Headers
+      var stkTh = document.querySelectorAll('#s2-stock-table thead th');
+      if (stkTh.length >= 6) {
+        stkTh[0].innerHTML = (lang === 'en') ? 'Ticker <span id="sort-icon-s2-stk-sym">↕</span>' : 'Mã CK <span id="sort-icon-s2-stk-sym">↕</span>';
+        stkTh[1].innerHTML = (lang === 'en') ? 'Inflow <span id="sort-icon-s2-stk-inflow">↕</span>' : 'Tiền vào <span id="sort-icon-s2-stk-inflow">↕</span>';
+        stkTh[2].innerHTML = (lang === 'en') ? 'Outflow <span id="sort-icon-s2-stk-outflow">↕</span>' : 'Tiền ra <span id="sort-icon-s2-stk-outflow">↕</span>';
+        stkTh[3].innerHTML = (lang === 'en') ? 'Net Flow <span id="sort-icon-s2-stk-net">▼</span>' : 'Ròng (Net) <span id="sort-icon-s2-stk-net">▼</span>';
+        stkTh[4].innerHTML = (lang === 'en') ? 'YTD Cum. <span id="sort-icon-s2-stk-cum">↕</span>' : 'Lũy kế YTD <span id="sort-icon-s2-stk-cum">↕</span>';
+        stkTh[5].innerHTML = (lang === 'en') ? 'Trading Funds <span id="sort-icon-s2-stk-funds">↕</span>' : 'Số quỹ GD <span id="sort-icon-s2-stk-funds">↕</span>';
+      }
+
+      // Sheet 2 Fund Table Headers
+      var fndTh = document.querySelectorAll('#s2-fund-table thead th');
+      if (fndTh.length >= 7) {
+        fndTh[0].innerHTML = (lang === 'en') ? 'Fund Code <span id="sort-icon-s2-fnd-code">↕</span>' : 'Mã Quỹ <span id="sort-icon-s2-fnd-code">↕</span>';
+        fndTh[1].innerHTML = (lang === 'en') ? 'Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-flow">▼</span>' : 'Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-flow">▼</span>';
+        fndTh[2].innerHTML = (lang === 'en') ? 'Cash<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-cash">↕</span>' : 'Tiền mặt<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-cash">↕</span>';
+        fndTh[3].innerHTML = (lang === 'en') ? 'Stocks<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-stock">↕</span>' : 'Cổ phiếu<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-stock">↕</span>';
+        fndTh[4].innerHTML = (lang === 'en') ? 'Bonds<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-bond">↕</span>' : 'Trái phiếu<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-bond">↕</span>';
+        fndTh[5].innerHTML = (lang === 'en') ? 'Inflow/Outflow Change<br><span style="font-size:9px; font-weight:normal;">Value (Bil VND)</span> <span id="sort-icon-s2-fnd-valChg">↕</span>' : 'Thay đổi Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">Giá trị (Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-valChg">↕</span>';
+        fndTh[6].innerHTML = (lang === 'en') ? 'Inflow/Outflow Change<br><span style="font-size:9px; font-weight:normal;">%</span> <span id="sort-icon-s2-fnd-pctChg">↕</span>' : 'Thay đổi Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">%</span> <span id="sort-icon-s2-fnd-pctChg">↕</span>';
+      }
+
+      // 7. Sheet 3: Cash & Asset Allocation Headers
+      var cashTh = document.querySelectorAll('#chart-cash-table thead th');
+      if (cashTh.length >= 9) {
+        var cM = (lang === 'en') ? 'Current Month (Sep 2026)' : 'Tháng hiện tại (T9/2026)';
+        var pM = (lang === 'en') ? 'Previous Month (Aug 2026)' : 'Tháng trước (T8/2026)';
+        var chg = (lang === 'en') ? 'Change' : 'Thay đổi';
+        if (cashTh[0]) cashTh[0].querySelector('span').textContent = (lang === 'en') ? 'Fund Code' : 'Mã quỹ';
+        if (cashTh[1]) cashTh[1].textContent = cM;
+        if (cashTh[2]) cashTh[2].textContent = pM;
+        if (cashTh[3]) cashTh[3].textContent = chg;
+      }
+
+      // 8. Modals
+      var auditTitle = document.getElementById('auditListModalTitle');
+      if (auditTitle) auditTitle.textContent = (lang === 'en') ? 'FUND LIST' : 'DANH SÁCH QUỸ';
+      var auditSub = document.querySelector('#auditListModal .fund-modal-subtitle');
+      if (auditSub) auditSub.textContent = (lang === 'en') ? 'September 2026 Data · Source: FiinPro-X' : 'Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X';
+
+      // 9. Re-render Active Tables & Charts
+      if (typeof window.renderS2SectorTable === 'function') window.renderS2SectorTable();
+      if (typeof window.renderS2StockTable === 'function') window.renderS2StockTable();
+      if (typeof window.renderS2FundTable === 'function') window.renderS2FundTable();
+      if (typeof window.renderS2SectorChart === 'function' && window.s2SectorViewMode === 'chart') window.renderS2SectorChart();
+      if (typeof window.renderP1ActiveChart === 'function') window.renderP1ActiveChart();
+      if (typeof window.renderP1Table === 'function') window.renderP1Table();
+    };
 
 </script>
 
