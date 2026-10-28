@@ -3952,7 +3952,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
   #pbi-sheet-4 .pbi-s4-grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    grid-template-rows: 1fr 1fr !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
     gap: 8px !important;
     flex: 1 1 0% !important;
     min-height: 0 !important;
@@ -3971,6 +3971,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    box-sizing: border-box !important;
   }
   #pbi-sheet-4 #card-stock-holdings {
     grid-column: 2 !important;
@@ -3979,14 +3980,16 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    box-sizing: border-box !important;
   }
   #pbi-sheet-4 #card-fig15 {
-    grid-column: 3 !important;
-    grid-row: 1 !important;
+    grid-column: 1 / span 2 !important;
+    grid-row: 2 !important;
     width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
+    box-sizing: border-box !important;
   }
   #pbi-sheet-4 .card {
     height: 100% !important;
@@ -4158,11 +4161,11 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     min-height: 0 !important;
   }
 
-  /* Sheet 4: 3 chart dong bo kich thuoc bang size card-cash-dist (1/3 chieu rong, 50% chieu cao sheet) */
+  /* Sheet 4: Chart 1 va 2 giu nguyen chieu rong cu (cot 1 va 2 cua he 3 cot); Chart 3 (Bump chart) o duoi span 2 cot (tong chieu rong 2 chart tren), chieu cao bang nhau */
   #pbi-sheet-4 .pbi-s4-grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    grid-template-rows: 1fr 1fr !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
     gap: 8px !important;
     width: 100% !important;
     height: 100% !important;
@@ -4202,8 +4205,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     border-radius: 8px !important;
   }
   #pbi-sheet-4 #card-fig15 {
-    grid-column: 3 !important;
-    grid-row: 1 !important;
+    grid-column: 1 / span 2 !important;
+    grid-row: 2 !important;
     width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
@@ -4693,6 +4696,11 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
   @media (max-width: 1100px) {
     #pbi-sheet-4 .pbi-s4-grid {
       grid-template-columns: 1fr !important;
+      grid-template-rows: auto !important;
+    }
+    #pbi-sheet-4 #card-fig15 {
+      grid-column: 1 !important;
+      grid-row: auto !important;
     }
   }
 
@@ -5514,11 +5522,11 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
 
     </div>
   <!-- BỘ LỌC NGÔN NGỮ (LANGUAGE FILTER: TIẾNG VIỆT / TIẾNG ANH) -->
-  <div class="pbi-lang-filter" id="pbiLangFilter" style="display: inline-flex; align-items: center; gap: 6px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); user-select: none;">
+  <div class="pbi-lang-filter" id="pbiLangFilter" style="display: none !important; align-items: center; gap: 6px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); user-select: none;">
     <span id="lang-filter-label" style="font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; padding-left: 4px;">Ngôn ngữ:</span>
     <div style="display: inline-flex; background: #f1f5f9; border-radius: 4px; padding: 1.5px; gap: 2px;">
-      <button type="button" id="btn-lang-vi" class="lang-switch-btn active" onclick="window.switchLanguage('vi')" style="padding: 3px 10px; font-size: 11px; font-weight: 700; border-radius: 3px; border: none; cursor: pointer; transition: all 0.15s ease; background: #007a3d; color: #ffffff;">Tiếng Việt</button>
-      <button type="button" id="btn-lang-en" class="lang-switch-btn" onclick="window.switchLanguage('en')" style="padding: 3px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; border: none; cursor: pointer; transition: all 0.15s ease; background: transparent; color: #475569;">Tiếng Anh</button>
+      <button type="button" id="btn-lang-vi" class="lang-switch-btn" onclick="window.switchLanguage('vi')" style="padding: 3px 10px; font-size: 11px; font-weight: 700; border-radius: 3px; border: none; cursor: pointer; transition: all 0.15s ease; background: transparent; color: #475569;">Tiếng Việt</button>
+      <button type="button" id="btn-lang-en" class="lang-switch-btn active" onclick="window.switchLanguage('en')" style="padding: 3px 10px; font-size: 11px; font-weight: 600; border-radius: 3px; border: none; cursor: pointer; transition: all 0.15s ease; background: #007a3d; color: #ffffff;">Tiếng Anh</button>
     </div>
   </div>
   </div>
@@ -5574,7 +5582,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
       <div class="card" id="p1-single-chart-card">
         <div class="card-header">
           <div>
-            <div class="card-title" id="p1-chart-title">Equity Fund Performance</div>
+            <div class="card-title" id="p1-chart-title">Hiệu suất Quỹ Cổ phiếu</div>
             <div class="card-subtitle" id="p1-chart-subtitle">Quỹ cổ phiếu có Tổng NAV ≥ 1.000 tỷ đồng — 1M vs YTD</div>
           </div>
         </div>
@@ -5634,8 +5642,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
           <div class="card-header" style="display: flex; flex-direction: column; gap: 4px; padding: 0 0 4px 0; margin-bottom: 2px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; width: 100%;">
               <div>
-                <div class="card-title">Fund NAV &amp; Capital Flows by Investment Strategy</div>
-                <div class="card-subtitle" id="fig-ft-subtitle">Equity, Bond, Balanced — Capital Flow &amp; NAV Scale (trillion VND)</div>
+                <div class="card-title">Quy mô NAV &amp; Dòng vốn theo Chiến lược Đầu tư</div>
+                <div class="card-subtitle" id="fig-ft-subtitle">Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn &amp; Quy mô NAV (nghìn tỷ VNĐ)</div>
               </div>
               <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
                 <!-- Filter Ròng / Lũy kế -->
@@ -5700,8 +5708,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
           <div class="card-header" style="display: flex; flex-direction: column; gap: 4px; padding: 0 0 4px 0; margin-bottom: 2px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; width: 100%;">
               <div>
-                <div class="card-title">Fund NAV &amp; Capital Flows by Structure Strategy</div>
-                <div class="card-subtitle" id="fig-fs-subtitle">ETFs, Closed-end, Open-ended — Capital Flow &amp; NAV Scale (trillion VND)</div>
+                <div class="card-title">Quy mô NAV &amp; Dòng vốn theo Cấu trúc Quỹ</div>
+                <div class="card-subtitle" id="fig-fs-subtitle">ETF, Quỹ đóng, Quỹ mở — Dòng vốn &amp; Quy mô NAV (nghìn tỷ VNĐ)</div>
               </div>
               <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
                 <!-- Filter Ròng / Lũy kế -->
@@ -5986,7 +5994,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
           <div class="card-header" style="padding: 10px 16px 6px; display: flex; flex-direction: column; gap: 4px;">
             <!-- HÀNG 1: TIÊU ĐỀ & CHUYỂN CHẾ ĐỘ VIEW (BUBBLE / BARBELL) -->
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-              <div class="card-title" style="font-size: 11.5px; font-weight: 800; color: var(--accent); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0;" title="Open-Ended Funds Cash Ratio &amp; Allocation Changes">Open-Ended Funds Cash Ratio &amp; Allocation Changes</div>
+              <div class="card-title" style="font-size: 11.5px; font-weight: 800; color: var(--accent); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0;" title="Tỷ lệ Tiền mặt Quỹ Mở &amp; Biến động Phân bổ">Tỷ lệ Tiền mặt Quỹ Mở &amp; Biến động Phân bổ</div>
               <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
                 <div class="view-toggle-container" id="toggle-cash-up-container" style="display: inline-flex; align-items: center; padding: 1px 2px; gap: 2px;">
                   <button type="button" class="view-toggle-btn active" id="btn-cash-up-bubble" onclick="setCashChartMode('chart-cash-up', 'bubble')" title="Xem Bubble chart">Bubble</button>
@@ -6070,7 +6078,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         <div class="card" id="card-cash-dist">
           <div class="card-header">
             <div>
-              <div class="card-title">Distribution of Fund Cash Ratio Changes &amp; Average Cash Allocation</div>
+              <div class="card-title">Phân bổ Biến động Tỷ lệ Tiền mặt &amp; Tỷ lệ Tiền mặt TB</div>
               <div class="card-subtitle" id="subtitle-cash-dist">T4–T9/2026 — Phân bổ thay đổi tiền mặt &amp; tỷ lệ tiền mặt TB</div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -6109,7 +6117,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
 <!-- ROW 1, COL 2: Figure 10: Funds Decreased Cash Holdings -->
         <div class="card" data-fund-type="equity" id="card-cash-down" style="display: none !important;">
           <div class="card-header">
-            <div><div class="card-title">Open-Ended Equity Funds with Decreased Cash Ratio</div><div class="card-subtitle">Tháng 8 vs Tháng 9/2026 — Tỷ lệ tiền mặt (%)</div></div>
+            <div><div class="card-title">Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm</div><div class="card-subtitle">Tháng 8 vs Tháng 9/2026 — Tỷ lệ tiền mặt (%)</div></div>
             <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
               <div class="view-toggle-container" id="toggle-cash-down-container" style="display: inline-flex; align-items: center; padding: 1px 2px; gap: 2px;">
                 <button type="button" class="view-toggle-btn active" id="btn-cash-down-bubble" onclick="setCashChartMode('chart-cash-down', 'bubble')" title="Xem Bubble chart">Bubble chart</button>
@@ -6231,7 +6239,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         <!-- ROW 1, COL 3: Figure 12: Mua ròng & Bán ròng theo nhóm ngành -->
         <div class="card" data-fund-type="equity" id="card-sector-buy">
           <div class="card-header">
-            <div><div class="card-title">Net Buying &amp; Selling Value by Industry Sector</div><div class="card-subtitle">T4–T9/2026 — tỷ đồng</div></div>
+            <div><div class="card-title">Giá trị Mua &amp; Bán Ròng theo Nhóm Ngành</div><div class="card-subtitle">T4–T9/2026 — tỷ đồng</div></div>
             <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
           <div class="card-more-menu-wrap">
                 <button type="button" class="btn-card-more" onclick="window.toggleCardMoreMenu(this, event)" title="Tùy chọn">
@@ -6280,7 +6288,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         <div class="card" data-fund-type="equity" id="card-stock-combined">
           <div class="card-header">
             <div>
-              <div class="card-title">Top 10 Net-Bought &amp; Net-Sold Stocks by Trading Value</div>
+              <div class="card-title">Top 10 Cổ phiếu Mua ròng &amp; Bán ròng theo Giá trị GD</div>
               <div class="card-subtitle" id="fig11-subtitle">Tháng 9/2026 — Top 10 mua (+) & bán (-) (tỷ VNĐ)</div>
             </div>
             <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
@@ -6333,7 +6341,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         <div class="card" data-fund-type="equity" id="card-stock-holdings">
         <div class="card-header">
           <div>
-            <div class="card-title">Top 10 Stocks Portfolio Weight (% NAV) &amp; Stock Cash Flow Explorer</div>
+            <div class="card-title">Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) &amp; Dòng tiền</div>
             <div class="card-subtitle" id="fig15-subtitle">Tháng 9/2026 — Top 10 Tỷ lệ nắm giữ trung bình (% NAV)</div>
           </div>
           <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
@@ -6407,7 +6415,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
       <div class="card" id="card-fig15">
         <div class="card-header">
           <div>
-            <div class="card-title" style="font-size:10.5px !important; line-height:1.2 !important;">Top Stock Holdings Ranking, Total Value &amp; Portfolio Weight</div>
+            <div class="card-title" style="font-size:11.5px !important; line-height:1.25 !important;">Top Stock Holdings Ranking, Total Value &amp; Portfolio Weight</div>
             <div class="card-subtitle" id="fig15-bump-subtitle">06/2026 → 09/2026 — Tổng giá trị, Tỷ lệ nắm giữ &amp; Tỷ trọng TB danh mục</div>
           </div>
           <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0; position: relative;">
@@ -6431,11 +6439,11 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
                   </div>
                   <div>
                     <div style="font-weight: 700; color: #007a3d;">2. Tỷ trọng trên toàn bộ cổ phiếu của các quỹ đầu tư đang nắm giữ</div>
-                    <div style="color: #64748b; font-size: 10px;">Hiển thị ngắn gọn trên biểu đồ: <b>Tỷ trọng</b></div>
+                    <div style="color: #64748b; font-size: 10px;">Hiển thị ngắn gọn trên biểu đồ (bên trái): <b>TT</b> (Weight)</div>
                   </div>
                   <div>
                     <div style="font-weight: 700; color: #475569;">3. Tỷ lệ nắm giữ TB</div>
-                    <div style="color: #64748b; font-size: 10px;">Hiển thị ngắn gọn trên biểu đồ: <b>Tỷ lệ</b></div>
+                    <div style="color: #64748b; font-size: 10px;">Hiển thị ngắn gọn trên biểu đồ (bên phải): <b>TL</b> (Holding)</div>
                   </div>
                 </div>
               </div>
@@ -10665,7 +10673,7 @@ window.VDSC_DOCS_DATA = {"perf":{"equity":[["Fubon FTSE VN",0.2225,3.7072],["EVE
             if (fig1Title) fig1Title.textContent = 'ETF Fund Performance';
             if (fig1Sub) fig1Sub.textContent = 'Các quỹ ETF — 1M vs YTD';
           } else {
-            if (fig1Title) fig1Title.textContent = 'Equity Fund Performance';
+            if (fig1Title) fig1Title.textContent = 'Hiệu suất Quỹ Cổ phiếu';
             const f1 = (window.perfChartFilters && typeof window.perfChartFilters.fig1 === 'boolean') ? window.perfChartFilters.fig1 : true;
             if (fig1Sub) fig1Sub.textContent = f1 ? 'Quỹ cổ phiếu có Tổng NAV ≥ 1.000 tỷ đồng — 1M vs YTD' : 'Toàn bộ quỹ Cổ phiếu (không giới hạn quy mô NAV) — 1M vs YTD';
           }
@@ -15876,6 +15884,14 @@ function renderCash(id, data, positive) {
             const idx = p[0].dataIndex;
             const item = topData[idx];
             if (!item) return '';
+            const isEn = (window.currentLang === 'en');
+            if (isEn) {
+              return `<b>${item.ticker} — ${item.name}</b><br/>` +
+                     `Avg Portfolio Weight: <b>${item.avgPct.toFixed(2)}%</b><br/>` +
+                     `Holding Funds: <b>${item.fundCount} funds</b><br/>` +
+                     `Close Price: <b>${item.price > 0 ? item.price.toLocaleString('en-US') + ' VND' : 'N/A'}</b><br/>` +
+                     `Total Value: <b>${item.totalValBil.toLocaleString('en-US')} bil VND</b>`;
+            }
             return `<b>${item.ticker} — ${item.name}</b><br/>` +
                    `Tỷ trọng TB trong danh mục: <b>${item.avgPct.toFixed(2)}%</b><br/>` +
                    `Số quỹ nắm giữ: <b>${item.fundCount} quỹ</b><br/>` +
@@ -17277,7 +17293,7 @@ window.openStockHoldingDetail = window.openStockModal;
         },
         yAxis: {
           type: 'value',
-          name: 'Tỷ VNĐ',
+          name: (window.currentLang === 'en') ? 'Bil VND' : 'Tỷ VNĐ',
           min: -niceMax,
           max: niceMax,
           interval: yInterval,
@@ -17693,7 +17709,7 @@ window.openStockHoldingDetail = window.openStockModal;
       var meta = {
         equity: {
           chartId: 'chart-equity-perf',
-          title: 'Equity Fund Performance',
+          title: 'Hiệu suất Quỹ Cổ phiếu',
           subtitle: 'Quỹ cổ phiếu có Tổng NAV ≥ 1.000 tỷ đồng — 1M vs YTD',
           note: 'Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Hiệu suất được tính bằng tỷ lệ thay đổi NAV/CCQ trong kỳ, bao gồm cổ tức đã chi trả, và được sắp xếp giảm dần; (2) Hiệu suất quỹ nước ngoài có thể chịu ảnh hưởng tỷ giá vì NAV được niêm yết bằng ngoại tệ; (3) Hiệu suất quá khứ không bảo đảm kết quả tương lai.',
           tableTitle: 'Dữ liệu chi tiết',
@@ -18068,7 +18084,7 @@ window.openStockHoldingDetail = window.openStockModal;
         const vnMayDisp = vn && vn.may != null ? Number(Number(vn.may).toFixed(1)) : 5.6;
         const vnYtdDisp = vn && vn.ytd != null ? Number(Number(vn.ytd).toFixed(1)) : 2.7;
         
-        // 1. Figure 1: Equity Fund Performance
+        // 1. Figure 1: Hiệu suất Quỹ Cổ phiếu
         if (chartId === 'chart-equity-perf') {
           const rawFunds = typeof getEquityPerfData === 'function' ? getEquityPerfData() : (typeof equityPerf !== 'undefined' ? equityPerf : []);
           const funds = [...rawFunds].filter(f => f.name !== 'VNINDEX').sort((a, b) => (Number.isFinite(b.ytd) ? b.ytd : -Infinity) - (Number.isFinite(a.ytd) ? a.ytd : -Infinity));
@@ -18643,7 +18659,7 @@ window.openStockHoldingDetail = window.openStockModal;
             formatNum(d.chgRatio, 1, true, true)
           ]);
           return {
-            caption: 'Figure 13: Fund Cash Holdings, Allocation Ratio & Monthly Variations (Aug vs Sep 2026)',
+            caption: 'Figure 13: Thống kê Tiền mặt & Biến động theo Quỹ (Aug vs Sep 2026)',
             headers: ['STT', 'Mã quỹ', 'Tên đầy đủ của quỹ', 'NAV T9 (Tỷ đồng)', 'Tiền mặt T9 (tỷ đ)', 'Tỷ trọng T9 (%)', 'NAV T8 (tỷ đ)', 'Tiền mặt T8 (tỷ đ)', 'Tỷ trọng T8 (%)', '% NAV MoM (%)', '% Tiền mặt MoM (%)', 'Thay đổi Tỷ trọng (% pt)'],
             aligns: ['center', 'left', 'left', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right'],
             rows: rows
@@ -18750,7 +18766,7 @@ window.openStockHoldingDetail = window.openStockModal;
             });
           });
           return {
-            caption: 'Figure 12: Net Buying & Selling Value by Industry Sector (Apr–Sep 2026 — Bil VND)',
+            caption: 'Figure 12: Giá trị Mua & Bán Ròng theo Nhóm Ngành (Apr–Sep 2026 — Bil VND)',
             headers: ['STT', 'Nhóm ngành', 'T4 (tỷ đ)', 'T5 (tỷ đ)', 'T6 (tỷ đ)', 'T7 (tỷ đ)', 'T8 (tỷ đ)', 'T9 (tỷ đ)', 'Tổng 6 tháng (tỷ đ)'],
             aligns: ['center', 'left', 'right', 'right', 'right', 'right', 'right', 'right', 'right'],
             rows: rowsMain,
@@ -20156,28 +20172,29 @@ window.toggleCardChartView = function(chartId) {
       const container = document.getElementById('chart-fig15-area');
       if (!container) return;
 
+      const isEn = (window.currentLang === 'en');
       const clientW = container.clientWidth || 580;
       const w = clientW;
-      const h = container.clientHeight || 280;
+      const h = container.clientHeight || 380;
       const items = getFig15Top5Items(m, pMode);
 
       if (!items || items.length === 0) {
-        container.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#94a3b8; font-size:11px; font-weight:500;">Không tìm thấy cổ phiếu nào phù hợp</div>';
+        container.innerHTML = '<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#94a3b8; font-size:12px; font-weight:500;">' + (isEn ? 'No matching stocks found' : 'Không tìm thấy cổ phiếu nào phù hợp') + '</div>';
         return;
       }
 
       const allNavs = items.flatMap(d => [d.t6 ? d.t6.nav : 0, d.t7 ? d.t7.nav : 0, d.t8 ? d.t8.nav : 0, d.t9 ? d.t9.nav : 0].filter(v => v > 0));
       const maxNav = Math.max(...allNavs, 10);
       function getR(nav) {
-        const minR = 13;
-        const maxR = 23;
+        const minR = 14;
+        const maxR = 24;
         const ratio = (maxNav > 0) ? (Math.sqrt(Math.max(10, nav)) / Math.sqrt(maxNav)) : 0.5;
         return Math.round(minR + ratio * (maxR - minR));
       }
 
-      const headerY = 16;
-      const topY = 38;
-      const bottomY = h - 22;
+      const headerY = Math.max(14, Math.min(20, Math.round(h * 0.05)));
+      const topY = Math.max(headerY + 24, Math.round(h * 0.13));
+      const bottomY = Math.max(topY + 140, h - 22);
       const K = items.length;
 
       function getY(slot) {
@@ -20200,23 +20217,23 @@ window.toggleCardChartView = function(chartId) {
       itemsT8.forEach((d, i) => slot8[d.ticker] = i);
       itemsT9.forEach((d, i) => slot9[d.ticker] = i);
 
-      // Căn chỉnh linh hoạt padX theo chiều rộng thực tế, không bị che chữ ở 2 mép
-      const isCompact = w < 610;
-      const padX = isCompact ? 56 : 68;
+      // Căn chỉnh linh hoạt padX theo chiều rộng thực tế (span 2 cột), không bị che chữ ở 2 mép
+      const isCompact = w < 650;
+      const padX = isCompact ? 48 : (isEn ? 78 : 64);
       const colStep = (w - 2 * padX) / 3;
       const c1X = Math.round(padX);
       const c2X = Math.round(padX + colStep);
       const c3X = Math.round(padX + 2 * colStep);
       const c4X = Math.round(w - padX);
 
-      // Headers
-      svg += `<text x="${c1X}" y="${headerY}" text-anchor="middle" font-size="10" font-weight="700" fill="#334155" font-family="'Segoe UI', sans-serif">06/2026</text>`;
-      svg += `<text x="${c2X}" y="${headerY}" text-anchor="middle" font-size="10" font-weight="700" fill="#334155" font-family="'Segoe UI', sans-serif">07/2026</text>`;
-      svg += `<text x="${c3X}" y="${headerY}" text-anchor="middle" font-size="10" font-weight="700" fill="#334155" font-family="'Segoe UI', sans-serif">08/2026</text>`;
-      svg += `<text x="${c4X}" y="${headerY}" text-anchor="middle" font-size="10" font-weight="700" fill="#007a3d" font-family="'Segoe UI', sans-serif">09/2026</text>`;
+      // Headers (Cột tháng)
+      svg += `<text x="${c1X}" y="${headerY}" text-anchor="middle" font-size="12" font-weight="700" fill="#334155" font-family="'Segoe UI', sans-serif">06/2026</text>`;
+      svg += `<text x="${c2X}" y="${headerY}" text-anchor="middle" font-size="12" font-weight="700" fill="#334155" font-family="'Segoe UI', sans-serif">07/2026</text>`;
+      svg += `<text x="${c3X}" y="${headerY}" text-anchor="middle" font-size="12" font-weight="700" fill="#334155" font-family="'Segoe UI', sans-serif">08/2026</text>`;
+      svg += `<text x="${c4X}" y="${headerY}" text-anchor="middle" font-size="12" font-weight="700" fill="#007a3d" font-family="'Segoe UI', sans-serif">09/2026</text>`;
 
       // Flow curves (06/2026 -> 07/2026 -> 08/2026 -> 09/2026)
-      const textPad = isCompact ? 40 : 48;
+      const textPad = isCompact ? 46 : (isEn ? 76 : 62);
       items.forEach(d => {
         const y0 = getY(slot6[d.ticker]);
         const y1 = getY(slot7[d.ticker]);
@@ -20240,9 +20257,9 @@ window.toggleCardChartView = function(chartId) {
 
         svg += `
           <g class="fig15-stock-group" data-ticker="${d.ticker}" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')" onmouseleave="hideFig15Hover()">
-            <path class="fig15-flow-line" id="line0-${d.ticker}" d="${path0}" fill="none" stroke="${d.color}" stroke-width="3" stroke-opacity="0.8" stroke-linecap="round" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')"/>
-            <path class="fig15-flow-line" id="line1-${d.ticker}" d="${path1}" fill="none" stroke="${d.color}" stroke-width="3" stroke-opacity="0.8" stroke-linecap="round" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')"/>
-            <path class="fig15-flow-line" id="line2-${d.ticker}" d="${path2}" fill="none" stroke="${d.color}" stroke-width="3" stroke-opacity="0.8" stroke-linecap="round" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')"/>
+            <path class="fig15-flow-line" id="line0-${d.ticker}" d="${path0}" fill="none" stroke="${d.color}" stroke-width="3.2" stroke-opacity="0.85" stroke-linecap="round" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')"/>
+            <path class="fig15-flow-line" id="line1-${d.ticker}" d="${path1}" fill="none" stroke="${d.color}" stroke-width="3.2" stroke-opacity="0.85" stroke-linecap="round" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')"/>
+            <path class="fig15-flow-line" id="line2-${d.ticker}" d="${path2}" fill="none" stroke="${d.color}" stroke-width="3.2" stroke-opacity="0.85" stroke-linecap="round" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')"/>
           </g>
         `;
       });
@@ -20254,21 +20271,17 @@ window.toggleCardChartView = function(chartId) {
 
       function fmtNav(val) {
         if (typeof val !== 'number' || isNaN(val) || val <= 0) return '';
-        const numStr = val.toLocaleString('vi-VN', { maximumFractionDigits: 1 });
-        return isCompact ? (numStr + ' tỷ') : (numStr + ' tỷ đồng');
+        const numStr = val.toLocaleString(isEn ? 'en-US' : 'vi-VN', { maximumFractionDigits: 1 });
+        return isEn ? (numStr + ' bn') : (isCompact ? (numStr + ' tỷ') : (numStr + ' tỷ'));
       }
 
-      function fmtMetricLine(wPct, sPct) {
-        const wp = fmtPct(wPct);
-        const sp = fmtPct(sPct);
-        if (!wp && !sp) return '';
-        if (isCompact) {
-          return `<tspan fill="#007a3d" font-weight="700">TT: ${wp}</tspan><tspan fill="#94a3b8"> • </tspan><tspan fill="#475569" font-weight="600">TL: ${sp}</tspan>`;
-        }
-        return `<tspan fill="#007a3d" font-weight="700">Tỷ trọng: ${wp}</tspan><tspan fill="#94a3b8"> • </tspan><tspan fill="#475569" font-weight="600">Tỷ lệ: ${sp}</tspan>`;
-      }
+      // Kích thước chữ theo yêu cầu của user: giữ nguyên font size như hiện tại cả bản tiếng Anh & tiếng Việt
+      const tickerFontSize = isCompact ? '12.5' : '13';
+      const navFontSize = isCompact ? '10' : '10.5';
+      const metricFontSize = navFontSize;
 
-      const metricFontSize = isCompact ? '6.8px' : '7px';
+      const labelTT = isEn ? 'Weight' : 'TT';
+      const labelTL = isEn ? 'Holding' : 'TL';
 
       // Render 4 columns (06/2026, 07/2026, 08/2026, 09/2026)
       items.forEach(d => {
@@ -20291,45 +20304,46 @@ window.toggleCardChartView = function(chartId) {
 
         svg += `<g class="fig15-stock-group" data-ticker="${d.ticker}" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')" onmouseleave="hideFig15Hover()">`;
 
+        // Helper render column node: TT và TL đặt kế bên nhau trên 1 hàng, font-size giữ nguyên (10 - 10.5px)
+        function renderNode(colX, yVal, periodKey, wPct, sPct, navVal) {
+          const colLabel = periodKey === 't6' ? '06/2026' : (periodKey === 't7' ? '07/2026' : (periodKey === 't8' ? '08/2026' : '09/2026'));
+          const tipText = isEn 
+            ? `${d.ticker} (${colLabel}): ${fmtNav(navVal)} | Weight: ${fmtPct(wPct)} | Holding: ${fmtPct(sPct)}`
+            : `${d.ticker} (${colLabel}): ${fmtNav(navVal)} | Tỷ trọng (TT): ${fmtPct(wPct)} | Tỷ lệ (TL): ${fmtPct(sPct)}`;
+          
+          const wp = fmtPct(wPct);
+          const sp = fmtPct(sPct);
+          
+          let metricSvg = '';
+          if (wp && sp) {
+            metricSvg = `<text x="${colX}" y="${yVal + 11}" text-anchor="middle" font-size="${metricFontSize}" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round;"><tspan fill="#007a3d" font-weight="700">${labelTT}: ${wp}</tspan><tspan fill="#94a3b8" font-weight="600"> • </tspan><tspan fill="#475569" font-weight="700">${labelTL}: ${sp}</tspan></text>`;
+          } else if (wp) {
+            metricSvg = `<text x="${colX}" y="${yVal + 11}" text-anchor="middle" font-size="${metricFontSize}" font-weight="700" fill="#007a3d" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round;">${labelTT}: ${wp}</text>`;
+          } else if (sp) {
+            metricSvg = `<text x="${colX}" y="${yVal + 11}" text-anchor="middle" font-size="${metricFontSize}" font-weight="700" fill="#475569" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round;">${labelTL}: ${sp}</text>`;
+          }
+
+          return `
+            <g class="fig15-node" style="cursor: pointer;" title="${tipText}" onmouseenter="showFig15Hover('${d.ticker}', event, '${periodKey}')" onclick="if(window.openStockModal) window.openStockModal('${d.ticker}', 'hold')">
+              <rect x="${colX - textPad}" y="${yVal - 26}" width="${textPad * 2}" height="42" fill="transparent"/>
+              <text x="${colX}" y="${yVal - 14}" text-anchor="middle" font-size="${tickerFontSize}" font-weight="800" fill="${d.color}" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round;">${d.ticker}</text>
+              <text x="${colX}" y="${yVal - 1}" text-anchor="middle" font-size="${navFontSize}" font-weight="700" fill="#0f172a" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3.5px; stroke-linejoin: round;">${fmtNav(navVal)}</text>
+              ${metricSvg}
+            </g>
+          `;
+        }
+
         // Cột 1 (06/2026)
-        svg += `
-          <g class="fig15-node" style="cursor: pointer;" title="${d.ticker} (06/2026): ${fmtNav(d.t6 ? d.t6.nav : null)} | Tỷ trọng: ${fmtPct(wPct6)} | Tỷ lệ: ${fmtPct(sPct6)}" onmouseenter="showFig15Hover('${d.ticker}', event, 't6')" onclick="if(window.openStockModal) window.openStockModal('${d.ticker}', 'hold')">
-            <rect x="${c1X - textPad}" y="${y0 - 16}" width="${textPad * 2}" height="33" fill="transparent"/>
-            <text x="${c1X}" y="${y0 - 8}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${d.color}" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${d.ticker}</text>
-            <text x="${c1X}" y="${y0 + 3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0f172a" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtNav(d.t6 ? d.t6.nav : null)}</text>
-            <text x="${c1X}" y="${y0 + 14}" text-anchor="middle" font-size="${metricFontSize}" font-weight="600" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtMetricLine(wPct6, sPct6)}</text>
-          </g>
-        `;
+        svg += renderNode(c1X, y0, 't6', wPct6, sPct6, d.t6 ? d.t6.nav : null);
 
         // Cột 2 (07/2026)
-        svg += `
-          <g class="fig15-node" style="cursor: pointer;" title="${d.ticker} (07/2026): ${fmtNav(d.t7 ? d.t7.nav : null)} | Tỷ trọng: ${fmtPct(wPct7)} | Tỷ lệ: ${fmtPct(sPct7)}" onmouseenter="showFig15Hover('${d.ticker}', event, 't7')" onclick="if(window.openStockModal) window.openStockModal('${d.ticker}', 'hold')">
-            <rect x="${c2X - textPad}" y="${y1 - 16}" width="${textPad * 2}" height="33" fill="transparent"/>
-            <text x="${c2X}" y="${y1 - 8}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${d.color}" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${d.ticker}</text>
-            <text x="${c2X}" y="${y1 + 3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0f172a" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtNav(d.t7 ? d.t7.nav : null)}</text>
-            <text x="${c2X}" y="${y1 + 14}" text-anchor="middle" font-size="${metricFontSize}" font-weight="600" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtMetricLine(wPct7, sPct7)}</text>
-          </g>
-        `;
+        svg += renderNode(c2X, y1, 't7', wPct7, sPct7, d.t7 ? d.t7.nav : null);
 
         // Cột 3 (08/2026)
-        svg += `
-          <g class="fig15-node" style="cursor: pointer;" title="${d.ticker} (08/2026): ${fmtNav(d.t8 ? d.t8.nav : null)} | Tỷ trọng: ${fmtPct(wPct8)} | Tỷ lệ: ${fmtPct(sPct8)}" onmouseenter="showFig15Hover('${d.ticker}', event, 't8')" onclick="if(window.openStockModal) window.openStockModal('${d.ticker}', 'hold')">
-            <rect x="${c3X - textPad}" y="${y2 - 16}" width="${textPad * 2}" height="33" fill="transparent"/>
-            <text x="${c3X}" y="${y2 - 8}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${d.color}" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${d.ticker}</text>
-            <text x="${c3X}" y="${y2 + 3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0f172a" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtNav(d.t8 ? d.t8.nav : null)}</text>
-            <text x="${c3X}" y="${y2 + 14}" text-anchor="middle" font-size="${metricFontSize}" font-weight="600" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtMetricLine(wPct8, sPct8)}</text>
-          </g>
-        `;
+        svg += renderNode(c3X, y2, 't8', wPct8, sPct8, d.t8 ? d.t8.nav : null);
 
         // Cột 4 (09/2026)
-        svg += `
-          <g class="fig15-node" style="cursor: pointer;" title="${d.ticker} (09/2026): ${fmtNav(d.t9 ? d.t9.nav : null)} | Tỷ trọng: ${fmtPct(wPct9)} | Tỷ lệ: ${fmtPct(sPct9)}" onmouseenter="showFig15Hover('${d.ticker}', event, 't9')" onclick="if(window.openStockModal) window.openStockModal('${d.ticker}', 'hold')">
-            <rect x="${c4X - textPad}" y="${y3 - 16}" width="${textPad * 2}" height="33" fill="transparent"/>
-            <text x="${c4X}" y="${y3 - 8}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${d.color}" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${d.ticker}</text>
-            <text x="${c4X}" y="${y3 + 3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0f172a" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtNav(d.t9 ? d.t9.nav : null)}</text>
-            <text x="${c4X}" y="${y3 + 14}" text-anchor="middle" font-size="${metricFontSize}" font-weight="600" font-family="'Segoe UI', sans-serif" style="paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round;">${fmtMetricLine(wPct9, sPct9)}</text>
-          </g>
-        `;
+        svg += renderNode(c4X, y3, 't9', wPct9, sPct9, d.t9 ? d.t9.nav : null);
 
         svg += `</g>`;
       });
@@ -22192,7 +22206,7 @@ window.toggleCardChartView = function(chartId) {
         const totMomColor = totMom > 0 ? '#007a3d' : (totMom < 0 ? '#eb5454' : '#64748b');
         tfoot.innerHTML = `
           <tr>
-            <td style="text-align: center; padding: 5px 4px; color: #1e293b;">TỔNG CỘNG</td>
+            <td style="text-align: center; padding: 5px 4px; color: #1e293b;">${(window.currentLang === "en" ? "TOTAL" : "TỔNG CỘNG")}</td>
             <td style="text-align: right; padding: 5px 6px; font-family: monospace; font-size: 10px; font-weight: 700; color: #007a3d;">+${totIn.toLocaleString('vi-VN', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
             <td style="text-align: right; padding: 5px 6px; font-family: monospace; font-size: 10px; font-weight: 700; color: #eb5454;">-${totOut.toLocaleString('vi-VN', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
             <td style="text-align: right; padding: 5px 6px; font-family: monospace; font-size: 10px; font-weight: 800; color: ${totNetColor};">${totNetSign}${totNet.toLocaleString('vi-VN', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
@@ -23825,11 +23839,46 @@ setTimeout(function() {
 
     
     // =========================================================================
-    // HỆ THỐNG DỊCH THUẬT TOÀN DIỆN 100% TIẾNG ANH / TIẾNG VIỆT
+    // HỆ THỐNG ĐỔI NGÔN NGỮ (VI <-> EN)
     // =========================================================================
     window.currentLang = 'vi';
-    window.DICT_VI_TO_EN = {"Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam": "Monthly Report on Investment Fund Activities in Vietnam", "Hiệu suất quỹ": "Fund Performance", "Dòng tiền": "Cash Flow", "Phân bố tài sản": "Asset Allocation", "Tỷ trọng nắm giữ": "Stock Holdings", "Ngôn ngữ:": "Language:", "BỘ LỌC DỮ LIỆU": "DATA FILTERS", "BỘ LỌC CHÍNH": "MAIN FILTERS", "Loại hình quỹ": "Fund Strategy", "Cấu trúc quỹ": "Fund Structure", "Chiến lược đầu tư": "Fund Strategy", "All loại quỹ (4)": "All Fund Types (4)", "All loại quỹ": "All Fund Types", "Chưa chọn loại quỹ nào": "No fund type selected", "Quỹ Cổ phiếu & ETF": "Equity & ETF Funds", "Quỹ Cổ phiếu": "Equity Funds", "Quỹ Trái phiếu": "Bond Funds", "Quỹ Cân bằng": "Balanced Funds", "Quỹ cổ phiếu": "Equity Funds", "Quỹ trái phiếu": "Bond Funds", "Quỹ cân bằng": "Balanced Funds", "Quỹ đóng": "Closed-End Fund", "Quỹ mở": "Open-End Fund", "Quỹ Đóng": "Closed-End Fund", "Quỹ Mở": "Open-End Fund", "Quỹ ETF": "ETF Fund", "Tiêu chí NAV": "NAV Criteria", "Bộ lọc theo chart": "Chart-based Filter", "Bộ lọc chi tiết từng chart": "Detailed Filter per Chart", "All quỹ": "All Funds", "Xem toàn bộ (không có bộ lọc)": "View all (unfiltered)", "Áp dụng chuẩn tất cả biểu đồ": "Apply standard across charts", "Lọc toàn bộ dữ liệu trên dashboard.": "Filter all data across dashboard.", "Lọc nhóm biểu đồ hiệu suất.": "Filter performance charts.", "Lọc riêng bảng Dòng tiền Mua/Bán.": "Filter cash flow tables.", "Kỳ báo cáo": "Reporting Period", "Mã cổ phiếu": "Stock Ticker", "All mã CK": "All Tickers", "Tìm quỹ...": "Search fund...", "Tìm mã CK...": "Search ticker...", "Tìm tên / mã quỹ...": "Search fund name / ticker...", "Tìm tên hoặc mã quỹ...": "Search fund name or code...", "Tìm mã CK hoặc tên DN...": "Search ticker or company name...", "Tìm mã quỹ, tên quỹ...": "Search fund code, name...", "Xóa tìm kiếm": "Clear search", "Khôi phục mặc định": "Reset Defaults", "Đang chờ nạp đủ data": "Awaiting full data", "Chế độ hiển thị: Toàn bộ danh mục quỹ (Không giới hạn tiêu chí NAV)": "Display Mode: Full Fund Universe (Unfiltered NAV criteria)", "Dữ liệu chi tiết": "Detailed Data", "Xuất dữ liệu gốc ra file Excel": "Export raw data to Excel", "Tùy chọn": "Options", "Xem theo Loại hình quỹ": "View by Fund Strategy", "Xem theo Cấu trúc quỹ": "View by Fund Structure", "Tên quỹ": "Fund Name", "Hiệu suất 1M": "1M Return", "Hiệu suất YTD": "YTD Return", "So với VNINDEX": "vs VNINDEX", "Chỉ số VNINDEX": "VNINDEX Benchmark", "— (Mốc so sánh)": "— (Benchmark)", "Mốc so sánh": "Benchmark", "Lãi suất tiền gửi 12 tháng": "12-Month Deposit Rate", "Dòng tiền Mua & Bán theo nhóm ngành": "Cash Flow by Industry Sector", "Dòng tiền theo Từng Mã CK": "Cash Flow by Stock Ticker", "Dòng tiền theo Từng Quỹ": "Cash Flow by Fund", "Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)": "Inflow, Outflow & Net Flow (Bil VND)", "Nhóm ngành": "Industry Sector", "Tiền vào": "Inflow", "Tiền ra": "Outflow", "Ròng (Net)": "Net Flow", "MoM": "MoM", "Mã CK": "Ticker", "Mã CP": "Ticker", "Lũy kế YTD": "YTD Cum.", "Số quỹ GD": "Trading Funds", "Mã Quỹ": "Fund Code", "Mã quỹ": "Fund Code", "Inflow / Outflow": "Inflow / Outflow", "(Tỷ VNĐ)": "(Bil VND)", "Tiền mặt": "Cash", "Cổ phiếu": "Stocks", "Trái phiếu": "Bonds", "Thay đổi Inflow / Outflow": "Inflow / Outflow Change", "Giá trị": "Value", "TỔNG CỘNG": "TOTAL", "TỔNG": "TOTAL", "Tỷ lệ Tiền mặt & Biến động Phân bổ các Quỹ Mở": "Open-Ended Funds Cash Ratio & Allocation Changes", "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ": "Cash Allocation Increase / Decrease Distribution by Fund", "Phân bổ Biến động Tỷ trọng Tiền mặt & Tỷ trọng Tiền mặt TB": "Distribution of Fund Cash Ratio Changes & Average Cash Allocation", "Các Quỹ Mở Cổ phiếu Giảm Tỷ trọng Tiền mặt": "Open-Ended Equity Funds with Decreased Cash Ratio", "Thống kê Tiền mặt & Biến động theo Quỹ": "Fund Cash Holdings, Allocation Ratio & Monthly Variations", "Quỹ tăng tiền mặt": "Funds Increasing Cash", "Quỹ giảm tiền mặt": "Funds Decreasing Cash", "Tăng TM": "Increase Cash", "Giảm TM": "Decrease Cash", "All loại quỹ (107 quỹ)": "All Fund Types (107 funds)", "── Theo Loại hình quỹ ──": "── By Fund Structure ──", "── Theo Chiến lược đầu tư ──": "── By Investment Strategy ──", "Quỹ mở (83 quỹ)": "Open-End Fund (83 funds)", "Quỹ ETF (21 quỹ)": "ETF Fund (21 funds)", "Quỹ đóng (3 quỹ)": "Closed-End Fund (3 funds)", "Quỹ Cổ phiếu (66 quỹ)": "Equity Fund (66 funds)", "Quỹ Trái phiếu (28 quỹ)": "Bond Fund (28 funds)", "Quỹ Cân bằng (13 quỹ)": "Balanced Fund (13 funds)", "Chọn tất cả": "Select All", "Bỏ chọn": "Deselect All", "Thay đổi": "Change", "Tháng hiện tại (T9/2026)": "Current Month (Sep 2026)", "Tháng trước (T8/2026)": "Previous Month (Aug 2026)", "Biến động Tháng 9 so với Tháng 8": "Change Sep vs Aug", "Tỷ trọng tiền mặt/NAV (%)": "Cash/NAV Ratio (%)", "Tỷ trọng Tiền mặt/NAV (%)": "Cash/NAV Ratio (%)", "Giá trị Mua & Bán Ròng theo Ngành": "Net Buying & Selling Value by Industry Sector", "Top 10 Cổ phiếu Mua & Bán Ròng nhiều nhất theo Giá trị": "Top 10 Net-Bought & Net-Sold Stocks by Trading Value", "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền CP": "Top 10 Stocks Portfolio Weight (% NAV) & Stock Cash Flow Explorer", "Bảng Xếp hạng Top Cổ phiếu, Tổng Giá trị & Tỷ trọng Danh mục": "Top Stock Holdings Ranking, Total Value & Portfolio Weight", "Biểu đồ Xếp hạng Top 5 Cổ phiếu (Bump Chart)": "Top 5 Stocks Bump Chart", "Top 10 mua ròng (triệu CP)": "Top 10 Net Bought (mil shares)", "Top 10 bán ròng (triệu CP)": "Top 10 Net Sold (mil shares)", "Toàn bộ": "All", "Khối lượng Mua/Bán CP": "Trading Volume (Shares)", "Giá trị Mua/Bán CP": "Trading Value (Bil VND)", "Tỷ trọng toàn danh mục": "Portfolio Weight", "Tỷ lệ nắm giữ TB": "Avg. Holding Ratio", "Tổng giá trị": "Total Value", "Quỹ nắm": "Holding Funds", "Tên / Mã quỹ": "Fund Name / Code", "Giá trị (tỷ đồng)": "Value (Bil VND)", "Giá trị (tỷ đ)": "Value (Bil VND)", "T9": "Sep", "T8": "Aug", "T7": "Jul", "T6": "Jun", "DANH SÁCH QUỸ": "FUND LIST", "Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X": "September 2026 Data · Source: FiinPro-X", "Đủ dữ liệu": "Full Data", "Thiếu dữ liệu": "Missing Data", "Tên quỹ (Bấm để xem danh mục)": "Fund Name (Click to view portfolio)", "Có tháng 8 không": "Aug Data Available", "Ghi chú: Bảng có thể bấm vào tên quỹ để xem thông tin danh mục": "Note: Click on fund name to view portfolio details", "Quay lại danh sách quỹ": "Back to fund list", "Danh mục Quỹ": "Fund Portfolio", "Danh mục đầu tư chi tiết Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X": "Detailed Investment Portfolio September 2026 · Source: FiinPro-X", "Chưa công bố danh mục Tháng 9/2026": "Portfolio for Sep 2026 Not Disclosed", "Quỹ này hiện chưa có dữ liệu danh mục đầu tư kỳ Tháng 9/2026 trên nền tảng FiinPro-X.": "This fund currently has no portfolio data for Sep 2026 on FiinPro-X.", "mã tài sản": "assets", "Tổng giá trị:": "Total value:", "Cổ phiếu ngành:": "Industry stocks:", "Lọc trong Bảng Mã CK →": "Filter in Ticker Table →", "Tên Doanh nghiệp": "Company Name", "Tên doanh nghiệp": "Company Name", "Tên cổ phiếu": "Stock Name", "Tên doanh nghiệp / Tài sản": "Company / Asset Name", "Ngành": "Sector", "Lệnh": "Order", "Khối lượng": "Volume", "Tỷ trọng": "Weight", "Tỷ trọng TB trong danh mục:": "Avg. Portfolio Weight:", "Giá:": "Price:", "Ròng:": "Net:", "GD:": "Trades:", "quỹ giao dịch": "trading funds", "lượt giao dịch": "transactions", "Quỹ mua": "Buying Funds", "Quỹ bán": "Selling Funds", "Di chuột ra ngoài hoặc bấm ESC để đóng": "Hover out or press ESC to close", "Bấm ESC hoặc nhấp ra ngoài để đóng": "Press ESC or click outside to close", "Đóng cửa sổ (Esc)": "Close window (Esc)", "Đóng bảng (Esc)": "Close panel (Esc)", "Đóng bảng": "Close panel", "Không tìm thấy quỹ nào khớp với từ khóa tìm kiếm.": "No funds match your search criteria.", "Không tìm thấy mã tài sản nào khớp với từ khóa tìm kiếm.": "No assets match your search criteria.", "Không tìm thấy mã cổ phiếu nào phù hợp.": "No stocks match your search criteria.", "Không có quỹ nào phù hợp.": "No matching funds.", "Không có quỹ khớp": "No matching funds", "Ngân hàng": "Banking", "Bất động sản": "Real Estate", "Thực phẩm và đồ uống": "Food & Beverage", "Dịch vụ tài chính": "Financial Services", "Công nghệ Thông tin": "Information Technology", "Dầu khí": "Oil & Gas", "Hàng & Dịch vụ Công nghiệp": "Industrial Goods & Services", "Ô tô và phụ tùng": "Automobiles & Parts", "Hóa chất": "Chemicals", "Xây dựng và Vật liệu": "Construction & Materials", "Hàng cá nhân & Gia dụng": "Personal & Household Goods", "Bán lẻ": "Retail", "Bảo hiểm": "Insurance", "Du lịch và Giải trí": "Travel & Leisure", "Tài nguyên Cơ bản": "Basic Resources", "Điện, nước & xăng dầu khí đốt": "Utilities", "Y tế": "Healthcare", "Viễn thông": "Telecommunications", "Truyền thông": "Media", "Trái phiếu doanh nghiệp": "Corporate Bonds", "Chứng chỉ quỹ": "Fund Certificates", "Khác": "Others", "Tháng 9/2026": "September 2026", "Tháng 8/2026": "August 2026", "Tháng 7/2026": "July 2026", "Tháng 6/2026": "June 2026", "Tháng 5/2026": "May 2026", "Tháng 4/2026": "April 2026", "Tháng 3/2026": "March 2026", "Tháng 2/2026": "February 2026", "Tháng 1/2026": "January 2026"};
-    window.DICT_EN_TO_VI = {"Monthly Report on Investment Fund Activities in Vietnam": "Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam", "Fund Performance": "Hiệu suất quỹ", "Cash Flow": "Dòng tiền", "Asset Allocation": "Phân bố tài sản", "Stock Holdings": "Tỷ trọng nắm giữ", "Language:": "Ngôn ngữ:", "DATA FILTERS": "BỘ LỌC DỮ LIỆU", "MAIN FILTERS": "BỘ LỌC CHÍNH", "Fund Strategy": "Chiến lược đầu tư", "Fund Structure": "Cấu trúc quỹ", "All Fund Types (4)": "All loại quỹ (4)", "All Fund Types": "All loại quỹ", "No fund type selected": "Chưa chọn loại quỹ nào", "Equity & ETF Funds": "Quỹ Cổ phiếu & ETF", "Equity Funds": "Quỹ cổ phiếu", "Bond Funds": "Quỹ trái phiếu", "Balanced Funds": "Quỹ cân bằng", "Closed-End Fund": "Quỹ Đóng", "Open-End Fund": "Quỹ Mở", "ETF Fund": "Quỹ ETF", "NAV Criteria": "Tiêu chí NAV", "Chart-based Filter": "Bộ lọc theo chart", "Detailed Filter per Chart": "Bộ lọc chi tiết từng chart", "All Funds": "All quỹ", "View all (unfiltered)": "Xem toàn bộ (không có bộ lọc)", "Apply standard across charts": "Áp dụng chuẩn tất cả biểu đồ", "Filter all data across dashboard.": "Lọc toàn bộ dữ liệu trên dashboard.", "Filter performance charts.": "Lọc nhóm biểu đồ hiệu suất.", "Filter cash flow tables.": "Lọc riêng bảng Dòng tiền Mua/Bán.", "Reporting Period": "Kỳ báo cáo", "Stock Ticker": "Mã cổ phiếu", "All Tickers": "All mã CK", "Search fund...": "Tìm quỹ...", "Search ticker...": "Tìm mã CK...", "Search fund name / ticker...": "Tìm tên / mã quỹ...", "Search fund name or code...": "Tìm tên hoặc mã quỹ...", "Search ticker or company name...": "Tìm mã CK hoặc tên DN...", "Search fund code, name...": "Tìm mã quỹ, tên quỹ...", "Clear search": "Xóa tìm kiếm", "Reset Defaults": "Khôi phục mặc định", "Awaiting full data": "Đang chờ nạp đủ data", "Display Mode: Full Fund Universe (Unfiltered NAV criteria)": "Chế độ hiển thị: Toàn bộ danh mục quỹ (Không giới hạn tiêu chí NAV)", "Detailed Data": "Dữ liệu chi tiết", "Export raw data to Excel": "Xuất dữ liệu gốc ra file Excel", "Options": "Tùy chọn", "View by Fund Strategy": "Xem theo Loại hình quỹ", "View by Fund Structure": "Xem theo Cấu trúc quỹ", "Fund Name": "Tên quỹ", "1M Return": "Hiệu suất 1M", "YTD Return": "Hiệu suất YTD", "vs VNINDEX": "So với VNINDEX", "VNINDEX Benchmark": "Chỉ số VNINDEX", "— (Benchmark)": "— (Mốc so sánh)", "Benchmark": "Mốc so sánh", "12-Month Deposit Rate": "Lãi suất tiền gửi 12 tháng", "Cash Flow by Industry Sector": "Dòng tiền Mua & Bán theo nhóm ngành", "Cash Flow by Stock Ticker": "Dòng tiền theo Từng Mã CK", "Cash Flow by Fund": "Dòng tiền theo Từng Quỹ", "Inflow, Outflow & Net Flow (Bil VND)": "Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)", "Industry Sector": "Nhóm ngành", "Inflow": "Tiền vào", "Outflow": "Tiền ra", "Net Flow": "Ròng (Net)", "MoM": "MoM", "Ticker": "Mã CP", "YTD Cum.": "Lũy kế YTD", "Trading Funds": "Số quỹ GD", "Fund Code": "Mã quỹ", "Inflow / Outflow": "Inflow / Outflow", "(Bil VND)": "(Tỷ VNĐ)", "Cash": "Tiền mặt", "Stocks": "Cổ phiếu", "Bonds": "Trái phiếu", "Inflow / Outflow Change": "Thay đổi Inflow / Outflow", "Value": "Giá trị", "TOTAL": "TỔNG", "Open-Ended Funds Cash Ratio & Allocation Changes": "Tỷ lệ Tiền mặt & Biến động Phân bổ các Quỹ Mở", "Cash Allocation Increase / Decrease Distribution by Fund": "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ", "Distribution of Fund Cash Ratio Changes & Average Cash Allocation": "Phân bổ Biến động Tỷ trọng Tiền mặt & Tỷ trọng Tiền mặt TB", "Open-Ended Equity Funds with Decreased Cash Ratio": "Các Quỹ Mở Cổ phiếu Giảm Tỷ trọng Tiền mặt", "Fund Cash Holdings, Allocation Ratio & Monthly Variations": "Thống kê Tiền mặt & Biến động theo Quỹ", "Funds Increasing Cash": "Quỹ tăng tiền mặt", "Funds Decreasing Cash": "Quỹ giảm tiền mặt", "Increase Cash": "Tăng TM", "Decrease Cash": "Giảm TM", "All Fund Types (107 funds)": "All loại quỹ (107 quỹ)", "── By Fund Structure ──": "── Theo Loại hình quỹ ──", "── By Investment Strategy ──": "── Theo Chiến lược đầu tư ──", "Open-End Fund (83 funds)": "Quỹ mở (83 quỹ)", "ETF Fund (21 funds)": "Quỹ ETF (21 quỹ)", "Closed-End Fund (3 funds)": "Quỹ đóng (3 quỹ)", "Equity Fund (66 funds)": "Quỹ Cổ phiếu (66 quỹ)", "Bond Fund (28 funds)": "Quỹ Trái phiếu (28 quỹ)", "Balanced Fund (13 funds)": "Quỹ Cân bằng (13 quỹ)", "Select All": "Chọn tất cả", "Deselect All": "Bỏ chọn", "Change": "Thay đổi", "Current Month (Sep 2026)": "Tháng hiện tại (T9/2026)", "Previous Month (Aug 2026)": "Tháng trước (T8/2026)", "Change Sep vs Aug": "Biến động Tháng 9 so với Tháng 8", "Cash/NAV Ratio (%)": "Tỷ trọng Tiền mặt/NAV (%)", "Net Buying & Selling Value by Industry Sector": "Giá trị Mua & Bán Ròng theo Ngành", "Top 10 Net-Bought & Net-Sold Stocks by Trading Value": "Top 10 Cổ phiếu Mua & Bán Ròng nhiều nhất theo Giá trị", "Top 10 Stocks Portfolio Weight (% NAV) & Stock Cash Flow Explorer": "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền CP", "Top Stock Holdings Ranking, Total Value & Portfolio Weight": "Bảng Xếp hạng Top Cổ phiếu, Tổng Giá trị & Tỷ trọng Danh mục", "Top 5 Stocks Bump Chart": "Biểu đồ Xếp hạng Top 5 Cổ phiếu (Bump Chart)", "Top 10 Net Bought (mil shares)": "Top 10 mua ròng (triệu CP)", "Top 10 Net Sold (mil shares)": "Top 10 bán ròng (triệu CP)", "All": "Toàn bộ", "Trading Volume (Shares)": "Khối lượng Mua/Bán CP", "Trading Value (Bil VND)": "Giá trị Mua/Bán CP", "Portfolio Weight": "Tỷ trọng toàn danh mục", "Avg. Holding Ratio": "Tỷ lệ nắm giữ TB", "Total Value": "Tổng giá trị", "Holding Funds": "Quỹ nắm", "Fund Name / Code": "Tên / Mã quỹ", "Value (Bil VND)": "Giá trị (tỷ đ)", "Sep": "T9", "Aug": "T8", "Jul": "T7", "Jun": "T6", "FUND LIST": "DANH SÁCH QUỸ", "September 2026 Data · Source: FiinPro-X": "Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X", "Full Data": "Đủ dữ liệu", "Missing Data": "Thiếu dữ liệu", "Fund Name (Click to view portfolio)": "Tên quỹ (Bấm để xem danh mục)", "Aug Data Available": "Có tháng 8 không", "Note: Click on fund name to view portfolio details": "Ghi chú: Bảng có thể bấm vào tên quỹ để xem thông tin danh mục", "Back to fund list": "Quay lại danh sách quỹ", "Fund Portfolio": "Danh mục Quỹ", "Detailed Investment Portfolio September 2026 · Source: FiinPro-X": "Danh mục đầu tư chi tiết Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X", "Portfolio for Sep 2026 Not Disclosed": "Chưa công bố danh mục Tháng 9/2026", "This fund currently has no portfolio data for Sep 2026 on FiinPro-X.": "Quỹ này hiện chưa có dữ liệu danh mục đầu tư kỳ Tháng 9/2026 trên nền tảng FiinPro-X.", "assets": "mã tài sản", "Total value:": "Tổng giá trị:", "Industry stocks:": "Cổ phiếu ngành:", "Filter in Ticker Table →": "Lọc trong Bảng Mã CK →", "Company Name": "Tên doanh nghiệp", "Stock Name": "Tên cổ phiếu", "Company / Asset Name": "Tên doanh nghiệp / Tài sản", "Sector": "Ngành", "Order": "Lệnh", "Volume": "Khối lượng", "Weight": "Tỷ trọng", "Avg. Portfolio Weight:": "Tỷ trọng TB trong danh mục:", "Price:": "Giá:", "Net:": "Ròng:", "Trades:": "GD:", "trading funds": "quỹ giao dịch", "transactions": "lượt giao dịch", "Buying Funds": "Quỹ mua", "Selling Funds": "Quỹ bán", "Hover out or press ESC to close": "Di chuột ra ngoài hoặc bấm ESC để đóng", "Press ESC or click outside to close": "Bấm ESC hoặc nhấp ra ngoài để đóng", "Close window (Esc)": "Đóng cửa sổ (Esc)", "Close panel (Esc)": "Đóng bảng (Esc)", "Close panel": "Đóng bảng", "No funds match your search criteria.": "Không tìm thấy quỹ nào khớp với từ khóa tìm kiếm.", "No assets match your search criteria.": "Không tìm thấy mã tài sản nào khớp với từ khóa tìm kiếm.", "No stocks match your search criteria.": "Không tìm thấy mã cổ phiếu nào phù hợp.", "No matching funds.": "Không có quỹ nào phù hợp.", "No matching funds": "Không có quỹ khớp", "Banking": "Ngân hàng", "Real Estate": "Bất động sản", "Food & Beverage": "Thực phẩm và đồ uống", "Financial Services": "Dịch vụ tài chính", "Information Technology": "Công nghệ Thông tin", "Oil & Gas": "Dầu khí", "Industrial Goods & Services": "Hàng & Dịch vụ Công nghiệp", "Automobiles & Parts": "Ô tô và phụ tùng", "Chemicals": "Hóa chất", "Construction & Materials": "Xây dựng và Vật liệu", "Personal & Household Goods": "Hàng cá nhân & Gia dụng", "Retail": "Bán lẻ", "Insurance": "Bảo hiểm", "Travel & Leisure": "Du lịch và Giải trí", "Basic Resources": "Tài nguyên Cơ bản", "Utilities": "Điện, nước & xăng dầu khí đốt", "Healthcare": "Y tế", "Telecommunications": "Viễn thông", "Media": "Truyền thông", "Corporate Bonds": "Trái phiếu doanh nghiệp", "Fund Certificates": "Chứng chỉ quỹ", "Others": "Khác", "September 2026": "Tháng 9/2026", "August 2026": "Tháng 8/2026", "July 2026": "Tháng 7/2026", "June 2026": "Tháng 6/2026", "May 2026": "Tháng 5/2026", "April 2026": "Tháng 4/2026", "March 2026": "Tháng 3/2026", "February 2026": "Tháng 2/2026", "January 2026": "Tháng 1/2026"};
+
+    window.SECTOR_MAP_EN = {
+      'Ngân hàng': 'Banks',
+      'Tài nguyên Cơ bản': 'Basic Resources',
+      'Hàng & Dịch vụ Công nghiệp': 'Industrial Goods & Services',
+      'Bất động sản': 'Real Estate',
+      'Dịch vụ tài chính': 'Financial Services',
+      'Thực phẩm và đồ uống': 'Food & Beverage',
+      'Bán lẻ': 'Retail',
+      'Trái phiếu doanh nghiệp': 'Corporate Bonds',
+      'Bảo hiểm': 'Insurance',
+      'Xây dựng và Vật liệu': 'Construction & Materials',
+      'Dầu khí': 'Oil & Gas',
+      'Điện, nước & xăng dầu khí đốt': 'Utilities',
+      'Công nghệ Thông tin': 'Information Technology',
+      'Hóa chất': 'Chemicals',
+      'Y tế': 'Health Care',
+      'Ô tô và phụ tùng': 'Automobiles & Parts',
+      'Viễn thông': 'Telecommunications',
+      'Du lịch và Giải trí': 'Travel & Leisure',
+      'Hàng cá nhân & Gia dụng': 'Personal & Household Goods',
+      'Truyền thông': 'Media'
+    };
+    window.SECTOR_MAP_VI = {};
+    for (var k in window.SECTOR_MAP_EN) {
+      window.SECTOR_MAP_VI[window.SECTOR_MAP_EN[k]] = k;
+    }
+
+    window.getSectorName = function(sec) {
+      if (window.currentLang === 'en') {
+        return window.SECTOR_MAP_EN[sec] || sec;
+      }
+      return window.SECTOR_MAP_VI[sec] || sec;
+    };
+
+    window.DICT_VI_TO_EN = {"Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam": "Monthly Report on Investment Fund Activities in Vietnam", "Hiệu suất quỹ": "Fund Performance", "Dòng tiền": "Cash Flow", "Phân bố tài sản": "Asset Allocation", "Tỷ trọng nắm giữ": "Stock Holdings", "Ngôn ngữ:": "Language:", "BỘ LỌC DỮ LIỆU": "DATA FILTERS", "BỘ LỌC CHÍNH": "MAIN FILTERS", "Loại hình quỹ": "Fund Strategy", "Cấu trúc quỹ": "Fund Structure", "Chiến lược đầu tư": "Fund Strategy", "All loại quỹ (4)": "All Fund Types (4)", "All loại quỹ": "All Fund Types", "Chưa chọn loại quỹ nào": "No fund type selected", "Quỹ Cổ phiếu & ETF": "Equity & ETF Funds", "Quỹ Cổ phiếu": "Equity Funds", "Quỹ Trái phiếu": "Bond Funds", "Quỹ Cân bằng": "Balanced Funds", "Quỹ cổ phiếu": "Equity Funds", "Quỹ trái phiếu": "Bond Funds", "Quỹ cân bằng": "Balanced Funds", "Quỹ đóng": "Closed-End Fund", "Quỹ mở": "Open-End Fund", "Quỹ Đóng": "Closed-End Fund", "Quỹ Mở": "Open-End Fund", "Quỹ ETF": "ETF Fund", "Tiêu chí NAV": "NAV Criteria", "Bộ lọc theo chart": "Chart-based Filter", "Bộ lọc chi tiết từng chart": "Detailed Filter per Chart", "All quỹ": "All Funds", "Xem toàn bộ (không có bộ lọc)": "View all (unfiltered)", "Áp dụng chuẩn tất cả biểu đồ": "Apply standard across charts", "Lọc toàn bộ dữ liệu trên dashboard.": "Filter all data across dashboard.", "Lọc nhóm biểu đồ hiệu suất.": "Filter performance charts.", "Lọc riêng bảng Dòng tiền Mua/Bán.": "Filter cash flow tables.", "Kỳ báo cáo": "Reporting Period", "Mã cổ phiếu": "Stock Ticker", "All mã CK": "All Tickers", "Tìm quỹ...": "Search fund...", "Tìm mã CK...": "Search ticker...", "Tìm tên / mã quỹ...": "Search fund name / ticker...", "Tìm tên hoặc mã quỹ...": "Search fund name or code...", "Tìm mã CK hoặc tên DN...": "Search ticker or company name...", "Tìm mã quỹ, tên quỹ...": "Search fund code, name...", "Xóa tìm kiếm": "Clear search", "Khôi phục mặc định": "Reset Default", "Đang chờ nạp đủ data": "Awaiting full data", "Chế độ hiển thị: Toàn bộ danh mục quỹ (Không giới hạn tiêu chí NAV)": "Display Mode: Full Fund Universe (Unfiltered NAV criteria)", "Dữ liệu chi tiết": "Detailed Data", "Xuất dữ liệu gốc ra file Excel": "Export raw data to Excel", "Tùy chọn": "Options", "Xem theo Loại hình quỹ": "View by Fund Strategy", "Xem theo Cấu trúc quỹ": "View by Fund Structure", "Tên quỹ": "Fund Name", "Hiệu suất 1M": "1M Return", "Hiệu suất YTD": "YTD Return", "So với VNINDEX": "vs VNINDEX", "Chỉ số VNINDEX": "VNINDEX Benchmark", "— (Mốc so sánh)": "— (Benchmark)", "Mốc so sánh": "Benchmark", "Lãi suất tiền gửi 12 tháng": "12-Month Deposit Rate", "Dòng tiền Mua & Bán theo nhóm ngành": "Cash Flow by Industry Sector", "Dòng tiền theo Từng Mã CK": "Cash Flow by Stock Ticker", "Dòng tiền theo Từng Quỹ": "Cash Flow by Fund", "Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)": "Inflow, Outflow & Net Flow (Bil VND)", "Nhóm ngành": "Industry Sector", "Tiền vào": "Inflow", "Tiền ra": "Outflow", "Ròng (Net)": "Net Flow", "MoM": "MoM", "Mã CK": "Ticker", "Mã CP": "Ticker", "Lũy kế YTD": "YTD Cum.", "Số quỹ GD": "Trading Funds", "Mã Quỹ": "Fund Code", "Mã quỹ": "Fund Code", "Inflow / Outflow": "Inflow / Outflow", "(Tỷ VNĐ)": "(Bil VND)", "Tiền mặt": "Cash", "Cổ phiếu": "Stocks", "Trái phiếu": "Bonds", "Thay đổi Inflow / Outflow": "Inflow/Outflow Change", "Giá trị": "Value", "TỔNG CỘNG": "TOTAL", "TỔNG": "TOTAL", "Tỷ lệ Tiền mặt & Biến động Phân bổ các Quỹ Mở": "Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ", "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ": "Distribution of Cash Increases / Decreases by Fund", "Phân bổ Biến động Tỷ trọng Tiền mặt & Tỷ trọng Tiền mặt TB": "Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB", "Các Quỹ Mở Cổ phiếu Giảm Tỷ trọng Tiền mặt": "Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm", "Thống kê Tiền mặt & Biến động theo Quỹ": "Thống kê Tiền mặt & Biến động theo Quỹ", "Quỹ tăng tiền mặt": "Funds Increasing Cash", "Quỹ giảm tiền mặt": "Funds Decreasing Cash", "Tăng TM": "Increase Cash", "Giảm TM": "Decrease Cash", "All loại quỹ (107 quỹ)": "All Fund Types (107 funds)", "── Theo Loại hình quỹ ──": "── By Fund Structure ──", "── Theo Chiến lược đầu tư ──": "── By Investment Strategy ──", "Quỹ mở (83 quỹ)": "Open-End Fund (83 funds)", "Quỹ ETF (21 quỹ)": "ETF Fund (21 funds)", "Quỹ đóng (3 quỹ)": "Closed-End Fund (3 funds)", "Quỹ Cổ phiếu (66 quỹ)": "Equity Fund (66 funds)", "Quỹ Trái phiếu (28 quỹ)": "Bond Fund (28 funds)", "Quỹ Cân bằng (13 quỹ)": "Balanced Fund (13 funds)", "Chọn tất cả": "Select All", "Bỏ chọn": "Deselect All", "Thay đổi": "Change", "Tháng hiện tại (T9/2026)": "Current Month (Sep 2026)", "Tháng trước (T8/2026)": "Previous Month (Aug 2026)", "Biến động Tháng 9 so với Tháng 8": "Change Sep vs Aug", "Tỷ trọng tiền mặt/NAV (%)": "Cash/NAV Ratio (%)", "Tỷ trọng Tiền mặt/NAV (%)": "Cash/NAV Ratio (%)", "Giá trị Mua & Bán Ròng theo Ngành": "Giá trị Mua & Bán Ròng theo Nhóm Ngành", "Top 10 Cổ phiếu Mua & Bán Ròng nhiều nhất theo Giá trị": "Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD", "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền CP": "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền", "Bảng Xếp hạng Top Cổ phiếu, Tổng Giá trị & Tỷ trọng Danh mục": "Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục", "Biểu đồ Xếp hạng Top 5 Cổ phiếu (Bump Chart)": "Top 5 Stocks Bump Chart", "Top 10 mua ròng (triệu CP)": "Top 10 Net Bought (mil shares)", "Top 10 bán ròng (triệu CP)": "Top 10 Net Sold (mil shares)", "Toàn bộ": "All", "Khối lượng Mua/Bán CP": "Trading Volume (Shares)", "Giá trị Mua/Bán CP": "Trading Value (Bil VND)", "Tỷ trọng toàn danh mục": "Portfolio Weight", "Tỷ lệ nắm giữ TB": "Avg Holding Ratio", "Tổng giá trị": "Total Value", "Quỹ nắm": "Holding Funds", "Tên / Mã quỹ": "Fund Name / Code", "Giá trị (tỷ đồng)": "Value (Bil VND)", "Giá trị (tỷ đ)": "Value (Bil VND)", "T9": "Sep", "T8": "Aug", "T7": "Jul", "T6": "Jun", "DANH SÁCH QUỸ": "FUND LIST", "Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X": "September 2026 Data · Source: FiinPro-X", "Đủ dữ liệu": "Full Data", "Thiếu dữ liệu": "Missing Data", "Tên quỹ (Bấm để xem danh mục)": "Fund Name (Click to view portfolio)", "Có tháng 8 không": "Aug Data Available", "Ghi chú: Bảng có thể bấm vào tên quỹ để xem thông tin danh mục": "Note: Click on fund name to view portfolio details", "Quay lại danh sách quỹ": "Back to Fund List", "Danh mục Quỹ": "Fund Portfolio", "Danh mục đầu tư chi tiết Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X": "Detailed Investment Portfolio September 2026 · Source: FiinPro-X", "Chưa công bố danh mục Tháng 9/2026": "Portfolio for Sep 2026 Not Disclosed", "Quỹ này hiện chưa có dữ liệu danh mục đầu tư kỳ Tháng 9/2026 trên nền tảng FiinPro-X.": "This fund currently has no portfolio data for Sep 2026 on FiinPro-X.", "mã tài sản": "assets", "Tổng giá trị:": "Total value:", "Cổ phiếu ngành:": "Industry stocks:", "Lọc trong Bảng Mã CK →": "Filter in Ticker Table →", "Tên Doanh nghiệp": "Company Name", "Tên doanh nghiệp": "Company Name", "Tên cổ phiếu": "Stock Name", "Tên doanh nghiệp / Tài sản": "Company / Asset Name", "Ngành": "Sector", "Lệnh": "Order", "Khối lượng": "Volume", "Tỷ trọng": "Weight", "Tỷ trọng TB trong danh mục:": "Avg. Portfolio Weight:", "Giá:": "Price:", "Ròng:": "Net:", "GD:": "Trades:", "quỹ giao dịch": "trading funds", "lượt giao dịch": "transactions", "Quỹ mua": "Buying Funds", "Quỹ bán": "Selling Funds", "Di chuột ra ngoài hoặc bấm ESC để đóng": "Hover out or press ESC to close", "Bấm ESC hoặc nhấp ra ngoài để đóng": "Press ESC or click outside to close", "Đóng cửa sổ (Esc)": "Close window (Esc)", "Đóng bảng (Esc)": "Close panel (Esc)", "Đóng bảng": "Close panel", "Không tìm thấy quỹ nào khớp với từ khóa tìm kiếm.": "No funds match your search criteria.", "Không tìm thấy mã tài sản nào khớp với từ khóa tìm kiếm.": "No assets match your search criteria.", "Không tìm thấy mã cổ phiếu nào phù hợp.": "No stocks match your search criteria.", "Không có quỹ nào phù hợp.": "No matching funds.", "Không có quỹ khớp": "No matching funds", "Ngân hàng": "Banking", "Bất động sản": "Real Estate", "Thực phẩm và đồ uống": "Food & Beverage", "Dịch vụ tài chính": "Financial Services", "Công nghệ Thông tin": "Information Technology", "Dầu khí": "Oil & Gas", "Hàng & Dịch vụ Công nghiệp": "Industrial Goods & Services", "Ô tô và phụ tùng": "Automobiles & Parts", "Hóa chất": "Chemicals", "Xây dựng và Vật liệu": "Construction & Materials", "Hàng cá nhân & Gia dụng": "Personal & Household Goods", "Bán lẻ": "Retail", "Bảo hiểm": "Insurance", "Du lịch và Giải trí": "Travel & Leisure", "Tài nguyên Cơ bản": "Basic Resources", "Điện, nước & xăng dầu khí đốt": "Utilities", "Y tế": "Healthcare", "Viễn thông": "Telecommunications", "Truyền thông": "Media", "Trái phiếu doanh nghiệp": "Corporate Bonds", "Chứng chỉ quỹ": "Fund Certificates", "Khác": "Others", "Tháng 9/2026": "September 2026", "Tháng 8/2026": "August 2026", "Tháng 7/2026": "July 2026", "Tháng 6/2026": "June 2026", "Tháng 5/2026": "May 2026", "Tháng 4/2026": "April 2026", "Tháng 3/2026": "March 2026", "Tháng 2/2026": "February 2026", "Tháng 1/2026": "January 2026", "BÁO CÁO THEO THÁNG HOẠT ĐỘNG CÁC QUỸ ĐẦU TƯ TẠI VIỆT NAM": "MONTHLY REPORT ON INVESTMENT FUND ACTIVITIES IN VIETNAM", "Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X · Đơn vị tính: Tỷ VNĐ (trừ khi có ghi chú khác)": "September 2026 · Data Source: FiinPro-X · Unit: Bil VND (unless otherwise noted)", "Bộ lọc & Tùy chọn": "Filters & Options", "Danh sách Quỹ": "Fund List", "Toàn màn hình": "Fullscreen", "Thu nhỏ": "Exit Fullscreen", "Đặt lại tất cả": "Reset All", "Quỹ": "Fund", "Hiệu suất Quỹ Cổ phiếu": "Hiệu suất Quỹ Cổ phiếu", "Quỹ cổ phiếu có Tổng NAV ≥ 1.000 tỷ đồng — 1M vs YTD": "Equity Funds with Total NAV ≥ 1,000 bil VND — 1M vs YTD", "Bảng số liệu hiệu suất 1M vs YTD và so sánh VNINDEX": "Performance Data Table 1M vs YTD and vs VNINDEX", "Quy mô NAV & Dòng vốn theo Chiến lược Đầu tư": "Quy mô NAV & Dòng vốn theo Chiến lược Đầu tư", "Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)": "Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)", "Quy mô NAV & Dòng vốn theo Cấu trúc Quỹ": "Quy mô NAV & Dòng vốn theo Cấu trúc Quỹ", "ETF, Quỹ đóng, Quỹ mở — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)": "ETF, Quỹ đóng, Quỹ mở — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)", "Inflow (Vào), Outflow (Ra) & Ròng (tỷ đ)": "Inflow, Outflow & Net Flow (Bil VND)", "Giá trị (Tỷ VNĐ)": "Value (Bil VND)", "Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ": "Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ", "Tháng 9/2026 — Phân bổ thay đổi tiền mặt (% pt) • Đầy đủ 107 quỹ": "September 2026 — Cash Change Distribution (% pt) • Full 107 Funds", "Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB": "Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB", "T4–T9/2026 — Phân bổ thay đổi tiền mặt & tỷ lệ tiền mặt TB": "Apr–Sep 2026 — Cash Change Distribution & Avg Cash Ratio", "Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm": "Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm", "Tháng 8 vs Tháng 9/2026 — Tỷ lệ tiền mặt (%)": "August vs September 2026 — Cash Ratio (%)", "Tháng 8 vs Tháng 9/2026 — Đơn vị: Tỷ đồng & %": "August vs September 2026 — Unit: Bil VND & %", "Giá trị Mua & Bán Ròng theo Nhóm Ngành": "Giá trị Mua & Bán Ròng theo Nhóm Ngành", "T4–T9/2026 — tỷ đồng": "Apr–Sep 2026 — bil VND", "Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD": "Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD", "Tháng 9/2026 — Top 10 mua (+) & bán (-) (tỷ VNĐ)": "September 2026 — Top 10 Buy (+) & Sell (-) (bil VND)", "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền": "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền", "Tháng 9/2026 — Top 10 Tỷ lệ nắm giữ trung bình (% NAV)": "September 2026 — Top 10 Average Portfolio Weight (% NAV)", "Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục": "Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục", "06/2026 → 09/2026 — Tổng giá trị, Tỷ lệ nắm giữ & Tỷ trọng TB danh mục": "06/2026 → 09/2026 — Total Value, Holding Ratio & Avg Portfolio Weight", "Tổng giá trị (tỷ đồng)": "Total Value (bil VND)", "Tỷ trọng TB": "Avg Weight", "Tỷ VNĐ": "Bil VND", "Chi tiết Giao dịch Cổ phiếu": "Stock Transaction Details", "Chi tiết Quỹ Nắm giữ Cổ phiếu": "Fund Stock Holding Details", "Đóng": "Close", "Xuất dữ liệu ra file Excel": "Export data to Excel", "Xuất Excel": "Export Excel", "Quay lại": "Back", "Tất cả": "All", "Mua": "Buy", "Bán": "Sell", "Ròng": "Net", "Lũy kế": "Cumulative"};
+    window.DICT_EN_TO_VI = {"Monthly Report on Investment Fund Activities in Vietnam": "Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam", "Fund Performance": "Hiệu suất quỹ", "Cash Flow": "Dòng tiền", "Asset Allocation": "Phân bố tài sản", "Stock Holdings": "Tỷ trọng nắm giữ", "Language:": "Ngôn ngữ:", "DATA FILTERS": "BỘ LỌC DỮ LIỆU", "MAIN FILTERS": "BỘ LỌC CHÍNH", "Fund Strategy": "Chiến lược đầu tư", "Fund Structure": "Cấu trúc quỹ", "All Fund Types (4)": "All loại quỹ (4)", "All Fund Types": "All loại quỹ", "No fund type selected": "Chưa chọn loại quỹ nào", "Equity & ETF Funds": "Quỹ Cổ phiếu & ETF", "Equity Funds": "Quỹ cổ phiếu", "Bond Funds": "Quỹ trái phiếu", "Balanced Funds": "Quỹ cân bằng", "Closed-End Fund": "Quỹ Đóng", "Open-End Fund": "Quỹ Mở", "ETF Fund": "Quỹ ETF", "NAV Criteria": "Tiêu chí NAV", "Chart-based Filter": "Bộ lọc theo chart", "Detailed Filter per Chart": "Bộ lọc chi tiết từng chart", "All Funds": "All quỹ", "View all (unfiltered)": "Xem toàn bộ (không có bộ lọc)", "Apply standard across charts": "Áp dụng chuẩn tất cả biểu đồ", "Filter all data across dashboard.": "Lọc toàn bộ dữ liệu trên dashboard.", "Filter performance charts.": "Lọc nhóm biểu đồ hiệu suất.", "Filter cash flow tables.": "Lọc riêng bảng Dòng tiền Mua/Bán.", "Reporting Period": "Kỳ báo cáo", "Stock Ticker": "Mã cổ phiếu", "All Tickers": "All mã CK", "Search fund...": "Tìm quỹ...", "Search ticker...": "Tìm mã CK...", "Search fund name / ticker...": "Tìm tên / mã quỹ...", "Search fund name or code...": "Tìm tên hoặc mã quỹ...", "Search ticker or company name...": "Tìm mã CK hoặc tên DN...", "Search fund code, name...": "Tìm mã quỹ, tên quỹ...", "Clear search": "Xóa tìm kiếm", "Reset Defaults": "Khôi phục mặc định", "Awaiting full data": "Đang chờ nạp đủ data", "Display Mode: Full Fund Universe (Unfiltered NAV criteria)": "Chế độ hiển thị: Toàn bộ danh mục quỹ (Không giới hạn tiêu chí NAV)", "Detailed Data": "Dữ liệu chi tiết", "Export raw data to Excel": "Xuất dữ liệu gốc ra file Excel", "Options": "Tùy chọn", "View by Fund Strategy": "Xem theo Loại hình quỹ", "View by Fund Structure": "Xem theo Cấu trúc quỹ", "Fund Name": "Tên quỹ", "1M Return": "Hiệu suất 1M", "YTD Return": "Hiệu suất YTD", "vs VNINDEX": "So với VNINDEX", "VNINDEX Benchmark": "Chỉ số VNINDEX", "— (Benchmark)": "— (Mốc so sánh)", "Benchmark": "Mốc so sánh", "12-Month Deposit Rate": "Lãi suất tiền gửi 12 tháng", "Cash Flow by Industry Sector": "Dòng tiền Mua & Bán theo nhóm ngành", "Cash Flow by Stock Ticker": "Dòng tiền theo Từng Mã CK", "Cash Flow by Fund": "Dòng tiền theo Từng Quỹ", "Inflow, Outflow & Net Flow (Bil VND)": "Inflow (Vào), Outflow (Ra) & Ròng (tỷ đ)", "Industry Sector": "Nhóm ngành", "Inflow": "Tiền vào", "Outflow": "Tiền ra", "Net Flow": "Ròng (Net)", "MoM": "MoM", "Ticker": "Mã CK", "YTD Cum.": "Lũy kế YTD", "Trading Funds": "Số quỹ GD", "Fund Code": "Mã quỹ", "Inflow / Outflow": "Inflow / Outflow", "(Bil VND)": "(Tỷ VNĐ)", "Cash": "Tiền mặt", "Stocks": "Cổ phiếu", "Bonds": "Trái phiếu", "Inflow / Outflow Change": "Thay đổi Inflow / Outflow", "Value": "Giá trị", "TOTAL": "TỔNG CỘNG", "Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ": "Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ", "Cash Allocation Increase / Decrease Distribution by Fund": "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ", "Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB": "Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB", "Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm": "Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm", "Thống kê Tiền mặt & Biến động theo Quỹ": "Thống kê Tiền mặt & Biến động theo Quỹ", "Funds Increasing Cash": "Quỹ tăng tiền mặt", "Funds Decreasing Cash": "Quỹ giảm tiền mặt", "Increase Cash": "Tăng TM", "Decrease Cash": "Giảm TM", "All Fund Types (107 funds)": "All loại quỹ (107 quỹ)", "── By Fund Structure ──": "── Theo Loại hình quỹ ──", "── By Investment Strategy ──": "── Theo Chiến lược đầu tư ──", "Open-End Fund (83 funds)": "Quỹ mở (83 quỹ)", "ETF Fund (21 funds)": "Quỹ ETF (21 quỹ)", "Closed-End Fund (3 funds)": "Quỹ đóng (3 quỹ)", "Equity Fund (66 funds)": "Quỹ Cổ phiếu (66 quỹ)", "Bond Fund (28 funds)": "Quỹ Trái phiếu (28 quỹ)", "Balanced Fund (13 funds)": "Quỹ Cân bằng (13 quỹ)", "Select All": "Chọn tất cả", "Deselect All": "Bỏ chọn", "Change": "Thay đổi", "Current Month (Sep 2026)": "Tháng hiện tại (T9/2026)", "Previous Month (Aug 2026)": "Tháng trước (T8/2026)", "Change Sep vs Aug": "Biến động Tháng 9 so với Tháng 8", "Cash/NAV Ratio (%)": "Tỷ trọng Tiền mặt/NAV (%)", "Giá trị Mua & Bán Ròng theo Nhóm Ngành": "Giá trị Mua & Bán Ròng theo Nhóm Ngành", "Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD": "Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD", "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền": "Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền", "Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục": "Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục", "Top 5 Stocks Bump Chart": "Biểu đồ Xếp hạng Top 5 Cổ phiếu (Bump Chart)", "Top 10 Net Bought (mil shares)": "Top 10 mua ròng (triệu CP)", "Top 10 Net Sold (mil shares)": "Top 10 bán ròng (triệu CP)", "All": "Tất cả", "Trading Volume (Shares)": "Khối lượng Mua/Bán CP", "Trading Value (Bil VND)": "Giá trị Mua/Bán CP", "Portfolio Weight": "Tỷ trọng toàn danh mục", "Avg. Holding Ratio": "Tỷ lệ nắm giữ TB", "Total Value": "Tổng giá trị", "Holding Funds": "Quỹ nắm", "Fund Name / Code": "Tên / Mã quỹ", "Value (Bil VND)": "Giá trị (Tỷ VNĐ)", "Sep": "T9", "Aug": "T8", "Jul": "T7", "Jun": "T6", "FUND LIST": "DANH SÁCH QUỸ", "September 2026 Data · Source: FiinPro-X": "Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X", "Full Data": "Đủ dữ liệu", "Missing Data": "Thiếu dữ liệu", "Fund Name (Click to view portfolio)": "Tên quỹ (Bấm để xem danh mục)", "Aug Data Available": "Có tháng 8 không", "Note: Click on fund name to view portfolio details": "Ghi chú: Bảng có thể bấm vào tên quỹ để xem thông tin danh mục", "Back to fund list": "Quay lại danh sách quỹ", "Fund Portfolio": "Danh mục Quỹ", "Detailed Investment Portfolio September 2026 · Source: FiinPro-X": "Danh mục đầu tư chi tiết Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X", "Portfolio for Sep 2026 Not Disclosed": "Chưa công bố danh mục Tháng 9/2026", "This fund currently has no portfolio data for Sep 2026 on FiinPro-X.": "Quỹ này hiện chưa có dữ liệu danh mục đầu tư kỳ Tháng 9/2026 trên nền tảng FiinPro-X.", "assets": "mã tài sản", "Total value:": "Tổng giá trị:", "Industry stocks:": "Cổ phiếu ngành:", "Filter in Ticker Table →": "Lọc trong Bảng Mã CK →", "Company Name": "Tên doanh nghiệp", "Stock Name": "Tên cổ phiếu", "Company / Asset Name": "Tên doanh nghiệp / Tài sản", "Sector": "Ngành", "Order": "Lệnh", "Volume": "Khối lượng", "Weight": "Tỷ trọng", "Avg. Portfolio Weight:": "Tỷ trọng TB trong danh mục:", "Price:": "Giá:", "Net:": "Ròng:", "Trades:": "GD:", "trading funds": "quỹ giao dịch", "transactions": "lượt giao dịch", "Buying Funds": "Quỹ mua", "Selling Funds": "Quỹ bán", "Hover out or press ESC to close": "Di chuột ra ngoài hoặc bấm ESC để đóng", "Press ESC or click outside to close": "Bấm ESC hoặc nhấp ra ngoài để đóng", "Close window (Esc)": "Đóng cửa sổ (Esc)", "Close panel (Esc)": "Đóng bảng (Esc)", "Close panel": "Đóng bảng", "No funds match your search criteria.": "Không tìm thấy quỹ nào khớp với từ khóa tìm kiếm.", "No assets match your search criteria.": "Không tìm thấy mã tài sản nào khớp với từ khóa tìm kiếm.", "No stocks match your search criteria.": "Không tìm thấy mã cổ phiếu nào phù hợp.", "No matching funds.": "Không có quỹ nào phù hợp.", "No matching funds": "Không có quỹ khớp", "Banking": "Ngân hàng", "Real Estate": "Bất động sản", "Food & Beverage": "Thực phẩm và đồ uống", "Financial Services": "Dịch vụ tài chính", "Information Technology": "Công nghệ Thông tin", "Oil & Gas": "Dầu khí", "Industrial Goods & Services": "Hàng & Dịch vụ Công nghiệp", "Automobiles & Parts": "Ô tô và phụ tùng", "Chemicals": "Hóa chất", "Construction & Materials": "Xây dựng và Vật liệu", "Personal & Household Goods": "Hàng cá nhân & Gia dụng", "Retail": "Bán lẻ", "Insurance": "Bảo hiểm", "Travel & Leisure": "Du lịch và Giải trí", "Basic Resources": "Tài nguyên Cơ bản", "Utilities": "Điện, nước & xăng dầu khí đốt", "Healthcare": "Y tế", "Telecommunications": "Viễn thông", "Media": "Truyền thông", "Corporate Bonds": "Trái phiếu doanh nghiệp", "Fund Certificates": "Chứng chỉ quỹ", "Others": "Khác", "September 2026": "Tháng 9/2026", "August 2026": "Tháng 8/2026", "July 2026": "Tháng 7/2026", "June 2026": "Tháng 6/2026", "May 2026": "Tháng 5/2026", "April 2026": "Tháng 4/2026", "March 2026": "Tháng 3/2026", "February 2026": "Tháng 2/2026", "January 2026": "Tháng 1/2026", "MONTHLY REPORT ON INVESTMENT FUND ACTIVITIES IN VIETNAM": "BÁO CÁO THEO THÁNG HOẠT ĐỘNG CÁC QUỸ ĐẦU TƯ TẠI VIỆT NAM", "September 2026 · Data Source: FiinPro-X · Unit: Bil VND (unless otherwise noted)": "Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X · Đơn vị tính: Tỷ VNĐ (trừ khi có ghi chú khác)", "Filters & Options": "Bộ lọc & Tùy chọn", "Fund List": "Danh sách Quỹ", "Fullscreen": "Toàn màn hình", "Exit Fullscreen": "Thu nhỏ", "Reset Default": "Khôi phục mặc định", "Reset All": "Đặt lại tất cả", "Fund": "Quỹ", "Hiệu suất Quỹ Cổ phiếu": "Hiệu suất Quỹ Cổ phiếu", "Equity Funds with Total NAV ≥ 1,000 bil VND — 1M vs YTD": "Quỹ cổ phiếu có Tổng NAV ≥ 1.000 tỷ đồng — 1M vs YTD", "Performance Data Table 1M vs YTD and vs VNINDEX": "Bảng số liệu hiệu suất 1M vs YTD và so sánh VNINDEX", "Quy mô NAV & Dòng vốn theo Chiến lược Đầu tư": "Quy mô NAV & Dòng vốn theo Chiến lược Đầu tư", "Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)": "Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)", "Quy mô NAV & Dòng vốn theo Cấu trúc Quỹ": "Quy mô NAV & Dòng vốn theo Cấu trúc Quỹ", "ETF, Quỹ đóng, Quỹ mở — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)": "ETF, Quỹ đóng, Quỹ mở — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)", "Inflow/Outflow Change": "Thay đổi Inflow / Outflow", "Distribution of Cash Increases / Decreases by Fund": "Phân bổ Tăng / Giảm Tiền mặt theo Quỹ", "September 2026 — Cash Change Distribution (% pt) • Full 107 Funds": "Tháng 9/2026 — Phân bổ thay đổi tiền mặt (% pt) • Đầy đủ 107 quỹ", "Apr–Sep 2026 — Cash Change Distribution & Avg Cash Ratio": "T4–T9/2026 — Phân bổ thay đổi tiền mặt & tỷ lệ tiền mặt TB", "August vs September 2026 — Cash Ratio (%)": "Tháng 8 vs Tháng 9/2026 — Tỷ lệ tiền mặt (%)", "August vs September 2026 — Unit: Bil VND & %": "Tháng 8 vs Tháng 9/2026 — Đơn vị: Tỷ đồng & %", "Apr–Sep 2026 — bil VND": "T4–T9/2026 — tỷ đồng", "September 2026 — Top 10 Buy (+) & Sell (-) (bil VND)": "Tháng 9/2026 — Top 10 mua (+) & bán (-) (tỷ VNĐ)", "September 2026 — Top 10 Average Portfolio Weight (% NAV)": "Tháng 9/2026 — Top 10 Tỷ lệ nắm giữ trung bình (% NAV)", "06/2026 → 09/2026 — Total Value, Holding Ratio & Avg Portfolio Weight": "06/2026 → 09/2026 — Tổng giá trị, Tỷ lệ nắm giữ & Tỷ trọng TB danh mục", "Total Value (bil VND)": "Tổng giá trị (tỷ đồng)", "Avg Holding Ratio": "Tỷ lệ nắm giữ TB", "Avg Weight": "Tỷ trọng TB", "Bil VND": "Tỷ VNĐ", "Stock Transaction Details": "Chi tiết Giao dịch Cổ phiếu", "Fund Stock Holding Details": "Chi tiết Quỹ Nắm giữ Cổ phiếu", "Close": "Đóng", "Export data to Excel": "Xuất dữ liệu ra file Excel", "Export Excel": "Xuất Excel", "Back": "Quay lại", "Back to Fund List": "Quay lại danh sách quỹ", "Buy": "Mua", "Sell": "Bán", "Net": "Ròng", "Cumulative": "Lũy kế"};
 
     window.getI18nText = function(str) {
       if (!str) return str;
@@ -23873,7 +23922,7 @@ setTimeout(function() {
           .replace(/Currently (\d+) funds with data \/ (\d+) funds/g, 'Hiện có $1 quỹ có dữ liệu/ $2 quỹ')
           .replace(/Matched (\d+) funds/g, 'Khớp $1 quỹ')
           .replace(/(\d+) buy · (\d+) sell/g, '$1 mua · $2 bán')
-          .replace(/(\d+) funds/g, '$1 quỹ')
+          .replace(/(\d+) quỹ/g, '$1 funds')
           .replace(/(\d+) tickers/g, '$1 mã')
           .replace(/(\d+) transactions/g, '$1 lượt giao dịch')
           .replace(/(\d+(\.\d+)?) mil shares/g, '$1 triệu CP')
@@ -23886,32 +23935,272 @@ setTimeout(function() {
 
     window.switchLanguage = function(lang) {
       window.currentLang = lang;
-      
-      // 1. Update Switcher Buttons
+      var isEn = (lang === 'en');
+
+      // 1. Language Toggle Buttons UI
       var btnVi = document.getElementById('btn-lang-vi');
       var btnEn = document.getElementById('btn-lang-en');
       var lblLang = document.getElementById('lang-filter-label');
       if (btnVi && btnEn) {
-        if (lang === 'en') {
+        if (isEn) {
           btnEn.style.background = '#007a3d';
           btnEn.style.color = '#ffffff';
           btnEn.style.fontWeight = '700';
+          btnEn.classList.add('active');
           btnVi.style.background = 'transparent';
           btnVi.style.color = '#475569';
           btnVi.style.fontWeight = '600';
+          btnVi.classList.remove('active');
           if (lblLang) lblLang.textContent = 'Language:';
         } else {
           btnVi.style.background = '#007a3d';
           btnVi.style.color = '#ffffff';
           btnVi.style.fontWeight = '700';
+          btnVi.classList.add('active');
           btnEn.style.background = 'transparent';
           btnEn.style.color = '#475569';
           btnEn.style.fontWeight = '600';
+          btnEn.classList.remove('active');
           if (lblLang) lblLang.textContent = 'Ngôn ngữ:';
         }
       }
 
-      // 2. Walk entire DOM text nodes and translate
+      // 2. Navigation Tabs
+      var tab1 = document.querySelector('#pbi-tab-1 .pbi-tab-title');
+      var tab2 = document.querySelector('#pbi-tab-2 .pbi-tab-title');
+      var tab3 = document.querySelector('#pbi-tab-3 .pbi-tab-title');
+      var tab4 = document.querySelector('#pbi-tab-4 .pbi-tab-title');
+      if (tab1) tab1.textContent = isEn ? 'Fund Performance' : 'Hiệu suất quỹ';
+      if (tab2) tab2.textContent = isEn ? 'Cash Flow' : 'Dòng tiền';
+      if (tab3) tab3.textContent = isEn ? 'Asset Allocation' : 'Phân bố tài sản';
+      if (tab4) tab4.textContent = isEn ? 'Stock Holdings' : 'Tỷ trọng nắm giữ';
+
+      // 3. Main Header & Controls
+      var mainTitle = document.querySelector('.report-title');
+      if (mainTitle) {
+        mainTitle.textContent = isEn
+          ? 'MONTHLY REPORT ON INVESTMENT FUND ACTIVITIES IN VIETNAM'
+          : 'BÁO CÁO THEO THÁNG HOẠT ĐỘNG CÁC QUỸ ĐẦU TƯ TẠI VIỆT NAM';
+      }
+      var mainSub = document.querySelector('.report-subtitle');
+      if (mainSub) {
+        mainSub.textContent = isEn
+          ? 'September 2026 · Data Source: FiinPro-X · Unit: Bil VND (unless otherwise noted)'
+          : 'Tháng 9/2026 · Nguồn dữ liệu: FiinPro-X · Đơn vị tính: Tỷ VNĐ (trừ khi có ghi chú khác)';
+      }
+
+      // 4. Sidebar Drawer Filters
+      var sbHead = document.querySelector('.drawer-title-bold');
+      if (sbHead) sbHead.textContent = isEn ? 'DATA FILTERS' : 'BỘ LỌC DỮ LIỆU';
+      var sbReset = document.querySelector('.drawer-reset-btn');
+      if (sbReset) sbReset.textContent = isEn ? 'Reset Default' : 'Khôi phục mặc định';
+
+      var sbFundLabels = document.querySelectorAll('.drawer-filter-group-title');
+      if (sbFundLabels.length >= 5) {
+        sbFundLabels[0].textContent = isEn ? 'Fund Strategy' : 'Loại hình quỹ';
+        sbFundLabels[1].textContent = isEn ? 'NAV Criteria' : 'Tiêu chí NAV';
+        sbFundLabels[2].textContent = isEn ? 'Fund' : 'Quỹ';
+        sbFundLabels[3].textContent = isEn ? 'Reporting Period' : 'Kỳ báo cáo';
+        sbFundLabels[4].textContent = isEn ? 'Stock Ticker' : 'Mã cổ phiếu';
+      }
+
+      var inputFund = document.getElementById('sbFundSearchInput');
+      if (inputFund) inputFund.placeholder = isEn ? 'Search fund...' : 'Tìm quỹ...';
+      var inputStock = document.getElementById('sbStockSearchInput');
+      if (inputStock) inputStock.placeholder = isEn ? 'Search ticker...' : 'Tìm mã CK...';
+
+      // 5. Sheet 1: Performance
+      var btnDimType = document.getElementById('btn-dim-type');
+      var btnDimStruct = document.getElementById('btn-dim-structure');
+      if (btnDimType) btnDimType.textContent = isEn ? 'Fund Strategy' : 'Chiến lược đầu tư';
+      if (btnDimStruct) btnDimStruct.textContent = isEn ? 'Fund Structure' : 'Cấu trúc quỹ';
+      
+      var p1Search = document.getElementById('p1-table-search');
+      if (p1Search) p1Search.placeholder = isEn ? 'Search fund name / ticker...' : 'Tìm tên / mã quỹ...';
+
+      var p1CardTitle = document.querySelector('#p1-single-chart-card .card-title');
+      if (p1CardTitle) p1CardTitle.textContent = isEn ? 'Hiệu suất Quỹ Cổ phiếu' : 'Hiệu suất Quỹ Cổ phiếu';
+      var p1CardSub = document.querySelector('#p1-single-chart-card .card-subtitle');
+      if (p1CardSub) p1CardSub.textContent = isEn ? 'Equity Funds with Total NAV ≥ 1,000 bil VND — 1M vs YTD' : 'Quỹ cổ phiếu có Tổng NAV ≥ 1.000 tỷ đồng — 1M vs YTD';
+
+      var p1TableTitle = document.querySelector('#card-p1-table .card-title');
+      if (p1TableTitle) p1TableTitle.textContent = isEn ? 'Detailed Data' : 'Dữ liệu chi tiết';
+      var p1TableSub = document.querySelector('#card-p1-table .card-subtitle');
+      if (p1TableSub) p1TableSub.textContent = isEn ? 'Performance Data Table 1M vs YTD and vs VNINDEX' : 'Bảng số liệu hiệu suất 1M vs YTD và so sánh VNINDEX';
+      
+      var p1Th = document.querySelectorAll('#p1-data-table thead th');
+      if (p1Th.length >= 4) {
+        p1Th[0].textContent = isEn ? 'Fund Name' : 'Tên quỹ';
+        p1Th[1].textContent = isEn ? '1M Return' : 'Hiệu suất 1M';
+        p1Th[2].textContent = isEn ? 'YTD Return' : 'Hiệu suất YTD';
+        p1Th[3].textContent = isEn ? 'vs VNINDEX' : 'So với VNINDEX';
+      }
+
+      var p1Note = document.getElementById('p1-chart-note');
+      if (p1Note) {
+        p1Note.textContent = isEn
+          ? 'Source: FiinPro-X Platform. Note: (1) Performance is calculated as the NAV/unit change over the period, including distributed dividends, sorted descending; (2) Foreign fund performance may be affected by FX rates as NAV is denominated in foreign currency; (3) Past performance is no guarantee of future results.'
+          : 'Nguồn: Nền tảng FiinPro-X. Lưu ý: (1) Hiệu suất được tính bằng tỷ lệ thay đổi NAV/CCQ trong kỳ, bao gồm cổ tức đã chi trả, và được sắp xếp giảm dần; (2) Hiệu suất quỹ nước ngoài có thể chịu ảnh hưởng tỷ giá vì NAV được niêm yết bằng ngoại tệ; (3) Hiệu suất quá khứ không bảo đảm kết quả tương lai.';
+      }
+
+      // 6. Sheet 2: Cash Flow
+      var s2TypeTitle = document.querySelector('#card-fund-type-merged .card-title');
+      if (s2TypeTitle) s2TypeTitle.textContent = isEn ? 'Quy mô NAV & Dòng vốn theo Chiến lược Đầu tư' : 'Quy mô NAV & Dòng vốn theo Chiến lược Đầu tư';
+      var s2TypeSub = document.querySelector('#card-fund-type-merged .card-subtitle');
+      if (s2TypeSub) s2TypeSub.textContent = isEn ? 'Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)' : 'Cổ phiếu, Trái phiếu, Cân bằng — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)';
+
+      var s2StructTitle = document.querySelector('#card-fund-structure-merged .card-title');
+      if (s2StructTitle) s2StructTitle.textContent = isEn ? 'Quy mô NAV & Dòng vốn theo Cấu trúc Quỹ' : 'Quy mô NAV & Dòng vốn theo Cấu trúc Quỹ';
+      var s2StructSub = document.querySelector('#card-fund-structure-merged .card-subtitle');
+      if (s2StructSub) s2StructSub.textContent = isEn ? 'ETF, Quỹ đóng, Quỹ mở — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)' : 'ETF, Quỹ đóng, Quỹ mở — Dòng vốn & Quy mô NAV (nghìn tỷ VNĐ)';
+
+      var s2MergedNote = document.getElementById('fig7-merged-note');
+      if (s2MergedNote) {
+        s2MergedNote.textContent = isEn
+          ? 'Source: FiinPro-X Platform. Cash flow and NAV data are aggregated from open-end, closed-end funds and ETFs with data up to Sep 2026.'
+          : 'Nguồn: Nền tảng FiinPro-X. Dữ liệu dòng tiền và NAV được tổng hợp từ các quỹ mở, quỹ đóng và ETF có dữ liệu đến T9/2026.';
+      }
+
+      // Sheet 2 Sector Section
+      var s2SectorTitle = document.querySelector('#pbi-sheet-2 .pbi-s2-middle-col .card-title');
+      if (s2SectorTitle) s2SectorTitle.textContent = isEn ? 'Cash Flow by Industry Sector' : 'Dòng tiền Mua & Bán theo nhóm ngành';
+      
+      var mNum = window.s2CurrentSectorMonth || 9;
+      var subSec = document.getElementById('s2-sector-subtitle');
+      if (subSec) {
+        subSec.textContent = isEn 
+          ? ('Month ' + mNum + '/2026 — Inflow, Outflow & Net Flow (Bil VND)')
+          : ('Tháng ' + mNum + '/2026 — Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)');
+      }
+
+      var secTh = document.querySelectorAll('#s2-sector-table thead th');
+      if (secTh.length >= 5) {
+        secTh[0].innerHTML = isEn ? 'Industry Sector <span id="sort-icon-s2-name">↕</span>' : 'Nhóm ngành <span id="sort-icon-s2-name">↕</span>';
+        secTh[1].innerHTML = isEn ? 'Inflow <span id="sort-icon-s2-inflow">↕</span>' : 'Tiền vào <span id="sort-icon-s2-inflow">↕</span>';
+        secTh[2].innerHTML = isEn ? 'Outflow <span id="sort-icon-s2-outflow">↕</span>' : 'Tiền ra <span id="sort-icon-s2-outflow">↕</span>';
+        secTh[3].innerHTML = isEn ? 'Net Flow <span id="sort-icon-s2-net">▼</span>' : 'Ròng (Net) <span id="sort-icon-s2-net">▼</span>';
+        secTh[4].innerHTML = isEn ? 'MoM <span id="sort-icon-s2-mom">↕</span>' : 'MoM <span id="sort-icon-s2-mom">↕</span>';
+      }
+
+      // Sheet 2 Stock Section
+      var s2StkTitle = document.querySelector('#card-stock-flow-s2 .card-title');
+      if (s2StkTitle) s2StkTitle.textContent = isEn ? 'Cash Flow by Stock Ticker' : 'Dòng tiền theo Từng Mã CK';
+
+      var stkTh = document.querySelectorAll('#s2-stock-table thead th');
+      if (stkTh.length >= 6) {
+        stkTh[0].innerHTML = isEn ? 'Ticker <span id="sort-icon-s2-stk-sym">↕</span>' : 'Mã CK <span id="sort-icon-s2-stk-sym">↕</span>';
+        stkTh[1].innerHTML = isEn ? 'Inflow <span id="sort-icon-s2-stk-inflow">↕</span>' : 'Tiền vào <span id="sort-icon-s2-stk-inflow">↕</span>';
+        stkTh[2].innerHTML = isEn ? 'Outflow <span id="sort-icon-s2-stk-outflow">↕</span>' : 'Tiền ra <span id="sort-icon-s2-stk-outflow">↕</span>';
+        stkTh[3].innerHTML = isEn ? 'Net Flow <span id="sort-icon-s2-stk-net">▼</span>' : 'Ròng (Net) <span id="sort-icon-s2-stk-net">▼</span>';
+        stkTh[4].innerHTML = isEn ? 'YTD Cum. <span id="sort-icon-s2-stk-cum">↕</span>' : 'Lũy kế YTD <span id="sort-icon-s2-stk-cum">↕</span>';
+        stkTh[5].innerHTML = isEn ? 'Trading Funds <span id="sort-icon-s2-stk-funds">↕</span>' : 'Số quỹ GD <span id="sort-icon-s2-stk-funds">↕</span>';
+      }
+
+      // Sheet 2 Fund Section
+      var s2FundTitle = document.querySelector('#card-fund-flow-s2 .card-title');
+      if (s2FundTitle) s2FundTitle.textContent = isEn ? 'Cash Flow by Fund' : 'Dòng tiền theo Từng Quỹ';
+
+      var fndTh = document.querySelectorAll('#s2-fund-table thead th');
+      if (fndTh.length >= 7) {
+        fndTh[0].innerHTML = isEn ? 'Fund Code <span id="sort-icon-s2-fnd-code">↕</span>' : 'Mã Quỹ <span id="sort-icon-s2-fnd-code">↕</span>';
+        fndTh[1].innerHTML = isEn ? 'Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-flow">▼</span>' : 'Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-flow">▼</span>';
+        fndTh[2].innerHTML = isEn ? 'Cash<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-cash">↕</span>' : 'Tiền mặt<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-cash">↕</span>';
+        fndTh[3].innerHTML = isEn ? 'Stocks<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-stock">↕</span>' : 'Cổ phiếu<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-stock">↕</span>';
+        fndTh[4].innerHTML = isEn ? 'Bonds<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-bond">↕</span>' : 'Trái phiếu<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-bond">↕</span>';
+        fndTh[5].innerHTML = isEn ? 'Inflow/Outflow Change<br><span style="font-size:9px; font-weight:normal;">Value (Bil VND)</span> <span id="sort-icon-s2-fnd-valChg">↕</span>' : 'Thay đổi Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">Giá trị (Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-valChg">↕</span>';
+        fndTh[6].innerHTML = isEn ? 'Inflow/Outflow Change<br><span style="font-size:9px; font-weight:normal;">%</span> <span id="sort-icon-s2-fnd-pctChg">↕</span>' : 'Thay đổi Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">%</span> <span id="sort-icon-s2-fnd-pctChg">↕</span>';
+      }
+
+      // 7. Sheet 3: Asset Allocation
+      var cUpTitle = document.querySelector('#card-cash-up .card-title');
+      if (cUpTitle) cUpTitle.textContent = isEn ? 'Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ' : 'Tỷ lệ Tiền mặt Quỹ Mở & Biến động Phân bổ';
+
+      var cMonthTitle = document.querySelector('#card-cash-month-dist .card-title');
+      if (cMonthTitle) cMonthTitle.textContent = isEn ? 'Distribution of Cash Increases / Decreases by Fund' : 'Phân bổ Tăng / Giảm Tiền mặt theo Quỹ';
+      var cMonthSub = document.querySelector('#card-cash-month-dist .card-subtitle');
+      if (cMonthSub) cMonthSub.textContent = isEn ? 'September 2026 — Cash Change Distribution (% pt) • Full 107 Funds' : 'Tháng 9/2026 — Phân bổ thay đổi tiền mặt (% pt) • Đầy đủ 107 quỹ';
+
+      var cDistTitle = document.querySelector('#card-cash-dist .card-title');
+      if (cDistTitle) cDistTitle.textContent = isEn ? 'Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB' : 'Phân bổ Biến động Tỷ lệ Tiền mặt & Tỷ lệ Tiền mặt TB';
+      var cDistSub = document.querySelector('#card-cash-dist .card-subtitle');
+      if (cDistSub) cDistSub.textContent = isEn ? 'Apr–Sep 2026 — Cash Change Distribution & Avg Cash Ratio' : 'T4–T9/2026 — Phân bổ thay đổi tiền mặt & tỷ lệ tiền mặt TB';
+
+      var cDownTitle = document.querySelector('#card-cash-down .card-title');
+      if (cDownTitle) cDownTitle.textContent = isEn ? 'Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm' : 'Quỹ Cổ phiếu Mở có Tỷ lệ Tiền mặt Giảm';
+      var cDownSub = document.querySelector('#card-cash-down .card-subtitle');
+      if (cDownSub) cDownSub.textContent = isEn ? 'August vs September 2026 — Cash Ratio (%)' : 'Tháng 8 vs Tháng 9/2026 — Tỷ lệ tiền mặt (%)';
+
+      var cTableTitle = document.querySelector('#card-cash-table .card-title');
+      if (cTableTitle) cTableTitle.textContent = isEn ? 'Thống kê Tiền mặt & Biến động theo Quỹ' : 'Thống kê Tiền mặt & Biến động theo Quỹ';
+      var cTableSub = document.querySelector('#card-cash-table .card-subtitle');
+      if (cTableSub) cTableSub.textContent = isEn ? 'August vs September 2026 — Unit: Bil VND & %' : 'Tháng 8 vs Tháng 9/2026 — Đơn vị: Tỷ đồng & %';
+
+      var cSecBuyTitle = document.querySelector('#card-sector-buy .card-title');
+      if (cSecBuyTitle) cSecBuyTitle.textContent = isEn ? 'Giá trị Mua & Bán Ròng theo Nhóm Ngành' : 'Giá trị Mua & Bán Ròng theo Nhóm Ngành';
+      var cSecBuySub = document.querySelector('#card-sector-buy .card-subtitle');
+      if (cSecBuySub) cSecBuySub.textContent = isEn ? 'Apr–Sep 2026 — bil VND' : 'T4–T9/2026 — tỷ đồng';
+
+      // Sheet 3 Cash Table Headers
+      var cashTh = document.querySelectorAll('#chart-cash-table thead th');
+      if (cashTh.length >= 4) {
+        var cM = isEn ? 'Current Month (Sep 2026)' : 'Tháng hiện tại (T9/2026)';
+        var pM = isEn ? 'Previous Month (Aug 2026)' : 'Tháng trước (T8/2026)';
+        var chg = isEn ? 'Change' : 'Thay đổi';
+        var sp = cashTh[0].querySelector('span');
+        if (sp) sp.textContent = isEn ? 'Fund Code' : 'Mã quỹ';
+        else cashTh[0].textContent = isEn ? 'Fund Code' : 'Mã quỹ';
+        if (cashTh[1]) cashTh[1].textContent = cM;
+        if (cashTh[2]) cashTh[2].textContent = pM;
+        if (cashTh[3]) cashTh[3].textContent = chg;
+      }
+
+      // 8. Sheet 4: Stock Holdings
+      var s4CombTitle = document.querySelector('#card-stock-combined .card-title');
+      if (s4CombTitle) s4CombTitle.textContent = isEn ? 'Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD' : 'Top 10 Cổ phiếu Mua ròng & Bán ròng theo Giá trị GD';
+      var s4CombSub = document.querySelector('#card-stock-combined .card-subtitle');
+      if (s4CombSub) s4CombSub.textContent = isEn ? 'September 2026 — Top 10 Buy (+) & Sell (-) (bil VND)' : 'Tháng 9/2026 — Top 10 mua (+) & bán (-) (tỷ VNĐ)';
+      var s4CombNote = document.getElementById('note-stock-combined');
+      if (s4CombNote) {
+        s4CombNote.textContent = isEn
+          ? 'Source: FiinPro-X Platform. Note: Net buy/sell values are aggregated from funds with sufficient portfolio data in both surveyed periods; value change is calculated for Sep 2026 (vs Aug).'
+          : 'Nguồn: Nền tảng FiinPro-X. Lưu ý: Giá trị mua/bán ròng được tổng hợp từ các quỹ có đủ dữ liệu danh mục ở cả kỳ khảo sát; thay đổi giá trị được tính cho kỳ T9/2026 (so với T8).';
+      }
+
+      var s4HoldTitle = document.querySelector('#card-stock-holdings .card-title');
+      if (s4HoldTitle) s4HoldTitle.textContent = isEn ? 'Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền' : 'Top 10 Cổ phiếu theo Tỷ trọng Danh mục (% NAV) & Dòng tiền';
+      var s4HoldSub = document.querySelector('#card-stock-holdings .card-subtitle');
+      if (s4HoldSub) s4HoldSub.textContent = isEn ? 'September 2026 — Top 10 Average Portfolio Weight (% NAV)' : 'Tháng 9/2026 — Top 10 Tỷ lệ nắm giữ trung bình (% NAV)';
+      var s4HoldNote = document.getElementById('note-stock-holdings');
+      if (s4HoldNote) {
+        s4HoldNote.textContent = isEn
+          ? 'Source: FiinPro-X Platform & Portfolio transaction data of 92 investment funds. Note: (1) Data only surveys listed stocks (excluding bonds); (2) Portfolio weight in Top 10 chart uses the average of Equity Funds; (3) Buy Cash = Buy Volume × Close Price; Sell Cash = Sell Volume × Close Price; Net Cash Flow = Buy Cash - Sell Cash (Unit: Bil VND); (4) Click on any Stock Ticker (on chart or in table) to open a dedicated modal showing all funds holding it, shares held, and % weight of NAV.'
+          : 'Nguồn: Nền tảng FiinPro-X & Dữ liệu giao dịch danh mục 92 quỹ đầu tư. Lưu ý: (1) Dữ liệu chỉ khảo sát các mã cổ phiếu niêm yết (không bao gồm trái phiếu); (2) Tỷ trọng ở biểu đồ Top 10 lấy trung bình của các Quỹ Cổ Phiếu (Equity Funds); (3) Tiền Mua = Khối lượng mua thêm × Giá đóng cửa; Tiền Bán = Khối lượng bán bớt × Giá đóng cửa; Dòng tiền Ròng = Tiền Mua - Tiền Bán (Đơn vị: Tỷ VNĐ); (4) Bấm vào bất kỳ Mã cổ phiếu nào (trên biểu đồ hoặc trong bảng) để mở bảng riêng xem toàn bộ danh sách quỹ đang sở hữu, khối lượng và % tỷ trọng trên NAV.';
+      }
+
+      var s4BumpTitle = document.querySelector('#card-fig15 .card-title');
+      if (s4BumpTitle) s4BumpTitle.textContent = isEn ? 'Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục' : 'Bảng xếp hạng Cổ phiếu Nắm giữ, Tổng Giá trị & Tỷ trọng Danh mục';
+      var s4BumpSub = document.querySelector('#card-fig15 .card-subtitle');
+      if (s4BumpSub) s4BumpSub.textContent = isEn ? '06/2026 → 09/2026 — Total Value, Holding Ratio & Avg Portfolio Weight' : '06/2026 → 09/2026 — Tổng giá trị, Tỷ lệ nắm giữ & Tỷ trọng TB danh mục';
+      var s4BumpNote = document.getElementById('note-fig15');
+      if (s4BumpNote) {
+        s4BumpNote.innerHTML = isEn
+          ? 'Source: FiinPro-X & Portfolio of 92 funds. Note on 3 metrics displayed below each ticker: (1) <b>Total Value (bil VND)</b>: Total NAV value of stock held by funds; (2) <b>Weight of all fund holdings</b>: Value ratio of the stock over the total portfolio of all fund stocks; (3) <b>Avg Holding Ratio</b>: Average portfolio weight of the stock in equity fund portfolios; (4) Connecting lines show rank transitions across 07/2026 → 08/2026 → 09/2026.'
+          : 'Nguồn: FiinPro-X & Danh mục 92 quỹ. Chú thích 3 chỉ số hiển thị dưới mỗi mã: (1) <b>Tổng giá trị (tỷ đồng)</b>: Tổng giá trị NAV cổ phiếu mà các quỹ đang sở hữu; (2) <b>Tỷ trọng trên toàn bộ cổ phiếu của các quỹ đầu tư đang nắm giữ</b>: Tỷ lệ giá trị của mã cổ phiếu trên tổng danh mục tất cả các mã cổ phiếu của các quỹ; (3) <b>Tỷ lệ nắm giữ TB</b>: Tỷ trọng bình quân của cổ phiếu trong danh mục các quỹ đầu tư cổ phiếu; (4) Đường nối thể hiện sự dịch chuyển thứ hạng qua các kỳ 07/2026 → 08/2026 → 09/2026.';
+      }
+
+      // 9. Modals
+      var auditTitle = document.getElementById('auditListModalTitle');
+      if (auditTitle) auditTitle.textContent = isEn ? 'FUND LIST' : 'DANH SÁCH QUỸ';
+      var auditSub = document.querySelector('#auditListModal .fund-modal-subtitle');
+      if (auditSub) auditSub.textContent = isEn ? 'September 2026 Data · Source: FiinPro-X' : 'Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X';
+
+      var tradeModalTitle = document.getElementById('stockTradeModalTitle');
+      if (tradeModalTitle) tradeModalTitle.textContent = isEn ? 'Stock Transaction Details' : 'Chi tiết Giao dịch Cổ phiếu';
+
+      var holdModalTitle = document.getElementById('stockHoldModalTitle');
+      if (holdModalTitle) holdModalTitle.textContent = isEn ? 'Fund Stock Holding Details' : 'Chi tiết Quỹ Nắm giữ Cổ phiếu';
+
+      // 10. Walk DOM text nodes for buttons, option tags, labels
       var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
       var node;
       while (node = walker.nextNode()) {
@@ -23922,7 +24211,7 @@ setTimeout(function() {
         node.nodeValue = window.translateNodeText(node.nodeValue, lang);
       }
 
-      // 3. Attributes (placeholder, title)
+      // Attributes (placeholder, title)
       document.querySelectorAll('[placeholder], [title]').forEach(function(el) {
         var p = el.getAttribute('placeholder');
         if (p) el.setAttribute('placeholder', window.translateNodeText(p, lang));
@@ -23930,196 +24219,39 @@ setTimeout(function() {
         if (t) el.setAttribute('title', window.translateNodeText(t, lang));
       });
 
-      // 4. Select dropdown options
+      // Select dropdown options
       document.querySelectorAll('select option').forEach(function(opt) {
         opt.textContent = window.translateNodeText(opt.textContent, lang);
       });
 
-      // 5. Dynamic Subtitle for Sector Table
-      var mNum = window.s2CurrentSectorMonth || 9;
-      var subSec = document.getElementById('s2-sector-subtitle');
-      if (subSec) {
-        subSec.textContent = (lang === 'en') 
-          ? ('Month ' + mNum + '/2026 — Inflow, Outflow & Net Flow (Bil VND)')
-          : ('Tháng ' + mNum + '/2026 — Inflow (Vào), Outflow (Ra) & Mua/Bán Ròng (tỷ đ)');
-      }
-
-      // 6. Re-render active charts and tables
+      // 11. Re-render Active Tables & Charts
       if (typeof window.renderS2SectorTable === 'function') window.renderS2SectorTable();
       if (typeof window.renderS2StockTable === 'function') window.renderS2StockTable();
       if (typeof window.renderS2FundTable === 'function') window.renderS2FundTable();
       if (typeof window.renderS2SectorChart === 'function' && window.s2SectorViewMode === 'chart') window.renderS2SectorChart();
       if (typeof window.renderP1ActiveChart === 'function') window.renderP1ActiveChart();
+      if (typeof window.renderP1DataTable === 'function') window.renderP1DataTable();
       if (typeof window.renderP1Table === 'function') window.renderP1Table();
+      if (typeof window.renderCash === 'function') window.renderCash();
+      if (typeof window.renderCashDist === 'function') window.renderCashDist();
+      if (typeof window.renderCashMonthDist === 'function') window.renderCashMonthDist();
+      if (typeof window.renderFig15Bump === 'function') window.renderFig15Bump();
+      if (typeof window.renderStockCombined === 'function') window.renderStockCombined();
       if (typeof window.renderFig15Chart === 'function') window.renderFig15Chart();
-      if (typeof window.renderFig16Bump === 'function') window.renderFig16Bump();
     };
 
 
-    window.SECTOR_MAP_VI = {};
-    for (var k in window.SECTOR_MAP_EN) {
-      window.SECTOR_MAP_VI[window.SECTOR_MAP_EN[k]] = k;
+        
+    function initVietnameseApp() {
+      if (typeof window.switchLanguage === 'function') {
+        window.switchLanguage('vi');
+      }
     }
-
-    window.getSectorName = function(sec) {
-      if (window.currentLang === 'en') {
-        return window.SECTOR_MAP_EN[sec] || sec;
-      }
-      return window.SECTOR_MAP_VI[sec] || sec;
-    };
-
-    window.switchLanguage = function(lang) {
-      window.currentLang = lang;
-      
-      // 1. Update Switcher Button UI
-      var btnVi = document.getElementById('btn-lang-vi');
-      var btnEn = document.getElementById('btn-lang-en');
-      var lblLang = document.getElementById('lang-filter-label');
-      
-      if (btnVi && btnEn) {
-        if (lang === 'en') {
-          btnEn.style.background = '#007a3d';
-          btnEn.style.color = '#ffffff';
-          btnEn.style.fontWeight = '700';
-          btnVi.style.background = 'transparent';
-          btnVi.style.color = '#475569';
-          btnVi.style.fontWeight = '600';
-          if (lblLang) lblLang.textContent = 'Language:';
-        } else {
-          btnVi.style.background = '#007a3d';
-          btnVi.style.color = '#ffffff';
-          btnVi.style.fontWeight = '700';
-          btnEn.style.background = 'transparent';
-          btnEn.style.color = '#475569';
-          btnEn.style.fontWeight = '600';
-          if (lblLang) lblLang.textContent = 'Ngôn ngữ:';
-        }
-      }
-
-      // 2. Translate Top Navigation Tabs
-      var tab1 = document.querySelector('#pbi-tab-1 .pbi-tab-title');
-      var tab2 = document.querySelector('#pbi-tab-2 .pbi-tab-title');
-      var tab3 = document.querySelector('#pbi-tab-3 .pbi-tab-title');
-      var tab4 = document.querySelector('#pbi-tab-4 .pbi-tab-title');
-      if (tab1) tab1.textContent = (lang === 'en') ? 'Fund Performance' : 'Hiệu suất quỹ';
-      if (tab2) tab2.textContent = (lang === 'en') ? 'Cash Flow' : 'Dòng tiền';
-      if (tab3) tab3.textContent = (lang === 'en') ? 'Asset Allocation' : 'Phân bố tài sản';
-      if (tab4) tab4.textContent = (lang === 'en') ? 'Stock Holdings' : 'Tỷ trọng nắm giữ';
-
-      // 3. Main Header Title
-      var mainTitle = document.querySelector('.report-title');
-      if (mainTitle) {
-        mainTitle.textContent = (lang === 'en') 
-          ? 'Monthly Report on Investment Fund Activities in Vietnam'
-          : 'Báo cáo theo tháng hoạt động các quỹ đầu tư tại Việt Nam';
-      }
-
-      // 4. Sidebar Drawer Filters
-      var sbHead = document.querySelector('.drawer-title-bold');
-      if (sbHead) sbHead.textContent = (lang === 'en') ? 'DATA FILTERS' : 'BỘ LỌC DỮ LIỆU';
-      var sbReset = document.querySelector('.drawer-reset-btn');
-      if (sbReset) sbReset.textContent = (lang === 'en') ? 'Reset Default' : 'Khôi phục mặc định';
-
-      var sbFundLabels = document.querySelectorAll('.drawer-filter-group-title');
-      if (sbFundLabels.length >= 5) {
-        sbFundLabels[0].textContent = (lang === 'en') ? 'Fund Strategy' : 'Loại hình quỹ';
-        sbFundLabels[1].textContent = (lang === 'en') ? 'NAV Criteria' : 'Tiêu chí NAV';
-        sbFundLabels[2].textContent = (lang === 'en') ? 'Fund' : 'Quỹ';
-        sbFundLabels[3].textContent = (lang === 'en') ? 'Reporting Period' : 'Kỳ báo cáo';
-        sbFundLabels[4].textContent = (lang === 'en') ? 'Stock Ticker' : 'Mã cổ phiếu';
-      }
-
-      var inputFund = document.getElementById('sbFundSearchInput');
-      if (inputFund) inputFund.placeholder = (lang === 'en') ? 'Search fund...' : 'Tìm quỹ...';
-      var inputStock = document.getElementById('sbStockSearchInput');
-      if (inputStock) inputStock.placeholder = (lang === 'en') ? 'Search ticker...' : 'Tìm mã CK...';
-
-      // 5. Sheet 1: Performance
-      var btnDimType = document.getElementById('btn-dim-type');
-      var btnDimStruct = document.getElementById('btn-dim-structure');
-      if (btnDimType) btnDimType.textContent = (lang === 'en') ? 'Fund Strategy' : 'Chiến lược đầu tư';
-      if (btnDimStruct) btnDimStruct.textContent = (lang === 'en') ? 'Fund Structure' : 'Cấu trúc quỹ';
-      
-      var p1Search = document.getElementById('p1-table-search');
-      if (p1Search) p1Search.placeholder = (lang === 'en') ? 'Search fund name / ticker...' : 'Tìm tên / mã quỹ...';
-      
-      var p1Th = document.querySelectorAll('#p1-data-table thead th');
-      if (p1Th.length >= 4) {
-        p1Th[0].textContent = (lang === 'en') ? 'Fund Name' : 'Tên quỹ';
-        p1Th[1].textContent = (lang === 'en') ? '1M Return' : 'Hiệu suất 1M';
-        p1Th[2].textContent = (lang === 'en') ? 'YTD Return' : 'Hiệu suất YTD';
-        p1Th[3].textContent = (lang === 'en') ? 'vs VNINDEX' : 'So với VNINDEX';
-      }
-
-      // 6. Sheet 2: Cash Flow (Page 02)
-      var s2Titles = document.querySelectorAll('#pbi-sheet-2 .card-title');
-      if (s2Titles.length >= 5) {
-        s2Titles[0].textContent = (lang === 'en') ? 'Fund NAV & Capital Flows by Investment Strategy' : 'Fund NAV & Capital Flows by Investment Strategy';
-        s2Titles[1].textContent = (lang === 'en') ? 'Fund NAV & Capital Flows by Structure Strategy' : 'Fund NAV & Capital Flows by Structure Strategy';
-        s2Titles[2].textContent = (lang === 'en') ? 'Cash Flow by Industry Sector' : 'Dòng tiền Mua & Bán theo nhóm ngành';
-        s2Titles[3].textContent = (lang === 'en') ? 'Cash Flow by Stock Ticker' : 'Dòng tiền theo Từng Mã CK';
-        s2Titles[4].textContent = (lang === 'en') ? 'Cash Flow by Fund' : 'Dòng tiền theo Từng Quỹ';
-      }
-
-      // Sheet 2 Sector Table Headers
-      var secTh = document.querySelectorAll('#s2-sector-table thead th');
-      if (secTh.length >= 5) {
-        secTh[0].innerHTML = (lang === 'en') ? 'Industry Sector <span id="sort-icon-s2-name">↕</span>' : 'Nhóm ngành <span id="sort-icon-s2-name">↕</span>';
-        secTh[1].innerHTML = (lang === 'en') ? 'Inflow <span id="sort-icon-s2-inflow">↕</span>' : 'Tiền vào <span id="sort-icon-s2-inflow">↕</span>';
-        secTh[2].innerHTML = (lang === 'en') ? 'Outflow <span id="sort-icon-s2-outflow">↕</span>' : 'Tiền ra <span id="sort-icon-s2-outflow">↕</span>';
-        secTh[3].innerHTML = (lang === 'en') ? 'Net Flow <span id="sort-icon-s2-net">▼</span>' : 'Ròng (Net) <span id="sort-icon-s2-net">▼</span>';
-        secTh[4].innerHTML = (lang === 'en') ? 'MoM <span id="sort-icon-s2-mom">↕</span>' : 'MoM <span id="sort-icon-s2-mom">↕</span>';
-      }
-
-      // Sheet 2 Stock Table Headers
-      var stkTh = document.querySelectorAll('#s2-stock-table thead th');
-      if (stkTh.length >= 6) {
-        stkTh[0].innerHTML = (lang === 'en') ? 'Ticker <span id="sort-icon-s2-stk-sym">↕</span>' : 'Mã CK <span id="sort-icon-s2-stk-sym">↕</span>';
-        stkTh[1].innerHTML = (lang === 'en') ? 'Inflow <span id="sort-icon-s2-stk-inflow">↕</span>' : 'Tiền vào <span id="sort-icon-s2-stk-inflow">↕</span>';
-        stkTh[2].innerHTML = (lang === 'en') ? 'Outflow <span id="sort-icon-s2-stk-outflow">↕</span>' : 'Tiền ra <span id="sort-icon-s2-stk-outflow">↕</span>';
-        stkTh[3].innerHTML = (lang === 'en') ? 'Net Flow <span id="sort-icon-s2-stk-net">▼</span>' : 'Ròng (Net) <span id="sort-icon-s2-stk-net">▼</span>';
-        stkTh[4].innerHTML = (lang === 'en') ? 'YTD Cum. <span id="sort-icon-s2-stk-cum">↕</span>' : 'Lũy kế YTD <span id="sort-icon-s2-stk-cum">↕</span>';
-        stkTh[5].innerHTML = (lang === 'en') ? 'Trading Funds <span id="sort-icon-s2-stk-funds">↕</span>' : 'Số quỹ GD <span id="sort-icon-s2-stk-funds">↕</span>';
-      }
-
-      // Sheet 2 Fund Table Headers
-      var fndTh = document.querySelectorAll('#s2-fund-table thead th');
-      if (fndTh.length >= 7) {
-        fndTh[0].innerHTML = (lang === 'en') ? 'Fund Code <span id="sort-icon-s2-fnd-code">↕</span>' : 'Mã Quỹ <span id="sort-icon-s2-fnd-code">↕</span>';
-        fndTh[1].innerHTML = (lang === 'en') ? 'Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-flow">▼</span>' : 'Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-flow">▼</span>';
-        fndTh[2].innerHTML = (lang === 'en') ? 'Cash<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-cash">↕</span>' : 'Tiền mặt<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-cash">↕</span>';
-        fndTh[3].innerHTML = (lang === 'en') ? 'Stocks<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-stock">↕</span>' : 'Cổ phiếu<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-stock">↕</span>';
-        fndTh[4].innerHTML = (lang === 'en') ? 'Bonds<br><span style="font-size:9px; font-weight:normal;">(Bil VND)</span> <span id="sort-icon-s2-fnd-bond">↕</span>' : 'Trái phiếu<br><span style="font-size:9px; font-weight:normal;">(Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-bond">↕</span>';
-        fndTh[5].innerHTML = (lang === 'en') ? 'Inflow/Outflow Change<br><span style="font-size:9px; font-weight:normal;">Value (Bil VND)</span> <span id="sort-icon-s2-fnd-valChg">↕</span>' : 'Thay đổi Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">Giá trị (Tỷ VNĐ)</span> <span id="sort-icon-s2-fnd-valChg">↕</span>';
-        fndTh[6].innerHTML = (lang === 'en') ? 'Inflow/Outflow Change<br><span style="font-size:9px; font-weight:normal;">%</span> <span id="sort-icon-s2-fnd-pctChg">↕</span>' : 'Thay đổi Inflow / Outflow<br><span style="font-size:9px; font-weight:normal;">%</span> <span id="sort-icon-s2-fnd-pctChg">↕</span>';
-      }
-
-      // 7. Sheet 3: Cash & Asset Allocation Headers
-      var cashTh = document.querySelectorAll('#chart-cash-table thead th');
-      if (cashTh.length >= 9) {
-        var cM = (lang === 'en') ? 'Current Month (Sep 2026)' : 'Tháng hiện tại (T9/2026)';
-        var pM = (lang === 'en') ? 'Previous Month (Aug 2026)' : 'Tháng trước (T8/2026)';
-        var chg = (lang === 'en') ? 'Change' : 'Thay đổi';
-        if (cashTh[0]) cashTh[0].querySelector('span').textContent = (lang === 'en') ? 'Fund Code' : 'Mã quỹ';
-        if (cashTh[1]) cashTh[1].textContent = cM;
-        if (cashTh[2]) cashTh[2].textContent = pM;
-        if (cashTh[3]) cashTh[3].textContent = chg;
-      }
-
-      // 8. Modals
-      var auditTitle = document.getElementById('auditListModalTitle');
-      if (auditTitle) auditTitle.textContent = (lang === 'en') ? 'FUND LIST' : 'DANH SÁCH QUỸ';
-      var auditSub = document.querySelector('#auditListModal .fund-modal-subtitle');
-      if (auditSub) auditSub.textContent = (lang === 'en') ? 'September 2026 Data · Source: FiinPro-X' : 'Dữ liệu Tháng 9/2026 · Nguồn FiinPro-X';
-
-      // 9. Re-render Active Tables & Charts
-      if (typeof window.renderS2SectorTable === 'function') window.renderS2SectorTable();
-      if (typeof window.renderS2StockTable === 'function') window.renderS2StockTable();
-      if (typeof window.renderS2FundTable === 'function') window.renderS2FundTable();
-      if (typeof window.renderS2SectorChart === 'function' && window.s2SectorViewMode === 'chart') window.renderS2SectorChart();
-      if (typeof window.renderP1ActiveChart === 'function') window.renderP1ActiveChart();
-      if (typeof window.renderP1Table === 'function') window.renderP1Table();
-    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVietnameseApp);
+    } else {
+      initVietnameseApp();
+    }
 
 </script>
 
