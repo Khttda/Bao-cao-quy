@@ -16773,7 +16773,7 @@ function renderStockHoldModalRows(funds) {
           ${fullFundName !== fName ? `<div style="font-size: 10px; color: #64748b; margin-top: 1px;">${fullFundName}</div>` : ''}
         </td>
         <td style="text-align: right; color: #1e293b; font-weight: 600; padding: 8px 10px;">${(vol != null ? vol.toLocaleString('en-US') : '—')} shares</td>
-        <td style="text-align: right; color: #007a3d; font-weight: 700; padding: 8px 10px; white-space: nowrap;">${(valBil != null ? valBil.toLocaleString('vi-VN') + ' tỷ' : '—')}${ownStr ? ` <span style="font-size: 10px; color: #64748b; font-weight: 500;">(${ownStr})</span>` : ''}</td>
+        <td style="text-align: right; color: #007a3d; font-weight: 700; padding: 8px 10px; white-space: nowrap;">${(valBil != null ? valBil.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' bil VND' : '—')}</td>
         <td style="text-align: right; color: #475569; padding: 8px 10px;">${(fundNavBil != null ? fundNavBil.toLocaleString('en-US') + ' bil VND' : '—')}</td>
         <td style="text-align: right; font-weight: 700; color: #007a3d; padding: 8px 10px;">${(pctNav != null ? pctNav.toFixed(2) + '%' : '—')}</td>
       </tr>
